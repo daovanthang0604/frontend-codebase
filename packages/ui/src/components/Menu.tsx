@@ -1,0 +1,141 @@
+"use client"
+
+import * as React from "react"
+import {
+  ListBoxCollection,
+  ListBoxSection,
+} from "@workspace/ui/components/ListBox"
+import { Popover } from "@workspace/ui/components/Popover"
+import { cn } from "@workspace/ui/lib/utils"
+import { Check, ChevronRight, Circle } from "lucide-react"
+import {
+  Header as AriaHeader,
+  Keyboard as AriaKeyboard,
+  Menu as AriaMenu,
+  MenuItem as AriaMenuItem,
+  MenuTrigger as AriaMenuTrigger,
+  Separator as AriaSeparator,
+  SubmenuTrigger as AriaSubmenuTrigger,
+  composeRenderProps,
+  type MenuItemProps as AriaMenuItemProps,
+  type MenuProps as AriaMenuProps,
+  type SeparatorProps as AriaSeparatorProps,
+  type PopoverProps,
+} from "react-aria-components"
+
+const MenuTrigger = AriaMenuTrigger
+const MenuSubTrigger = AriaSubmenuTrigger
+const MenuSection = ListBoxSection
+const MenuCollection = ListBoxCollection
+function MenuPopover({ className, ...props }: PopoverProps) {
+  return (
+    <Popover
+      className={composeRenderProps(className, (className) =>
+        cn("w-auto", className)
+      )}
+      {...props}
+    />
+  )
+}
+const Menu = <T extends object>({ className, ...props }: AriaMenuProps<T>) => (
+  <AriaMenu
+    className={cn(
+      "max-h-[inherit] overflow-auto rounded-md p-1.5 outline-0 [clip-path:inset(0_0_0_0_round_calc(var(--radius)-2px))]",
+      className
+    )}
+    {...props}
+  />
+)
+const MenuItem = ({ children, className, ...props }: AriaMenuItemProps) => (
+  <AriaMenuItem
+    textValue={
+      props.textValue || (typeof children === "string" ? children : undefined)
+    }
+    className={composeRenderProps(className, (className) =>
+      cn(
+        "text-gray-12 relative flex cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2 text-sm font-medium outline-none select-none [&_svg]:size-4 [&_svg]:shrink-0",
+        /* Disabled */
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        /* Focused */
+        "data-[focused]:bg-gray-3",
+        /* Selection Mode */
+        "data-[selection-mode]:pl-8",
+        className
+      )
+    )}
+    {...props}
+  >
+    {composeRenderProps(children, (children, renderProps) => (
+      <>
+        <span className="absolute left-2 flex size-4 items-center justify-center">
+          {renderProps.isSelected && (
+            <>
+              {renderProps.selectionMode == "single" && (
+                <Circle className="size-2 fill-current" />
+              )}
+              {renderProps.selectionMode == "multiple" && (
+                <Check className="size-4" />
+              )}
+            </>
+          )}
+        </span>
+
+        {children}
+
+        {renderProps.hasSubmenu && (
+          <ChevronRight className="text-gray-11 ml-auto size-4" />
+        )}
+      </>
+    ))}
+  </AriaMenuItem>
+)
+interface MenuHeaderProps extends React.ComponentProps<typeof AriaHeader> {
+  inset?: boolean
+  separator?: boolean
+}
+const MenuHeader = ({
+  className,
+  inset,
+  separator = true,
+  ...props
+}: MenuHeaderProps) => (
+  <AriaHeader
+    className={cn(
+      "px-3 py-1.5 text-sm font-semibold",
+      inset && "pl-8",
+      separator && "border-b-border -mx-1 mb-1 border-b pb-2.5",
+      className
+    )}
+    {...props}
+  />
+)
+const MenuSeparator = ({ className, ...props }: AriaSeparatorProps) => (
+  <AriaSeparator
+    className={cn("bg-gray-a5 -mx-1 my-1 h-px", className)}
+    {...props}
+  />
+)
+const MenuKeyboard = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof AriaKeyboard>) => {
+  return (
+    <AriaKeyboard
+      className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
+      {...props}
+    />
+  )
+}
+export {
+  Menu,
+  MenuCollection,
+  MenuHeader,
+  MenuItem,
+  MenuKeyboard,
+  MenuPopover,
+  MenuSection,
+  MenuSeparator,
+  MenuSubTrigger,
+  MenuTrigger,
+}
+export type { MenuHeaderProps }

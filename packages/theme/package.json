@@ -1,0 +1,62 @@
+{
+  "name": "@workspace/theme",
+  "version": "1.0.7",
+  "description": "Theme package for Workspace applications",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./postcss.config": "./postcss.config.mjs",
+    "./globals.css": "./src/styles/globals.css",
+    "./generated.css": "./src/styles/generated.css",
+    "./semantic.css": "./src/styles/semantic.css",
+    "./provider": "./src/provider.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "gen:css": "tsx scripts/generate-default-theme-css.ts"
+  },
+  "keywords": [
+    "theme",
+    "react",
+    "tailwind",
+    "radix-ui",
+    "workspace"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "class-variance-authority": "catalog:",
+    "clsx": "^2.1.1",
+    "dayjs": "catalog:",
+    "lodash": "catalog:",
+    "lucide-react": "catalog:",
+    "next-themes": "catalog:",
+    "radix-ui": "^1.4.3",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwind-merge": "^3.3.1",
+    "tailwind-variants": "^3.1.1",
+    "tw-animate-css": "^1.3.6",
+    "zod": "catalog:",
+    "@radix-ui/colors": "catalog:",
+    "bezier-easing": "catalog:",
+    "colorjs.io": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
+    "@workspace/eslint-config": "workspace:^",
+    "eslint": "^9.32.0",
+    "@turbo/gen": "^2.5.5",
+    "@types/lodash": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "tailwindcss": "^4.1.11",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}

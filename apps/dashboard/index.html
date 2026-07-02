@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" suppressHydrationWarning>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="description" content="A React + TanStack Router starter template." />
+    <title>Frontend Starter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- workspace Design System (WDS) foundation fonts — app-wide UI + type.
+         Public Sans (UI), Lora (editorial display + prose), Space Grotesk
+         (tabular numerals), JetBrains Mono (technical labels). Wired as the
+         theme's --font-sans/serif/mono/num in @workspace/theme globals.css.
+         Self-hosting is a later optimization; this matches the existing
+         <link> loading pattern. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <script>
+      // Prevent flash of wrong theme on page load
+      ;(function () {
+        try {
+          var theme = localStorage.getItem("theme")
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark")
+          }
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="app" class="antialiased"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

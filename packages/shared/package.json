@@ -1,0 +1,30 @@
+{
+  "name": "@workspace/shared",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "axios": "^1.15.0",
+    "lodash": "catalog:"
+  },
+  "devDependencies": {
+    "@types/lodash": "catalog:",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^9.32.0",
+    "typescript": "catalog:",
+    "vite": "^7.1.7",
+    "zod": "catalog:"
+  },
+  "exports": {
+    "./api/*": "./src/api/*.ts",
+    "./constants/*": "./src/constants/*.ts",
+    "./zod": "./src/zod/index.ts",
+    "./utils/*": "./src/utils/*.ts"
+  }
+}

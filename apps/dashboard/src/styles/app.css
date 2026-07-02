@@ -1,0 +1,239 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Base palette / radius / dark-mode scales intentionally live ONLY in
+   @workspace/theme (generated.css + semantic.css, imported in main.tsx) and are
+   overridden per-market at runtime by <ThemeStylePreview>. A local :root/.dark
+   copy used to sit here, but it (a) duplicated that source, (b) disagreed with
+   it (pure-neutral gray + 4px vs. the theme's cool-tinted gray + tokenized
+   radius), and (c) was already shadowed by the later theme import — so it was
+   dead code. Removed to keep a single source of truth. App-only styles (the
+   [data-editorial] scope, keyframes) remain below.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Hide scrollbar while keeping element scrollable */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Discover slideshow mesh-variant blob drift. Suppressed by `prefers-reduced-motion`
+   at the consumer (component checks `useReducedMotion` and omits the class). */
+@keyframes mesh-drift {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(8vw, -6vh);
+  }
+  50% {
+    transform: translate(-4vw, 4vh);
+  }
+  75% {
+    transform: translate(6vw, 8vh);
+  }
+}
+
+.animate-mesh-drift {
+  animation: mesh-drift 40s ease-in-out infinite;
+}
+
+/* Discover slideshow legibility scrims. Decorative shadows behind the 3-layer
+   slide text (number / label / description) so the foreground stays readable
+   on photo and mesh background variants. Centralised here so all 3 layers
+   draw from a single source of truth — see SlideshowStage.tsx.
+   These are decorative; they do NOT substitute for WCAG contrast. */
+.slide-text-shadow-heavy {
+  text-shadow:
+    0 2px 24px rgba(0, 0, 0, 0.7),
+    0 1px 4px rgba(0, 0, 0, 0.5);
+}
+.slide-text-shadow-light {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Agentic regen narrative — active-phase glyph breathing (opacity-only, no
+   rotation). See .plan/display-ads-v2/2026-05-26-agentic-regen-spec.md §D. */
+@keyframes regen-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* Agentic regen narrative — canvas shimmer sweep across the matte during an
+   in-flight regen. Single forward pass per loop; consumer keeps the gradient
+   inside an overflow-hidden parent (CANVAS_MATTE) so the sweep clips cleanly. */
+@keyframes regen-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Editorial Quiet (cool-tone) — display-ad-edit prototype aesthetic scope
+   See .plan/display-ads-v2/2026-05-26-editorial-quiet-spec.md.
+
+   Scoped to [data-editorial="true"] on the prototype root so the rest of
+   the CRM is unaffected. The first E1 pass overrode the gray ramp to a
+   warm paper-tone — that broke harmony with the cool slate-gray dashboard
+   chrome around the prototype. The editorial direction is preserved but
+   only at the TYPOGRAPHY level here: the prototype inherits the CRM-wide
+   cool gray ramp + existing Radix accent/status colors. Color/surface
+   work for editorial-cool happens in later slices once the system-wide
+   palette is decided.
+   ───────────────────────────────────────────────────────────────────────── */
+[data-editorial="true"] {
+  /* Geist Sans default. Fraunces / Geist Mono kick in via the class-scoped
+     rules below so they only apply to text that explicitly wants them. */
+  font-family:
+    "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  font-optical-sizing: auto;
+
+  /* Cool ink-blue editorial accent — a discrete chromatic moment used only
+     in editorial micro-positions: mono identifiers, the headline hairline
+     rule, and the canvas matte gallery-mount frame. Doesn't replace the
+     Radix --accent-* (which still drives Pick / Finish / focus rings) and
+     doesn't fight the system's existing grass / amber / blue signals.
+     The value sits between the CRM's existing slate text and the
+     dashboard's navy CTA — Are.na / Stripe Press / Geist canon. */
+  --ink-cool-9:  oklch(0.42 0.085 245);
+  --ink-cool-10: oklch(0.36 0.090 245);
+  --ink-cool-a3: oklch(0.42 0.085 245 / 0.18);
+
+  /* Premium-redesign easing for hover lifts + photo fades. Scoped here
+     (not in @workspace/theme) because every consumer lives inside the
+     display-ads-v2 prototype. See
+     .plan/display-ads-v2/2026-05-20-premium-redesign-design.md §4. */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark[data-editorial="true"],
+.dark [data-editorial="true"] {
+  --ink-cool-9:  oklch(0.74 0.095 245);
+  --ink-cool-10: oklch(0.80 0.090 245);
+  --ink-cool-a3: oklch(0.74 0.095 245 / 0.22);
+}
+
+/* Tailwind's `font-mono` / serif utilities resolve via the theme package's
+   @theme tokens. We re-resolve them here so any consumer inside the
+   prototype picks up the editorial families, while the rest of the CRM
+   stays on the shared theme. */
+[data-editorial="true"] .font-mono,
+[data-editorial="true"] [class*="font-mono"] {
+  font-family:
+    "Geist Mono", "Berkeley Mono", "JetBrains Mono", ui-monospace,
+    "SF Mono", Menlo, monospace;
+}
+
+[data-editorial="true"] .font-serif,
+[data-editorial="true"] [class*="font-['Iowan_Old_Style"] {
+  font-family:
+    "Fraunces", "Iowan Old Style", Iowan, "Apple Garamond", Baskerville,
+    "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 36, "SOFT" 50, "WONK" 0;
+}
+
+/* Editorial gallery-mount frame + subtle radial vignette on the canvas
+   matte. (1) a 1px inset frame in ink-cool that reads as a matted print
+   edge; (2) a radial-gradient that brightens the artwork center ~3% vs
+   the corners — gives the canvas the "gallery-lit" feel referenced in the
+   spec without adding markup. The vignette lives on background-image so
+   it composes over the existing bg-gray-4 background-color cleanly. */
+[data-editorial="true"] .canvas-matte {
+  box-shadow:
+    inset 0 0 0 1px var(--ink-cool-a3),
+    0 1px 0 0 oklch(0 0 0 / 0.04);
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% 45%,
+    oklch(1 0 0 / 0.05),
+    transparent 72%
+  );
+}
+
+.dark [data-editorial="true"] .canvas-matte,
+.dark[data-editorial="true"] .canvas-matte {
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% 45%,
+    oklch(1 0 0 / 0.03),
+    transparent 72%
+  );
+}
+
+/* Editorial publication rule — a hairline divider sitting beneath the
+   serif canvas headline. Fades from ink-cool to transparent over ~28ch.
+   Reads as a publication mark, not a divider. Consumers attach this via
+   the EDITORIAL_RULE recipe class. */
+[data-editorial="true"] .editorial-rule {
+  position: relative;
+}
+[data-editorial="true"] .editorial-rule::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 28ch;
+  max-width: 100%;
+  margin-top: 0.75rem;
+  background: linear-gradient(
+    to right,
+    var(--ink-cool-a3),
+    transparent 92%
+  );
+}
+
+/* Status pill — legacy SaaS chrome (bg-tint + border + rounded-full pill)
+   stays outside the editorial scope. Inside [data-editorial="true"], the
+   badge chrome is suppressed and the status dot + label stand alone —
+   Frame.io V4 publication restraint. !important is needed because the
+   pill's background-color / border-color are inline styles.
+   The dot-hide rule is scoped to descendants of [data-status-pill] so
+   the attribute name stays inert outside the StatusPill component. */
+[data-status-pill] [data-status-dot] {
+  display: none;
+}
+[data-editorial="true"] [data-status-pill="default"] {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+}
+[data-editorial="true"] [data-status-pill] [data-status-dot] {
+  display: inline-block;
+}
+
+/* Editorial drop cap — applied to multi-line body paragraphs (EmptyState,
+   future Read-mode prose). First letter pulls left, scales to ~3.5×, opts
+   into Fraunces opsz=72 for display-grade aperture. Ink-cool color makes
+   it sit as a single chromatic moment in the paragraph. */
+[data-editorial="true"] .editorial-dropcap::first-letter {
+  font-family:
+    "Fraunces", "Iowan Old Style", Iowan, "Apple Garamond", Baskerville,
+    serif;
+  font-variation-settings: "opsz" 72, "SOFT" 50, "WONK" 0;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3.4em;
+  line-height: 0.82;
+  float: left;
+  margin: 0.15em 0.45rem -0.1em 0;
+  color: var(--ink-cool-9);
+}
+
+/* Editorial end-of-list ornament — a quiet ✦ glyph signaling "end of
+   contents" at the foot of any list that opts in. Sits in ink-cool at
+   tonal opacity so it whispers rather than asserts. */
+[data-editorial="true"] .editorial-endmark {
+  display: block;
+  text-align: center;
+  font-family:
+    "Fraunces", "Iowan Old Style", Iowan, "Apple Garamond", Baskerville,
+    serif;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--ink-cool-9);
+  opacity: 0.5;
+  padding: 1rem 0 0.75rem;
+  letter-spacing: 0.3em;
+}

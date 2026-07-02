@@ -1,0 +1,78 @@
+/* Semantic aliases. WDS palette: success = emerald, warning = burnt orange,
+   error = red, info = blue. success/warning now point at the EXACT DS ramps
+   (--success-* / --warning-*, seeded from #10B981 / #C2701C in globals.css)
+   rather than the Radix stock green/orange, which drifted in hue and brightness
+   from the DS. error/info still track the Radix red/blue scales (already close). */
+@theme inline {
+  /* Canonical focus-ring color, so `ring-ring` resolves (shadcn-origin components
+     reference it; it was undefined = invisible rings). = accent-9, identical to the
+     legacy `ring-accent-9`, so converging components onto `ring-ring` is zero-visual.
+     The global `*` rule applies it at /50 as the default ring. */
+  --color-ring: var(--accent-9);
+
+  /* Card / elevated-surface token. WDS pages are warm cream (--gray-1) with
+     WHITE cards (DS "surface-0" #fff) that lift off the page — without this the
+     card would be cream-on-cream and vanish. Light = white; dark = one step up
+     from the page (--gray-2). Use `bg-panel` on cards, dialogs, menus, popovers.
+     White-label-safe: white is white for every tenant; dark tracks the ramp. */
+  --color-panel: var(--panel);
+
+  --color-error-1: var(--red-1);
+  --color-error-2: var(--red-2);
+  --color-error-3: var(--red-3);
+  --color-error-4: var(--red-4);
+  --color-error-5: var(--red-5);
+  --color-error-6: var(--red-6);
+  --color-error-7: var(--red-7);
+  --color-error-8: var(--red-8);
+  --color-error-9: var(--red-9);
+  --color-error-10: var(--red-10);
+  --color-error-11: var(--red-11);
+  --color-error-12: var(--red-12);
+
+  --color-warning-1: var(--warning-1);
+  --color-warning-2: var(--warning-2);
+  --color-warning-3: var(--warning-3);
+  --color-warning-4: var(--warning-4);
+  --color-warning-5: var(--warning-5);
+  --color-warning-6: var(--warning-6);
+  --color-warning-7: var(--warning-7);
+  --color-warning-8: var(--warning-8);
+  --color-warning-9: var(--warning-9);
+  --color-warning-10: var(--warning-10);
+  --color-warning-11: var(--warning-11);
+  --color-warning-12: var(--warning-12);
+
+  --color-success-1: var(--success-1);
+  --color-success-2: var(--success-2);
+  --color-success-3: var(--success-3);
+  --color-success-4: var(--success-4);
+  --color-success-5: var(--success-5);
+  --color-success-6: var(--success-6);
+  --color-success-7: var(--success-7);
+  --color-success-8: var(--success-8);
+  --color-success-9: var(--success-9);
+  --color-success-10: var(--success-10);
+  --color-success-11: var(--success-11);
+  --color-success-12: var(--success-12);
+
+  /* `info` intentionally tracks the FIXED Radix blue scale, not the white-label
+     --accent-* scale. It only looks identical to the brand on blue-accent
+     tenants (the default brand #1A56DB ≈ Radix blue); for any other brand accent
+     the two diverge automatically. `info` is currently used in one place (the
+     Sonner info toast). To make it distinct even on blue brands, add a scale
+     (e.g. `cyan`) to scaleNames in lib/radix-colors.ts, regenerate generated.css,
+     and remap these tokens to var(--cyan-*). */
+  --color-info-1: var(--blue-1);
+  --color-info-2: var(--blue-2);
+  --color-info-3: var(--blue-3);
+  --color-info-4: var(--blue-4);
+  --color-info-5: var(--blue-5);
+  --color-info-6: var(--blue-6);
+  --color-info-7: var(--blue-7);
+  --color-info-8: var(--blue-8);
+  --color-info-9: var(--blue-9);
+  --color-info-10: var(--blue-10);
+  --color-info-11: var(--blue-11);
+  --color-info-12: var(--blue-12);
+}

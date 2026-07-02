@@ -1,0 +1,111 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# This is a pnpm-only monorepo — never commit npm/yarn lockfiles (CLAUDE.md rule #3)
+package-lock.json
+yarn.lock
+npm-shrinkwrap.json
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage
+test-results/
+playwright-report/
+blob-report/
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Build Outputs
+.next/
+out/
+build
+dist
+
+
+# Debug
+npm-debug.log*
+
+# Storybook
+storybook-static
+
+# IDE
+.idea/
+
+# Misc
+.DS_Store
+*.pem
+
+# Cloudflare
+.wrangler
+
+# Claude Code local state
+.claude/worktrees/
+.claude/settings.local.json
+.claude/agent-memory-local/
+
+# Spec-pipeline skills — symlinks into the workspace-spec-pipeline repo, which
+# owns its own git history. Listed explicitly so any new real (non-symlink)
+# skill added under .claude/skills/ is still picked up by git.
+.claude/skills/be-orchestrator
+.claude/skills/constraints-writer
+.claude/skills/design-writer
+.claude/skills/fe-orchestrator
+.claude/skills/implementation-orchestrator
+.claude/skills/linear-writer
+.claude/skills/pipeline-onboard
+.claude/skills/pipeline-runner
+.claude/skills/prototype-learner
+.claude/skills/prototype-learner-richmode
+.claude/skills/scope-reviewer
+.claude/skills/scope-writer
+.claude/skills/spec-reviewer
+.claude/skills/spec-writer
+
+# NestJS / Backend (apps/api)
+tsconfig.build.tsbuildinfo
+*.tsbuildinfo
+
+# Backend logs
+logs/
+*.log
+
+# Prisma generated client (regenerate with pnpm prisma:generate)
+# apps/api/node_modules/.prisma  — already covered by node_modules rule
+
+# graphify extraction cache (large, regenerated automatically by graphify update)
+graphify-out/cache/
+
+# Generated OpenAPI spec (regenerate with pnpm codegen)
+openapi.json
+
+# Playwright MCP local cache
+.playwright-mcp/
+swagger*png
+
+# MCP
+.mcp.json
+
+# Spec pipeline ephemeral artifacts (staged brief + reviewer findings)
+.plan/**/feature-brief.md
+.plan/**/*-findings.json
+
+# Local-only contributor stats script (personal tooling, not shared)
+scripts/local/*
+
+# Per-developer symlink to the shared spec-pipeline team-config (machine-specific path)
+apps/api/team-config.md
+backups

@@ -1,0 +1,344 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@import "./generated.css";
+@import "./semantic.css";
+
+@source "../../../apps/**/*.{ts,tsx}";
+@source "../../../components/**/*.{ts,tsx}";
+@source "../../../ui/**/*.{ts,tsx}";
+@source "../../../music-ui/**/*.{ts,tsx}";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Elevation scale — warm ink tint (WDS "warm ink on white paper": shadows are
+     ink-tinted rgba(42,37,32), never neutral grey or pure black). The geometry and
+     opacity of every step are preserved (incl. --shadow-lg, kept for callsites tuned
+     to its strength); only the color was warmed. Dark-mode shadows stay black (below). */
+  --shadow-xs: 0 1px 2px 0 rgba(42, 37, 32, 0.04);
+  --shadow-sm:
+    0 1px 3px 0 rgba(42, 37, 32, 0.06), 0 1px 2px 0 rgba(42, 37, 32, 0.04);
+  --shadow-md:
+    0 4px 8px -2px rgba(42, 37, 32, 0.08),
+    0 2px 4px -2px rgba(42, 37, 32, 0.04);
+  --shadow-lg:
+    0 4px 20px -1px rgba(42, 37, 32, 0.1), 0 4px 6px -2px rgba(42, 37, 32, 0.05);
+  --shadow-xl:
+    0 16px 32px -8px rgba(42, 37, 32, 0.12),
+    0 4px 8px -4px rgba(42, 37, 32, 0.06);
+  --shadow-2xl: 0 24px 48px -12px rgba(42, 37, 32, 0.18);
+
+  /* Accent-tinted glow: driven by --accent-9 so theme overrides propagate. */
+  --shadow-glow-accent:
+    0 0 0 1px color-mix(in oklch, var(--accent-9) 30%, transparent),
+    0 8px 24px -6px color-mix(in oklch, var(--accent-9) 35%, transparent);
+
+  /* Radius scale — WDS "soft / bookish" proportions (packages/ui/design-system/
+     tokens/spacing.css). The tenant-set --radius (default 8px = WDS base) scales the
+     whole ramp; at 8px the named steps land on WDS's values:
+     sm 6 (chips) · md 11 (buttons/inputs) · lg 14 (tiles) · xl 16 (cards) · 2xl 22 (hero).
+     Tenant override stays proportional; 0px collapses the ramp to sharp. */
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: calc(var(--radius) * 1.375);
+  --radius-lg: calc(var(--radius) * 1.75);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 2.75);
+  --radius-3xl: calc(var(--radius) * 3.5);
+
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+  --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+  /* Motion — WDS "Spring" personality (packages/ui/design-system/tokens/effects.css).
+     Enter/exit uses ease-out, on-screen movement uses ease-in-out (both already in the
+     Penner set above + Tailwind built-ins). The spring is for transforms that should
+     feel alive (switch knob, checkbox check, menu/dialog enter); count-up for KPI
+     reveals. CSS path: transition + --ease-spring/--dur-*. React path: drive Framer
+     Motion from the --spring-* numbers (type:"spring", stiffness/damping/mass).
+     CONSUMERS MUST honor prefers-reduced-motion (keep opacity, drop transforms) and
+     animate only transform/opacity. */
+  --ease-spring: cubic-bezier(0.34, 1.32, 0.46, 1);
+  --dur-fast: 150ms;
+  --dur-base: 250ms;
+  --dur-slow: 350ms;
+  --dur-spring: 420ms;
+  --dur-count: 1100ms;
+  --spring-stiffness: 300;
+  --spring-damping: 18;
+  --spring-mass: 0.9;
+}
+
+/* Typeface tokens — workspace Design System (WDS) families.
+   Migrated from Geist / Geist Mono / Fraunces to the WDS type system
+   (source: packages/ui/design-system/tokens/{typography,fonts}.css):
+     --font-sans  → Public Sans    — all UI / interface text; the body default
+     --font-serif → Lora           — editorial display headlines, prose, pull-quotes
+     --font-mono  → JetBrains Mono  — technical labels, IDs, ad-size specs, metadata
+     --font-num   → Space Grotesk   — tabular lining figures for standout numbers
+                    (scores, counts, stats); opt in via the `font-num` utility
+   The webfonts are loaded in the CRM (apps/dashboard/index.html). Fallback
+   chains mirror WDS so apps that don't load the webfonts degrade gracefully.
+   NOTE: the [data-editorial] prototype scope in the CRM's app.css still names
+   Fraunces / Geist and is migrated separately, not in this foundation pass. */
+@theme {
+  --font-sans:
+    "Public Sans", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-serif:
+    "Lora", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-mono:
+    "JetBrains Mono", "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-num:
+    "Space Grotesk", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Type scale — WDS (packages/ui/design-system/tokens/typography.css). Each named
+   size carries its line-height / weight / tracking, so one utility sets the whole
+   step. Pair DISPLAY steps with `font-serif` (Lora editorial headlines), UI steps
+   with `font-sans` (Public Sans); numerals use `font-num tabular-nums` (Space
+   Grotesk lining figures). These ADD to Tailwind's default text-* scale — components
+   opt in (e.g. `font-serif text-display-lg`, `uppercase text-eyebrow`) during the
+   component phase; the body default (text-sm) is untouched here. */
+@theme {
+  --text-display-xl: 44px;
+  --text-display-xl--line-height: 1.08;
+  --text-display-xl--font-weight: 700;
+  --text-display-xl--letter-spacing: -0.015em;
+  --text-display-lg: 33px;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--font-weight: 700;
+  --text-display-lg--letter-spacing: -0.015em;
+  --text-display-md: 24px;
+  --text-display-md--line-height: 1.15;
+  --text-display-md--font-weight: 700;
+  --text-display-sm: 18px;
+  --text-display-sm--line-height: 1.2;
+  --text-display-sm--font-weight: 700;
+
+  --text-ui-lg: 17px;
+  --text-ui-lg--line-height: 1.6;
+  --text-ui-lg--font-weight: 500;
+  --text-ui-base: 15px;
+  --text-ui-base--line-height: 1.6;
+  --text-ui-base--font-weight: 400;
+  --text-ui-sm: 13px;
+  --text-ui-sm--line-height: 1.5;
+  --text-ui-sm--font-weight: 400;
+  --text-ui-xs: 12px;
+  --text-ui-xs--line-height: 1.4;
+  --text-ui-xs--font-weight: 500;
+
+  --text-eyebrow: 11px;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--font-weight: 700;
+  --text-eyebrow--letter-spacing: 0.1em;
+
+  --text-prose: 16px;
+  --text-prose--line-height: 1.7;
+  --text-prose--font-weight: 400;
+}
+
+@layer base {
+  /* Raw value behind --color-panel (semantic.css). WDS card surface = white
+     paper lifting off the cream page. Dark mode steps up from --gray-1 instead. */
+  :root {
+    --panel: #ffffff;
+
+    /* Data-table body ink. The DS sets table/body text one step softer than the
+       near-black ink (DS --ds-ink-2 #3A342C "long-form body text"), reserving
+       the darkest ink (--gray-12 #2A2520) for emphasis like a row's primary
+       name. Light-only literal (the DS ink is fixed, not white-labeled); .dark
+       tracks --gray-12 below so dark mode is unchanged. Consumed by the AgTable
+       theme's foregroundColor (packages/ui/.../ag-table-theme.ts). */
+    --table-ink: #3a342c;
+
+    /* WDS semantic ramps — exact DS values (success = emerald #10B981,
+       warning = burnt orange #C2701C), copied verbatim from the DS hue-relative
+       ramps (packages/ui/design-system/tokens/scales.css). These are FIXED (not
+       white-labeled) and are NOT runtime-injected (ThemeStylePreview is
+       accentOnly), so defining them here is authoritative. Light-mode values; the
+       DS is light-only, so .dark falls back to the generated ramp below.
+       semantic.css points --color-success-* / --color-warning-* at these. */
+    --success-1: oklch(0.992 0.006 162.48);
+    --success-2: oklch(0.972 0.02 162.48);
+    --success-3: oklch(0.957 0.028 162.48);
+    --success-4: oklch(0.935 0.042 162.48);
+    --success-5: oklch(0.91 0.055 162.48);
+    --success-6: oklch(0.88 0.066 162.48);
+    --success-7: oklch(0.84 0.082 162.48);
+    --success-8: oklch(0.785 0.11 162.48);
+    --success-9: #10b981;
+    --success-10: oklch(0.65 0.15 162.48);
+    --success-11: oklch(0.55 0.12 162.48);
+    --success-12: oklch(0.37 0.08 162.48);
+
+    --warning-1: oklch(0.992 0.008 59.68);
+    --warning-2: oklch(0.972 0.026 59.68);
+    --warning-3: oklch(0.958 0.034 59.68);
+    --warning-4: oklch(0.935 0.05 59.68);
+    --warning-5: oklch(0.91 0.064 59.68);
+    --warning-6: oklch(0.879 0.076 59.68);
+    --warning-7: oklch(0.838 0.092 59.68);
+    --warning-8: oklch(0.778 0.118 59.68);
+    --warning-9: #c2701c;
+    --warning-10: oklch(0.585 0.13 59.68);
+    --warning-11: oklch(0.52 0.11 59.68);
+    --warning-12: oklch(0.37 0.07 59.68);
+  }
+
+  * {
+    @apply border-gray-a6 ring-ring/50 ring-offset-gray-1;
+  }
+
+  body {
+    @apply bg-gray-1 text-gray-12 font-sans text-ui-base;
+  }
+
+  b,
+  strong {
+    @apply font-semibold;
+  }
+
+  /* Dark-mode elevation wants luminance drop, not just darker rgba. */
+  .dark {
+    /* Card surface lifts one step off the page (--gray-1) in dark mode. */
+    --panel: var(--gray-2);
+
+    /* Dark mode: body ink stays at the near-white --gray-12 (no softening). */
+    --table-ink: var(--gray-12);
+
+    /* Dark semantics: the DS is light-only, so reuse the generated green/orange
+       dark ramp (legible on dark) for success/warning. */
+    --success-1: var(--green-1);
+    --success-2: var(--green-2);
+    --success-3: var(--green-3);
+    --success-4: var(--green-4);
+    --success-5: var(--green-5);
+    --success-6: var(--green-6);
+    --success-7: var(--green-7);
+    --success-8: var(--green-8);
+    --success-9: var(--green-9);
+    --success-10: var(--green-10);
+    --success-11: var(--green-11);
+    --success-12: var(--green-12);
+
+    --warning-1: var(--orange-1);
+    --warning-2: var(--orange-2);
+    --warning-3: var(--orange-3);
+    --warning-4: var(--orange-4);
+    --warning-5: var(--orange-5);
+    --warning-6: var(--orange-6);
+    --warning-7: var(--orange-7);
+    --warning-8: var(--orange-8);
+    --warning-9: var(--orange-9);
+    --warning-10: var(--orange-10);
+    --warning-11: var(--orange-11);
+    --warning-12: var(--orange-12);
+
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow-sm:
+      0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md:
+      0 4px 8px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+    --shadow-lg:
+      0 8px 20px -2px rgba(0, 0, 0, 0.55),
+      0 4px 8px -4px rgba(0, 0, 0, 0.35);
+    --shadow-xl: 0 16px 32px -8px rgba(0, 0, 0, 0.6);
+    --shadow-2xl: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Aurora surface utilities — layered radial accent washes for marketing
+   backdrops. Accent tokens mean any theme override propagates. */
+@utility aurora-bg {
+  background-color: var(--gray-1);
+  background-image:
+    radial-gradient(
+      ellipse 80% 50% at 20% 0%,
+      color-mix(in oklch, var(--accent-5) 55%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 85% 20%,
+      color-mix(in oklch, var(--accent-4) 45%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 60% at 50% 90%,
+      color-mix(in oklch, var(--accent-3) 40%, transparent),
+      transparent 65%
+    );
+}
+
+@utility aurora-grid {
+  background-image:
+    linear-gradient(var(--color-gray-a6) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-gray-a6) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 30%,
+    black,
+    transparent 75%
+  );
+}
+
+@utility aurora-sweep {
+  background-image: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgb(255 255 255 / 0.12) 120deg,
+    transparent 240deg
+  );
+}
+
+@utility aurora-split-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+@utility preview-canvas {
+  background-color: var(--color-gray-2);
+  background-image: radial-gradient(
+    var(--color-gray-a4) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+}
+
+/* Reduced-motion safety net. Most animated UI (the tw-animate-css enters on
+   Dialog / Menu / Toast / Sheet, the Switch knob, etc.) has no per-component
+   guard, so a single global override honors `prefers-reduced-motion: reduce`
+   everywhere: near-instant animation/transition, no smooth scroll. The motion
+   spec requires every animated surface to respect reduced motion; this is the
+   catch-all (the standard a11y reset — !important is needed to override the
+   per-component transition utilities). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

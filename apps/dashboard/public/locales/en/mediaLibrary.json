@@ -1,0 +1,15 @@
+{
+  "loading": "Loading media…",
+  "loadingMore": "Loading more…",
+  "emptyTitle": "No media yet",
+  "emptyOrgDescription": "Images uploaded to this organization's campaigns will appear here.",
+  "emptyCampaignDescription": "Images uploaded to this campaign will appear here.",
+  "errorTitle": "Couldn't load media",
+  "errorDescription": "Something went wrong loading the media library. Please try again.",
+  "retry": "Retry",
+  "thumbnailFailed": "Failed to load image",
+  "selectAsset": "View {{name}}",
+  "previewTitle": "Media preview",
+  "previewLoadError": "Couldn't load this image. Please close and try again.",
+  "assetAlt": "Media asset"
+}
