@@ -44,6 +44,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Syncpack (dependency-version consistency)
+        run: pnpm syncpack
+
       # Non-blocking until the theme/ui over-declared-dependency backlog is
       # cleared; flip to a required check (drop continue-on-error) once green.
       - name: Knip (unused deps / dead code)
