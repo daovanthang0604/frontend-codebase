@@ -2,10 +2,13 @@ packages:
   - "apps/*"
   - "packages/*"
 
-onlyBuiltDependencies:
-  - esbuild
-  - "@tailwindcss/oxide"
-  - unrs-resolver
+allowBuilds:
+  esbuild: true
+  "@tailwindcss/oxide": true
+  unrs-resolver: true
+  # dev-only i18next-cli tooling; native binary ships via optional deps, so the
+  # postinstall isn't needed (it was never built under pnpm 10 either).
+  "@swc/core": false
 
 peerDependencyRules:
   allowedVersions:

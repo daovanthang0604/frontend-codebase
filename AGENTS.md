@@ -37,7 +37,8 @@ pnpm test         # vitest (harness is set up; no tests ship by default)
 pnpm format       # prettier --write .
 ```
 
-Requires **Node ≥ 24** and **pnpm 10** (`packageManager` is pinned).
+Requires **Node ≥ 24** and **pnpm 11** (pinned via `packageManager`; run
+`corepack enable` so your local pnpm matches the pinned version).
 
 ## Package management
 
