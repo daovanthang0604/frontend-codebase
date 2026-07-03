@@ -20,17 +20,21 @@ export const config = [
       },
     },
   },
+  // eslint-plugin-react-hooks v7: the flat "recommended-latest" preset enables
+  // the Rules of Hooks, exhaustive-deps, AND the React Compiler lints — which
+  // keep components compiler-eligible before the compiler is turned on.
+  pluginReactHooks.configs.flat["recommended-latest"],
   {
-    plugins: {
-      "react-hooks": pluginReactHooks,
-    },
     settings: { react: { version: "detect" } },
     rules: {
-      ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      // Advisory only ("Compilation Skipped: incompatible library"): fires for
+      // every component built on @tanstack/react-table, react-virtual, etc. The
+      // compiler safely skips those components — it is not a correctness signal.
+      "react-hooks/incompatible-library": "off",
     },
   },
 ]

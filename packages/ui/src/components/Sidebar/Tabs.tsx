@@ -78,6 +78,9 @@ export function SidebarTabsDropdown({
   }, [options, pathname])
 
   const handleClick = () => {
+    // closeOnRedirect is a ref from useSidebar(); mutating .current inside an
+    // event handler is valid (the compiler just can't prove it's a ref here).
+    // eslint-disable-next-line react-hooks/immutability -- ref mutation in a handler
     closeOnRedirect.current = false
     setOpen(false)
   }

@@ -20,7 +20,10 @@ export default defineConfig({
       target: "react",
       autoCodeSplitting: true,
     }),
-    viteReact(),
+    // React Compiler (v1.0) — build-time auto-memoization. Pinned exact because
+    // memoization output can shift across versions. It safely skips components
+    // it can't optimize (e.g. the @tanstack-based DataTable).
+    viteReact({ babel: { plugins: ["babel-plugin-react-compiler"] } }),
   ],
   resolve: {
     alias: {
