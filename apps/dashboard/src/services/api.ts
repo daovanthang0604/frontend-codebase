@@ -1,8 +1,9 @@
+import { env } from "@/env"
 import axios, { type InternalAxiosRequestConfig } from "axios"
 
 import { authStorage } from "./auth-storage"
 
-const baseURL = import.meta.env.VITE_BASE_API
+const baseURL = env.VITE_BASE_API
 
 const api = axios.create({
   baseURL,

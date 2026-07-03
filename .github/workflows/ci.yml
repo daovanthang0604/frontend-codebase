@@ -43,3 +43,6 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Syncpack (dependency-version consistency)
+        run: pnpm syncpack

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": ["tailwindcss", "tw-animate-css"],
+  "ignoreBinaries": ["tsx"],
+  "workspaces": {
+    "apps/dashboard": {
+      "entry": [
+        "src/reportWebVitals.ts",
+        "src/routes/**/*.tsx",
+        "src/components/**/*.{ts,tsx}",
+        "src/hooks/**/*.{ts,tsx}",
+        "src/utils/**/*.{ts,tsx}",
+        "src/constants/**/*.{ts,tsx}",
+        "src/services/**/*.{ts,tsx}",
+        "src/test/**/*.{ts,tsx}",
+        "i18next.config.ts"
+      ],
+      "ignore": ["public/**", "postcss.config.mjs"]
+    },
+    "packages/ui": {
+      "entry": ["src/**/*.{ts,tsx}"]
+    },
+    "packages/theme": {
+      "entry": ["src/**/*.{ts,tsx}", "scripts/**/*.ts", "resolve-catalog.js"]
+    },
+    "packages/shared": {
+      "entry": ["src/**/*.ts"]
+    }
+  }
+}

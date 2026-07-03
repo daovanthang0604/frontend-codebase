@@ -33,5 +33,11 @@ export default defineConfig({
     // under parallel load (e.g. the pre-push hook), causing flaky timeouts on
     // otherwise-synchronous component tests. 15s absorbs that cold-start spike.
     testTimeout: 15000,
+    // Type tests (*.test-d.ts) are checked by `vitest --typecheck` (it shells
+    // out to tsc) and run alongside the runtime suite on `vitest run`.
+    typecheck: {
+      enabled: true,
+      include: ["src/**/*.test-d.ts"],
+    },
   },
 })

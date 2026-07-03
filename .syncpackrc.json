@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/syncpack@15/dist/schema.json",
+  "versionGroups": [
+    {
+      "label": "Peer dependencies declare a compatibility range, not a pinned install — keep them broad, don't force them to the catalog.",
+      "dependencyTypes": ["peer"],
+      "dependencies": ["**"],
+      "packages": ["**"],
+      "isIgnored": true
+    }
+  ]
+}
