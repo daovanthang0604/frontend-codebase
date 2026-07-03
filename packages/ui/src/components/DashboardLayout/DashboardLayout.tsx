@@ -46,7 +46,7 @@ function DesktopSidebarShell({
             collapsed && "w-16!"
           )}
           style={{
-            ...(sidebarStyle ?? {}),
+            ...sidebarStyle,
             ...(!collapsed && sidebarWidth !== undefined
               ? { width: sidebarWidth }
               : null),
