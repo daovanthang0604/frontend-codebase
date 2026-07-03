@@ -1,6 +1,16 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "ignorePatterns": ["**/dist/**", "**/routeTree.gen.ts", "**/*.gen.ts", "**/coverage/**"],
+  "plugins": ["typescript", "unicorn", "oxc", "react"],
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/routeTree.gen.ts",
+    "**/*.gen.ts",
+    "**/coverage/**",
+    "**/public/**",
+    "packages/ui/ui-build.js",
+    "packages/ui/resolve-catalog.js",
+    "packages/ui/restore-catalog.js"
+  ],
   "categories": {
     "correctness": "error"
   },
@@ -12,6 +22,36 @@
         "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }
-    ]
-  }
+    ],
+    "typescript/no-explicit-any": "error",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["packages/ui/**"],
+      "rules": {
+        "typescript/no-explicit-any": "off",
+        "react/exhaustive-deps": "off"
+      }
+    },
+    {
+      "files": ["packages/ui/src/components/Sidebar/Sidebar.tsx"],
+      "rules": {
+        "react/rules-of-hooks": "off"
+      }
+    },
+    {
+      "files": ["packages/shared/**"],
+      "rules": {
+        "typescript/no-explicit-any": "off"
+      }
+    },
+    {
+      "files": ["apps/dashboard/**"],
+      "rules": {
+        "typescript/no-explicit-any": "off"
+      }
+    }
+  ]
 }

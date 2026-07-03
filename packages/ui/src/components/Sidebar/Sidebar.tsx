@@ -260,7 +260,6 @@ export function SidebarContent({
   // Render-prop ref forward: the ref object (not its .current) is handed to the
   // consumer to attach; .current is only read inside the pointer handlers below,
   // never during render.
-  // eslint-disable-next-line react-hooks/refs -- intentional render-prop ref forward
   return children({
     ref: desktopBoundaryRef,
     collapsed,
@@ -291,7 +290,6 @@ export function SidebarDrawerOverlay(props: ComponentProps<"div">) {
     if (open) {
       // Delayed-unmount transition: reveal now, hide after the fade-out. The
       // synchronous set is intentional for this show/animate-out pattern.
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
       setHidden(false)
     } else {
       const timer = window.setTimeout(() => setHidden(true), 220)
@@ -332,7 +330,6 @@ export function SidebarDrawerContent({
     if (open) {
       // Delayed-unmount transition: reveal now, hide after the fade-out. The
       // synchronous set is intentional for this show/animate-out pattern.
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
       setHidden(false)
     } else {
       // Fallback timeout in case onTransitionEnd doesn't fire

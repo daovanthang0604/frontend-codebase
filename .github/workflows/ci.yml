@@ -32,13 +32,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Oxlint (fast lint)
-        run: pnpm oxlint
-
       - name: Check types
         run: pnpm check-types
 
-      - name: Lint
+      - name: Lint (oxlint)
         run: pnpm lint
 
       - name: Test

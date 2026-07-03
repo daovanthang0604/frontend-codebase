@@ -214,7 +214,6 @@ function DebouncedSearchInput({
     if (value === undefined && internalValue) {
       // Prop-driven reset: clear the debounced internal value when the
       // controlled `value` is cleared externally. Intentional state sync.
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
       setDirty(false)
       setInternalValue("")
     }
