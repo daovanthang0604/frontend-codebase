@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { cleanup, render, screen } from "@testing-library/react"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import {
   InputOTP,
@@ -9,6 +9,20 @@ import {
 } from "../components/InputOTP"
 
 describe("InputOTP", () => {
+  // input-otp starts an internal polling timer on mount (password-manager
+  // detection). Under load that real-timer callback can fire after this file's
+  // jsdom is torn down, surfacing as an intermittent "Unhandled Error" that
+  // fails the whole ui suite even though every test passes. Fake timers keep it
+  // from ever firing; we unmount + clear them before restoring real timers.
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    cleanup()
+    vi.clearAllTimers()
+    vi.useRealTimers()
+  })
+
   it("renders OTP input", () => {
     render(
       <InputOTP maxLength={6}>

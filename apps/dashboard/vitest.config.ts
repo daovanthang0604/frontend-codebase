@@ -24,6 +24,10 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test/setup-dom.ts"],
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    // This app ships no runtime tests yet (its business logic was stripped), so
+    // `vitest run` finds nothing. Pass instead of exiting 1 so the CI test step
+    // is green now and starts enforcing tests the moment any are added.
+    passWithNoTests: true,
     // The default 5s timeout is occasionally exceeded by the FIRST jsdom render
     // in a worker (esbuild transform + jsdom init) when the full suite runs
     // under parallel load (e.g. the pre-push hook), causing flaky timeouts on
