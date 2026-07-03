@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.13.11",
-    "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-query-devtools": "^5.84.2",

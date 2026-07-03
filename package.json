@@ -10,7 +10,8 @@
     "test": "turbo run test",
     "test:unit": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "knip": "knip"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.0",
@@ -18,6 +19,7 @@
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.32.0",
+    "knip": "^6.24.0",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.7.2",
     "turbo": "2.10.2",

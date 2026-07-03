@@ -9,7 +9,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "axios": "^1.15.0",
     "lodash": "catalog:"
   },
   "devDependencies": {
@@ -22,7 +21,6 @@
     "zod": "catalog:"
   },
   "exports": {
-    "./api/*": "./src/api/*.ts",
     "./constants/*": "./src/constants/*.ts",
     "./zod": "./src/zod/index.ts",
     "./utils/*": "./src/utils/*.ts"
