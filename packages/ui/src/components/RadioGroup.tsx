@@ -3,7 +3,7 @@
 import { useControllableState } from "@radix-ui/react-use-controllable-state"
 import { Label } from "@workspace/ui/components/Label"
 import { cn } from "@workspace/ui/lib/utils"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva } from "class-variance-authority"
 import { Circle } from "lucide-react"
 import {
   Radio as AriaRadio,
@@ -17,7 +17,7 @@ function BaseRadioGroup({ className, ...props }: AriaRadioGroupProps) {
   return (
     <AriaRadioGroup
       aria-label="radio"
-      className={composeRenderProps(className, (className, renderProps) =>
+      className={composeRenderProps(className, (className) =>
         cn("group/radiogroup flex flex-col flex-wrap gap-2", className)
       )}
       {...props}
@@ -55,7 +55,7 @@ type RadioVariantProps = {
   variant?: "default" | "card" | null | undefined
 }
 function Radio({
-  className,
+  className: _className,
   children,
   variant = "default",
   ...props

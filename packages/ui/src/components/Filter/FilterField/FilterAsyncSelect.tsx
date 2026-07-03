@@ -93,7 +93,7 @@ export function FilterAsyncSelect({
       })
 
       options.forEach((opt) => {
-        const { icon, ...rest } = opt
+        const { icon: _icon, ...rest } = opt
         allAvailableOptions.set(String(opt.value), rest)
       })
 

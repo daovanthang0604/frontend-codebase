@@ -304,7 +304,7 @@ export function SidebarDrawerOverlay(props: ComponentProps<"div">) {
   return (
     <div
       data-state={open ? "open" : "closed"}
-      onPointerDown={(e) => {
+      onPointerDown={() => {
         setOpen(false)
       }}
       {...props}
@@ -467,7 +467,7 @@ export function SidebarItem({
       "data-active": active,
       "data-prefetch": prefetch,
       ...(external ? { target: "_blank", rel: "noopener noreferrer" } : null),
-      style: { ...(child.props.style ?? {}), textDecoration: "none" },
+      style: { ...child.props.style, textDecoration: "none" },
       children: (
         <>
           {icon && <span className="shrink-0 [&>svg]:size-4">{icon}</span>}

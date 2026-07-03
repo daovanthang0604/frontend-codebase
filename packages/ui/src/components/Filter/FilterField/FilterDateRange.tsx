@@ -146,13 +146,11 @@ export function FilterDateRange({
 
 function RangeCalendarCell({
   date,
-  range,
+  range: _range,
 }: {
   date: CalendarDate
   range: DateRange | null
 }) {
-  const hasRange =
-    !!range?.start && !!range?.end && range.start.compare(range.end) !== 0
   return (
     <CalendarCell
       date={date}

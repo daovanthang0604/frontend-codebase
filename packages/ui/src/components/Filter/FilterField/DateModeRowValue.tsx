@@ -114,7 +114,6 @@ export function DateModeRowValue({
 
   const label = MODE_LABEL[mode]
   const text = formatDateFilterValue(value)
-  const hasPreset = !!v?.preset
 
   return (
     <>

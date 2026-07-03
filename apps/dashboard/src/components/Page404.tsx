@@ -1,7 +1,6 @@
 import { Button } from "@workspace/ui/components/Button"
-import { Card, CardContent } from "@workspace/ui/components/Card"
 import { Link } from "@tanstack/react-router"
-import { ArrowLeft, CircleX, SearchX } from "lucide-react"
+import { ArrowLeft, CircleX } from "lucide-react"
 
 interface Page404Props {
   title?: string

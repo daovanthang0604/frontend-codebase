@@ -8,6 +8,7 @@ describe("cn", () => {
   })
 
   it("handles conditional classes", () => {
+    // oxlint-disable-next-line no-constant-binary-expression -- intentional: cn() must drop a falsy conditional class
     expect(cn("base", false && "hidden", "visible")).toBe("base visible")
   })
 
