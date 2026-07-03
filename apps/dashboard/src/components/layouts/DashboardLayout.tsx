@@ -40,6 +40,9 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
   })
 
   const [mounted, setMounted] = useState(false)
+  // One-tick mount guard: paints a neutral placeholder on the first render to
+  // avoid a theme/layout flash, then the real layout after mount. Intentional.
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
   useEffect(() => setMounted(true), [])
 
   if (!mounted) {

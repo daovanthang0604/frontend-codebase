@@ -9,17 +9,21 @@ interface UseIsMobileProps {
 export function useIsMobile({
   breakpoint = DEFAULT_MOBILE_BREAKPOINT,
 }: UseIsMobileProps = {}) {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+  const subscribe = React.useCallback(
+    (onStoreChange: () => void) => {
+      const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`)
+      mql.addEventListener("change", onStoreChange)
+      return () => mql.removeEventListener("change", onStoreChange)
+    },
+    [breakpoint]
+  )
 
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`)
-    const onChange = () => {
-      setIsMobile(window.innerWidth < breakpoint)
-    }
-    mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < breakpoint)
-    return () => mql.removeEventListener("change", onChange)
-  }, [])
-
-  return !!isMobile
+  // useSyncExternalStore is the compiler-safe way to read an external source
+  // (viewport width) without a setState-in-effect: getSnapshot reads the current
+  // width synchronously, and the matchMedia subscription drives re-renders.
+  return React.useSyncExternalStore(
+    subscribe,
+    () => window.innerWidth < breakpoint,
+    () => false
+  )
 }
