@@ -13,9 +13,7 @@
     "i18n:extract": "i18next-cli extract"
   },
   "dependencies": {
-    "@workspace/shared": "workspace:*",
-    "@workspace/theme": "workspace:*",
-    "@workspace/ui": "workspace:*",
+    "@t3-oss/env-core": "^0.13.11",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-query": "catalog:",
@@ -25,6 +23,9 @@
     "@tanstack/react-table": "catalog:",
     "@tanstack/router-plugin": "^1.132.0",
     "@tanstack/zod-adapter": "^1.147.3",
+    "@workspace/shared": "workspace:*",
+    "@workspace/theme": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "axios": "^1.15.0",
     "dompurify": "^3.4.0",
     "i18next": "^25.6.0",
