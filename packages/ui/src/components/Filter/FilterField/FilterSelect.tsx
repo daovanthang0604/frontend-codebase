@@ -87,7 +87,7 @@ export function FilterSelect({
       const selectedIds = Array.from(keys).map(String)
       const selectedOptions = options
         .filter((opt) => selectedIds.includes(String(opt.value)))
-        .map(({ icon, ...rest }) => rest)
+        .map(({ icon: _icon, ...rest }) => rest)
 
       setFieldValue(
         field,
@@ -108,7 +108,7 @@ export function FilterSelect({
     if (isAllSelected) {
       setFieldValue(field, undefined)
     } else {
-      const allOptions = optionsWithId.map(({ icon, id, ...rest }) => rest)
+      const allOptions = optionsWithId.map(({ icon: _icon, id: _id, ...rest }) => rest)
       setFieldValue(field, allOptions)
     }
   }, [field, optionsWithId, selectedValues.length, setFieldValue])

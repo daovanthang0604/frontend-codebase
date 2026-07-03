@@ -55,8 +55,6 @@ export function FilterDateMode() {
 
   const current = normalizeValue(value[field])
   const today = dayjs()
-  const todayEnd = today.endOf("day").toDate()
-  const todayStart = today.startOf("day").toDate()
 
   const updateValue = (newValue: DateModeFilterValue | undefined) => {
     setFieldValue(field, newValue)

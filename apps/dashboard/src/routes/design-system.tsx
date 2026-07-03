@@ -63,7 +63,6 @@ import {
   DataTableColumnHeader,
 } from "@workspace/ui/components/DataTable"
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -101,7 +100,6 @@ import { SegmentedControl } from "@workspace/ui/components/SegmentedControl"
 import { Select } from "@workspace/ui/components/Select"
 import { Separator } from "@workspace/ui/components/Separator"
 import {
-  Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -129,10 +127,8 @@ import {
   MoreHorizontal,
   Pencil,
   Plus,
-  Search,
   Sparkles,
   Star,
-  Trash2,
   TrendingUp,
 } from "lucide-react"
 

@@ -1,7 +1,6 @@
 import type { RefObject } from "react"
 import { Button } from "@workspace/ui/components/Button"
 import { NumberInput } from "@workspace/ui/components/NumberInput"
-import { Select, type SelectOption } from "@workspace/ui/components/Select"
 import { cn } from "@workspace/ui/lib/utils"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useMeasure } from "react-use"
@@ -14,20 +13,12 @@ interface DataTablePaginationProps {
   onPageSizeChange?: (size: number) => void
   className?: string
 }
-const pageSizeOptions: SelectOption<number>[] = [
-  { value: 10, label: "10" },
-  { value: 20, label: "20" },
-  { value: 50, label: "50" },
-  { value: 100, label: "100" },
-  { value: 200, label: "200" },
-  { value: 1000, label: "1000" },
-]
 export function DataTablePagination({
   pageIndex,
   pageSize,
   totalRows,
   onPageChange,
-  onPageSizeChange,
+  onPageSizeChange: _onPageSizeChange,
   className,
 }: DataTablePaginationProps) {
   const [containerRef, { width }] = useMeasure()

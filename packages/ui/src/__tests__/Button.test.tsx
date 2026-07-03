@@ -44,7 +44,7 @@ describe("Button", () => {
   })
 
   it("renders with badge", () => {
-    const { container } = render(
+    render(
       <Button withBadge badgeNumber={5}>
         Notifications
       </Button>

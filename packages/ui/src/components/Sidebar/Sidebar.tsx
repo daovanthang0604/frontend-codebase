@@ -304,7 +304,7 @@ export function SidebarDrawerOverlay(props: ComponentProps<"div">) {
   return (
     <div
       data-state={open ? "open" : "closed"}
-      onPointerDown={(e) => {
+      onPointerDown={() => {
         setOpen(false)
       }}
       {...props}

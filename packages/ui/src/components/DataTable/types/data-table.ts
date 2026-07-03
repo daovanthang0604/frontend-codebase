@@ -10,8 +10,6 @@ import type {
 } from "@tanstack/react-table"
 import type { ButtonProps } from "@workspace/ui/components/Button"
 
-import type { FilterValue } from "../../Filter"
-
 export interface DataTableProps<TData> {
   /** Columns to display */
   columns: ColumnDef<TData, any>[]

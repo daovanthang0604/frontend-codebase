@@ -7,7 +7,6 @@ import { InfoIcon } from "lucide-react"
 import {
   Label as AriaLabel,
   Focusable,
-  Pressable,
   type LabelProps as AriaLabelProps,
 } from "react-aria-components"
 

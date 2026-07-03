@@ -28,16 +28,12 @@ import type {
 import { cn } from "@workspace/ui/lib/utils"
 
 import type { FilterValue } from "../Filter"
-import { DebouncedSearchInput } from "../Input"
-import { DataTableDisplaySettings } from "./DataTableDisplaySettings"
 import { DataTableFloatingBar } from "./DataTableFloatingBar"
-import { DataTablePagination } from "./DataTablePagination"
 import {
   DataTableEmpty,
   DataTableError,
   DataTableLoading,
 } from "./DataTableStates"
-import { DataTableToolbarContainer } from "./DataTableToolbarContainer"
 import { useDataTableSettings } from "./hooks/use-data-table-settings"
 
 declare module "@tanstack/react-table" {
@@ -243,7 +239,7 @@ export function DataTable<
   isError = false,
   errorMessage,
   // Components
-  filterBar,
+  filterBar: _filterBar,
   actionBar,
   // State for server-side operations
   initialState,
@@ -252,7 +248,7 @@ export function DataTable<
   // Selection
   enableRowSelection = false,
   // Search
-  searchPlaceholder = "Search...",
+  searchPlaceholder: _searchPlaceholder = "Search...",
   // Display settings
   storageKey = "default-table",
   defaultColumnVisibility = {},
@@ -295,7 +291,6 @@ export function DataTable<
     updateColumnSizing,
     updateColumnPinning,
     updateColumnOrder,
-    resetToDefaults,
   } = useDataTableSettings({
     storageKey,
     defaultColumnVisibility,
@@ -420,13 +415,13 @@ export function DataTable<
   const centerColumns = table.getCenterVisibleLeafColumns()
   const state = table.getState()
   // column filters props (client side)
-  const columnFilters: FilterValue = useMemo(
+  const _columnFilters: FilterValue = useMemo(
     () =>
       state.columnFilters.reduce((acc, filter) => {
         try {
           acc[filter.id] = filter.value as any
           return acc
-        } catch (error) {
+        } catch {
           return acc
         }
       }, {} as FilterValue),
@@ -437,7 +432,7 @@ export function DataTable<
       onStateChange?.(table.getState())
     }, 50)
   }
-  const setColumnFilters = (filters: FilterValue) => {
+  const _setColumnFilters = (filters: FilterValue) => {
     table.setColumnFilters(
       Object.entries(filters).map(([id, value]) => ({ id, value }))
     )

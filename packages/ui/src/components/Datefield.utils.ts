@@ -4,7 +4,7 @@ export const parseTime = (time: string) => {
   try {
     const timeArray = time.split(":").map(Number)
     return new Time(...timeArray)
-  } catch (error) {
+  } catch {
     return null
   }
 }

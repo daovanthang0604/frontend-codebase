@@ -1,14 +1,14 @@
 import { Separator } from "../Separator"
 
-interface DataTableToolbarContainerProps<TData> {
+interface DataTableToolbarContainerProps {
   header: React.ReactNode
   content?: React.ReactNode
 }
 
-export function DataTableToolbarContainer<TData>({
+export function DataTableToolbarContainer({
   header,
   content,
-}: DataTableToolbarContainerProps<TData>) {
+}: DataTableToolbarContainerProps) {
   // TODO: implement the logic to open and close the toolbar
   return (
     <div>

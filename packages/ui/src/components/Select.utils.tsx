@@ -47,7 +47,7 @@ export function useAriaSelectProps({
             ?.map((v) => {
               try {
                 return JSON.parse(v)
-              } catch (error) {
+              } catch {
                 return null
               }
             })
