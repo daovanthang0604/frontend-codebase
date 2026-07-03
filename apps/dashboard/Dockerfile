@@ -1,7 +1,9 @@
 FROM node:24-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+# Install Corepack explicitly (Node 25+ no longer bundles it) so this image
+# keeps working when the base image bumps past Node 24.
+RUN npm i -g corepack@latest && corepack enable
 
 # Stage 1: Builder
 FROM base AS builder
