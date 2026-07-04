@@ -4,11 +4,13 @@ import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
+import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
+import { Slider as UiSlider } from "@workspace/ui/components/Slider"
 import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
 
 // Dev/QA surface for the Base UI migration — intentionally NOT wrapped in
@@ -105,6 +107,30 @@ function CheckboxDemo({ Checkbox }: { Checkbox: CheckboxLike }) {
   )
 }
 
+type SliderLike = ComponentType<{
+  value?: number | number[]
+  onChange?: (v: number | number[]) => void
+  minValue?: number
+  maxValue?: number
+  label?: ReactNode
+  className?: string
+}>
+
+function SliderDemo({ Slider }: { Slider: SliderLike }) {
+  const [val, setVal] = useState<number | number[]>(40)
+  return (
+    <div className="w-64">
+      <Slider
+        value={val}
+        onChange={setVal}
+        minValue={0}
+        maxValue={100}
+        label="Volume"
+      />
+    </div>
+  )
+}
+
 type LabelLike = ComponentType<{
   withAsterisk?: boolean
   className?: string
@@ -162,6 +188,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Checkbox.Root/Indicator · checked/unchecked/indeterminate/disabled"
           baseui={<CheckboxDemo Checkbox={BaseUiCheckbox} />}
           ui={<CheckboxDemo Checkbox={UiCheckbox} />}
+        />
+
+        <Compare
+          title="Slider"
+          meta="Base UI Slider.Root/Control/Track/Indicator/Thumb · react-aria props mapped"
+          baseui={<SliderDemo Slider={BaseUiSlider} />}
+          ui={<SliderDemo Slider={UiSlider} />}
         />
 
         <Compare
