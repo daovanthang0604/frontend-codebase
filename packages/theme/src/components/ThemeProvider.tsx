@@ -55,6 +55,10 @@ export function useTheme() {
   return {
     ...ctx,
     mode: themeMode.theme as ThemeMode,
+    // Resolved (currently-visible) mode — always "light"/"dark", never "system".
+    // Toggles must key off this, not `mode`, or the first click no-ops when
+    // `mode` is "system" and the target happens to match what's on screen.
+    resolvedMode: themeMode.resolvedTheme as ThemeMode,
     setMode: themeMode.setTheme,
   }
 }

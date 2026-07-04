@@ -5,7 +5,7 @@ import { Button } from "@workspace/ui/components/Button"
 import { MoonStar, SunIcon } from "lucide-react"
 
 export function ThemeModeSwitcher() {
-  const { mode, setMode } = useTheme()
+  const { resolvedMode, setMode } = useTheme()
 
   return (
     <Button
@@ -15,10 +15,10 @@ export function ThemeModeSwitcher() {
       intent="secondary"
       tooltip="Toggle theme"
       tooltipDelay={1000}
-      onClick={() => setMode(mode === "light" ? "dark" : "light")}
+      onClick={() => setMode(resolvedMode === "dark" ? "light" : "dark")}
       aria-label="theme switcher"
     >
-      {mode === "dark" ? <SunIcon /> : <MoonStar />}
+      {resolvedMode === "dark" ? <SunIcon /> : <MoonStar />}
     </Button>
   )
 }
