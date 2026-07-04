@@ -62,6 +62,10 @@ import {
   Tabs as BaseUiTabs,
 } from "@workspace/base-ui/components/Tabs"
 import {
+  Toggle as BaseUiToggle,
+  ToggleGroup as BaseUiToggleGroup,
+} from "@workspace/base-ui/components/Toggle"
+import {
   Tooltip as BaseUiTooltip,
   TooltipTrigger as BaseUiTooltipTrigger,
 } from "@workspace/base-ui/components/Tooltip"
@@ -124,6 +128,10 @@ import {
   TabPanel as UiTabPanel,
   Tabs as UiTabs,
 } from "@workspace/ui/components/Tabs"
+import {
+  Toggle as UiToggle,
+  ToggleGroup as UiToggleGroup,
+} from "@workspace/ui/components/Toggle"
 import {
   Tooltip as UiTooltip,
   TooltipTrigger as UiTooltipTrigger,
@@ -680,6 +688,46 @@ function UiScrollAreaDemo() {
   )
 }
 
+function BaseUiToggleDemo() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex gap-2">
+        <BaseUiToggle aria-label="Bold" defaultSelected className="font-bold">
+          B
+        </BaseUiToggle>
+        <BaseUiToggle aria-label="Italic" className="italic">
+          I
+        </BaseUiToggle>
+      </div>
+      <BaseUiToggleGroup selectionMode="single" defaultSelectedKeys={["left"]}>
+        <BaseUiToggle id="left">Left</BaseUiToggle>
+        <BaseUiToggle id="center">Center</BaseUiToggle>
+        <BaseUiToggle id="right">Right</BaseUiToggle>
+      </BaseUiToggleGroup>
+    </div>
+  )
+}
+
+function UiToggleDemo() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex gap-2">
+        <UiToggle aria-label="Bold" defaultSelected className="font-bold">
+          B
+        </UiToggle>
+        <UiToggle aria-label="Italic" className="italic">
+          I
+        </UiToggle>
+      </div>
+      <UiToggleGroup selectionMode="single" defaultSelectedKeys={["left"]}>
+        <UiToggle id="left">Left</UiToggle>
+        <UiToggle id="center">Center</UiToggle>
+        <UiToggle id="right">Right</UiToggle>
+      </UiToggleGroup>
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -746,6 +794,13 @@ function DesignSystemBaseUiRoute() {
           meta="styled native label · withAsterisk (tooltip variant deferred)"
           baseui={<LabelDemo Label={BaseUiLabel} />}
           ui={<LabelDemo Label={UiLabel} />}
+        />
+
+        <Compare
+          title="Toggle"
+          meta="Base UI Toggle + ToggleGroup · two-state button · data-pressed · single-select group"
+          baseui={<BaseUiToggleDemo />}
+          ui={<UiToggleDemo />}
         />
 
         <Compare
