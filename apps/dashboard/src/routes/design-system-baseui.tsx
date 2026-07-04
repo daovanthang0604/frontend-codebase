@@ -4,6 +4,11 @@ import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
+import {
+  Popover as BaseUiPopover,
+  PopoverDialog as BaseUiPopoverDialog,
+  PopoverTrigger as BaseUiPopoverTrigger,
+} from "@workspace/base-ui/components/Popover"
 import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
@@ -15,6 +20,11 @@ import {
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
+import {
+  Popover as UiPopover,
+  PopoverDialog as UiPopoverDialog,
+  PopoverTrigger as UiPopoverTrigger,
+} from "@workspace/ui/components/Popover"
 import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import { Slider as UiSlider } from "@workspace/ui/components/Slider"
@@ -216,6 +226,43 @@ function TooltipDemo({
   )
 }
 
+type PopoverTriggerLike = ComponentType<{ children: ReactNode }>
+type PopoverLike = ComponentType<{
+  children: ReactNode
+  placement?: "top" | "bottom" | "left" | "right"
+}>
+type PopoverDialogLike = ComponentType<{
+  children?: ReactNode
+  className?: string
+}>
+
+function PopoverDemo({
+  PopoverTrigger,
+  Popover,
+  PopoverDialog,
+  Button,
+}: {
+  PopoverTrigger: PopoverTriggerLike
+  Popover: PopoverLike
+  PopoverDialog: PopoverDialogLike
+  Button: ButtonLike
+}) {
+  return (
+    <PopoverTrigger>
+      <Button>Open popover</Button>
+      <Popover placement="bottom">
+        <PopoverDialog className="w-64">
+          <div className="text-gray-12 text-sm font-semibold">Dimensions</div>
+          <p className="text-gray-11 mt-1 text-sm">
+            Set the width and height of the layer. Click outside or press Esc to
+            dismiss.
+          </p>
+        </PopoverDialog>
+      </Popover>
+    </PopoverTrigger>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -298,6 +345,27 @@ function DesignSystemBaseUiRoute() {
             <TooltipDemo
               TooltipTrigger={UiTooltipTrigger}
               Tooltip={UiTooltip}
+              Button={UiButton}
+            />
+          }
+        />
+
+        <Compare
+          title="Popover"
+          meta="Base UI Portal/Positioner/Popup · click to open · Esc / outside-click to dismiss"
+          baseui={
+            <PopoverDemo
+              PopoverTrigger={BaseUiPopoverTrigger}
+              Popover={BaseUiPopover}
+              PopoverDialog={BaseUiPopoverDialog}
+              Button={BaseUiButton}
+            />
+          }
+          ui={
+            <PopoverDemo
+              PopoverTrigger={UiPopoverTrigger}
+              Popover={UiPopover}
+              PopoverDialog={UiPopoverDialog}
               Button={UiButton}
             />
           }
