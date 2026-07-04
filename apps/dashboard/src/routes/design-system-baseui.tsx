@@ -20,6 +20,13 @@ import {
 } from "@workspace/base-ui/components/Popover"
 import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
+import {
+  SheetContent as BaseUiSheetContent,
+  SheetDescription as BaseUiSheetDescription,
+  SheetHeader as BaseUiSheetHeader,
+  SheetTitle as BaseUiSheetTitle,
+  SheetTrigger as BaseUiSheetTrigger,
+} from "@workspace/base-ui/components/Sheet"
 import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import {
@@ -44,6 +51,13 @@ import {
 } from "@workspace/ui/components/Popover"
 import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
+import {
+  SheetContent as UiSheetContent,
+  SheetDescription as UiSheetDescription,
+  SheetHeader as UiSheetHeader,
+  SheetTitle as UiSheetTitle,
+  SheetTrigger as UiSheetTrigger,
+} from "@workspace/ui/components/Sheet"
 import { Slider as UiSlider } from "@workspace/ui/components/Slider"
 import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
 import {
@@ -330,6 +344,42 @@ function UiDialogDemo() {
   )
 }
 
+function BaseUiSheetDemo() {
+  return (
+    <BaseUiSheetTrigger>
+      <BaseUiButton variant="outline" intent="secondary">
+        Open sheet
+      </BaseUiButton>
+      <BaseUiSheetContent side="right">
+        <BaseUiSheetHeader>
+          <BaseUiSheetTitle>Side sheet</BaseUiSheetTitle>
+          <BaseUiSheetDescription>
+            Slides in from the edge. Esc or the scrim dismisses it.
+          </BaseUiSheetDescription>
+        </BaseUiSheetHeader>
+      </BaseUiSheetContent>
+    </BaseUiSheetTrigger>
+  )
+}
+
+function UiSheetDemo() {
+  return (
+    <UiSheetTrigger>
+      <UiButton variant="outline" intent="secondary">
+        Open sheet
+      </UiButton>
+      <UiSheetContent side="right">
+        <UiSheetHeader>
+          <UiSheetTitle>Side sheet</UiSheetTitle>
+          <UiSheetDescription>
+            Slides in from the edge. Esc or the scrim dismisses it.
+          </UiSheetDescription>
+        </UiSheetHeader>
+      </UiSheetContent>
+    </UiSheetTrigger>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -443,6 +493,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Root/Backdrop/Popup · modal · focus trap + Esc + scrim-click"
           baseui={<BaseUiDialogDemo />}
           ui={<UiDialogDemo />}
+        />
+
+        <Compare
+          title="Sheet"
+          meta="Base UI dialog anchored to an edge · slides in from the right"
+          baseui={<BaseUiSheetDemo />}
+          ui={<UiSheetDemo />}
         />
       </div>
     </div>
