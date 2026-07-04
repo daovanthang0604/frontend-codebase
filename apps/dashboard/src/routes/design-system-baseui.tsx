@@ -1,5 +1,6 @@
 import { useState, type ComponentType, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
+import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
@@ -178,16 +179,19 @@ function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
       <div className="mx-auto max-w-5xl px-6 py-10">
-        <header className="mb-6">
-          <div className="text-gray-10 text-eyebrow uppercase">Migration</div>
-          <h1 className="text-gray-12 text-display-sm font-semibold">
-            Base&nbsp;UI catalog
-          </h1>
-          <p className="text-gray-11 text-ui-base mt-2 max-w-2xl">
-            Each component rebuilt on Base&nbsp;UI (left) beside its
-            @workspace/ui counterpart (right) for visual parity. This route grows
-            one section per migrated component.
-          </p>
+        <header className="mb-6 flex items-start justify-between gap-4">
+          <div>
+            <div className="text-gray-10 text-eyebrow uppercase">Migration</div>
+            <h1 className="text-gray-12 text-display-sm font-semibold">
+              Base&nbsp;UI catalog
+            </h1>
+            <p className="text-gray-11 text-ui-base mt-2 max-w-2xl">
+              Each component rebuilt on Base&nbsp;UI (left) beside its
+              @workspace/ui counterpart (right) for visual parity. This route
+              grows one section per migrated component.
+            </p>
+          </div>
+          <ThemeModeSwitcher />
         </header>
 
         <Compare
