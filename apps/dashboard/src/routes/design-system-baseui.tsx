@@ -37,6 +37,7 @@ import {
   MenuTrigger as BaseUiMenuTrigger,
 } from "@workspace/base-ui/components/Menu"
 import { Meter as BaseUiMeter } from "@workspace/base-ui/components/Meter"
+import { NumberInput as BaseUiNumberInput } from "@workspace/base-ui/components/NumberInput"
 import {
   Popover as BaseUiPopover,
   PopoverDialog as BaseUiPopoverDialog,
@@ -104,6 +105,7 @@ import {
   MenuTrigger as UiMenuTrigger,
 } from "@workspace/ui/components/Menu"
 import { Meter as UiMeter } from "@workspace/ui/components/Meter"
+import { NumberInput as UiNumberInput } from "@workspace/ui/components/NumberInput"
 import {
   Popover as UiPopover,
   PopoverDialog as UiPopoverDialog,
@@ -728,6 +730,34 @@ function UiToggleDemo() {
   )
 }
 
+function BaseUiNumberInputDemo() {
+  return (
+    <div className="w-48 space-y-3">
+      <BaseUiNumberInput
+        label="Budget"
+        placeholder="0"
+        showStepper
+        defaultValue={100}
+      />
+      <BaseUiNumberInput label="Quantity" placeholder="0" />
+    </div>
+  )
+}
+
+function UiNumberInputDemo() {
+  return (
+    <div className="w-48 space-y-3">
+      <UiNumberInput
+        label="Budget"
+        placeholder="0"
+        showStepper
+        defaultValue={100}
+      />
+      <UiNumberInput label="Quantity" placeholder="0" />
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -801,6 +831,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Toggle + ToggleGroup · two-state button · data-pressed · single-select group"
           baseui={<BaseUiToggleDemo />}
           ui={<UiToggleDemo />}
+        />
+
+        <Compare
+          title="NumberInput"
+          meta="Base UI NumberField Root/Group/Input/Increment/Decrement · stepper + type"
+          baseui={<BaseUiNumberInputDemo />}
+          ui={<UiNumberInputDemo />}
         />
 
         <Compare
