@@ -1,11 +1,10 @@
 "use client"
 
 import { NumberField as BaseNumberField } from "@base-ui/react/number-field"
-import { ChevronDown, ChevronUp } from "lucide-react"
-
 import { Label } from "@workspace/base-ui/components/Label"
 import { Separator } from "@workspace/base-ui/components/Separator"
 import { cn } from "@workspace/base-ui/lib/utils"
+import { ChevronDown, ChevronUp } from "lucide-react"
 
 // Drop-in for @workspace/ui/NumberInput, rebuilt on Base UI (NumberField Root/
 // Group/Input/Increment/Decrement). react-aria maps over: minValue/maxValue ->
@@ -27,6 +26,10 @@ interface NumberInputProps {
   step?: number
   isDisabled?: boolean
   formatOptions?: Intl.NumberFormatOptions
+  // Input-level props forwarded to NumberField.Input (react-aria's NumberField
+  // accepted these directly; consumers like DataTable's pagination rely on them).
+  "aria-label"?: string
+  onFocus?: React.FocusEventHandler<HTMLInputElement>
 }
 
 function NumberInput({
@@ -43,6 +46,8 @@ function NumberInput({
   step,
   isDisabled,
   formatOptions,
+  onFocus,
+  "aria-label": ariaLabel,
 }: NumberInputProps) {
   return (
     <BaseNumberField.Root
@@ -68,6 +73,8 @@ function NumberInput({
         <BaseNumberField.Input
           placeholder={placeholder}
           inputMode="numeric"
+          aria-label={ariaLabel}
+          onFocus={onFocus}
           className="placeholder:text-gray-8 w-fit min-w-0 flex-1 border-transparent bg-transparent pr-2 outline-0"
         />
         {showStepper && (
@@ -76,13 +83,13 @@ function NumberInput({
             <div className="flex flex-col pr-0.5">
               <BaseNumberField.Increment
                 aria-label="Increment"
-                className="flex grow items-center justify-center px-1 transition-transform [&>svg]:text-gray-11 hover:[&>svg]:text-gray-12 motion-safe:active:translate-y-px"
+                className="[&>svg]:text-gray-11 hover:[&>svg]:text-gray-12 flex grow items-center justify-center px-1 transition-transform motion-safe:active:translate-y-px"
               >
                 <ChevronUp aria-hidden className="size-4 translate-y-px" />
               </BaseNumberField.Increment>
               <BaseNumberField.Decrement
                 aria-label="Decrement"
-                className="flex grow items-center justify-center px-1 transition-transform [&>svg]:text-gray-11 hover:[&>svg]:text-gray-12 motion-safe:active:-translate-y-px"
+                className="[&>svg]:text-gray-11 hover:[&>svg]:text-gray-12 flex grow items-center justify-center px-1 transition-transform motion-safe:active:-translate-y-px"
               >
                 <ChevronDown aria-hidden className="size-4 -translate-y-px" />
               </BaseNumberField.Decrement>

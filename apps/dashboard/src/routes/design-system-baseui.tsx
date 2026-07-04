@@ -1,6 +1,6 @@
 import { useState, type ComponentType, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
-import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
+import type { Column, ColumnDef } from "@tanstack/react-table"
 import {
   Accordion as BaseUiAccordion,
   AccordionContent as BaseUiAccordionContent,
@@ -19,6 +19,10 @@ import {
   CollapsibleContent as BaseUiCollapsibleContent,
   CollapsibleTrigger as BaseUiCollapsibleTrigger,
 } from "@workspace/base-ui/components/Collapsible"
+import {
+  DataTable as BaseUiDataTable,
+  DataTableColumnHeader as BaseUiDataTableColumnHeader,
+} from "@workspace/base-ui/components/DataTable"
 import {
   DialogClose as BaseUiDialogClose,
   DialogContent as BaseUiDialogContent,
@@ -100,6 +104,10 @@ import {
   CollapsibleTrigger as UiCollapsibleTrigger,
 } from "@workspace/ui/components/Collapsible"
 import {
+  DataTable as UiDataTable,
+  DataTableColumnHeader as UiDataTableColumnHeader,
+} from "@workspace/ui/components/DataTable"
+import {
   DialogContent as UiDialogContent,
   DialogDescription as UiDialogDescription,
   DialogFooter as UiDialogFooter,
@@ -161,6 +169,8 @@ import {
   TooltipTrigger as UiTooltipTrigger,
 } from "@workspace/ui/components/Tooltip"
 
+import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
+
 // Dev/QA surface for the Base UI migration — intentionally NOT wrapped in
 // <PageShell> and NOT i18n'd, same exemption as /design-system. Each migrated
 // component adds a <Compare> section (base-ui left, @workspace/ui right).
@@ -183,7 +193,9 @@ function Compare({
       </header>
       <div className="grid grid-cols-2 gap-6">
         <div>
-          <div className="text-gray-10 text-eyebrow mb-3 uppercase">base-ui</div>
+          <div className="text-gray-10 text-eyebrow mb-3 uppercase">
+            base-ui
+          </div>
           <div className="flex flex-wrap items-center gap-3">{baseui}</div>
         </div>
         <div>
@@ -800,7 +812,11 @@ function BaseUiSegmentedControlDemo() {
 function UiSegmentedControlDemo() {
   const [val, setVal] = useState("week")
   return (
-    <UiSegmentedControl options={segmentOptions} value={val} onChange={setVal} />
+    <UiSegmentedControl
+      options={segmentOptions}
+      value={val}
+      onChange={setVal}
+    />
   )
 }
 
@@ -867,10 +883,101 @@ function UiInputDemo() {
       <UiInput label="Email" placeholder="you@example.com" />
       <UiPasswordInput label="Password" placeholder="••••••••" />
       <UiTextArea label="Notes" placeholder="Write something…" />
-      <UiSearchInput placeholder="Search…" value={search} onChange={setSearch} />
+      <UiSearchInput
+        placeholder="Search…"
+        value={search}
+        onChange={setSearch}
+      />
     </div>
   )
 }
+
+// Sample data for the DataTable showcase — a handful of campaigns, enough to
+// exercise row selection, sortable headers, pagination, and column display
+// settings without a lot of scaffolding.
+interface DtRow {
+  id: string
+  campaign: string
+  channel: string
+  status: "active" | "pending" | "draft"
+  reach: number
+  updated: string
+}
+
+const dtStatus: Record<DtRow["status"], { label: string; className: string }> =
+  {
+    active: { label: "Active", className: "bg-success-a3 text-success-11" },
+    pending: { label: "Pending", className: "bg-warning-a3 text-warning-11" },
+    draft: { label: "Draft", className: "bg-gray-a3 text-gray-11" },
+  }
+
+const dtRows: DtRow[] = [
+  { id: "1", campaign: "Spring Harvest Gala", channel: "Email · Social", status: "active", reach: 182_400, updated: "2h ago" }, // prettier-ignore
+  { id: "2", campaign: "Clean Water Initiative", channel: "Display · Search", status: "active", reach: 96_210, updated: "5h ago" }, // prettier-ignore
+  { id: "3", campaign: "Youth Mentorship Drive", channel: "Social", status: "pending", reach: 41_870, updated: "Yesterday" }, // prettier-ignore
+  { id: "4", campaign: "Winter Coat Collection", channel: "Email", status: "draft", reach: 0, updated: "3d ago" }, // prettier-ignore
+  { id: "5", campaign: "Community Garden Launch", channel: "Display", status: "active", reach: 58_330, updated: "1w ago" }, // prettier-ignore
+]
+
+// DataTableColumnHeader binds to its own package's table context, so each kit
+// builds its columns with its OWN header component — hence a factory rather than
+// a shared column array.
+function makeDtColumns(
+  ColumnHeader: ComponentType<{ column: Column<DtRow, unknown>; title: string }>
+): ColumnDef<DtRow>[] {
+  return [
+    {
+      accessorKey: "campaign",
+      header: ({ column }) => <ColumnHeader column={column} title="Campaign" />,
+      size: 260,
+      minSize: 200,
+      cell: ({ row }) => (
+        <div className="flex flex-col leading-tight">
+          <span className="text-gray-12 text-sm font-semibold">
+            {row.original.campaign}
+          </span>
+          <span className="text-gray-10 text-xs">{row.original.channel}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      size: 130,
+      cell: ({ row }) => {
+        const s = dtStatus[row.original.status]
+        return (
+          <span
+            className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${s.className}`}
+          >
+            {s.label}
+          </span>
+        )
+      },
+    },
+    {
+      accessorKey: "reach",
+      header: ({ column }) => <ColumnHeader column={column} title="Reach" />,
+      size: 120,
+      cell: ({ row }) => (
+        <span className="text-gray-12 text-sm font-semibold tabular-nums">
+          {row.original.reach.toLocaleString()}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "updated",
+      header: "Updated",
+      size: 120,
+      cell: ({ row }) => (
+        <span className="text-gray-11 text-sm">{row.original.updated}</span>
+      ),
+    },
+  ]
+}
+
+const baseUiDtColumns = makeDtColumns(BaseUiDataTableColumnHeader)
+const uiDtColumns = makeDtColumns(UiDataTableColumnHeader)
 
 function DesignSystemBaseUiRoute() {
   return (
@@ -1084,6 +1191,49 @@ function DesignSystemBaseUiRoute() {
           baseui={<BaseUiScrollAreaDemo />}
           ui={<UiScrollAreaDemo />}
         />
+
+        {/* DataTable is a wide composite, so it's stacked full-width (base-ui
+            above ui) rather than squeezed into the two-column Compare grid. */}
+        <section className="border-gray-a4 border-t py-7">
+          <header className="mb-4 flex flex-col gap-1">
+            <h2 className="text-gray-12 text-ui-lg font-semibold">DataTable</h2>
+            <span className="text-gray-10 text-ui-sm">
+              TanStack Table · selection / sortable headers / pagination /
+              column display-settings · base-ui primitives (Checkbox, Button,
+              Popover, Switch, ScrollArea, NumberInput, Separator)
+            </span>
+          </header>
+          <div className="space-y-8">
+            <div>
+              <div className="text-gray-10 text-eyebrow mb-3 uppercase">
+                base-ui
+              </div>
+              <BaseUiDataTable
+                columns={baseUiDtColumns}
+                data={dtRows}
+                dataSource="client"
+                storageKey="baseui-ds-table"
+                emptyStateTitle="No campaigns yet"
+                enableRowSelection
+                estimatedRowHeight={53}
+              />
+            </div>
+            <div>
+              <div className="text-gray-10 text-eyebrow mb-3 uppercase">
+                @workspace/ui
+              </div>
+              <UiDataTable
+                columns={uiDtColumns}
+                data={dtRows}
+                dataSource="client"
+                storageKey="ui-ds-table"
+                emptyStateTitle="No campaigns yet"
+                enableRowSelection
+                estimatedRowHeight={53}
+              />
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )
