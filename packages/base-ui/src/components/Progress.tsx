@@ -7,8 +7,8 @@ import { cn } from "@workspace/base-ui/lib/utils"
 
 // Drop-in for @workspace/ui/Progress, rebuilt on Base UI (Root/Track/Indicator/
 // Value/Label). Slim determinate bar; pass value=null for an indeterminate pulse.
-// Fill kept at accent-9 to match ui (open question: adopt accent-solid like the
-// Slider for palette consistency).
+// Fill uses accent-solid (navy) to match the other controls (Slider/Switch/…),
+// not ui's blue accent-9.
 
 interface ProgressProps {
   value?: number | null
@@ -47,7 +47,7 @@ function Progress({
       <BaseProgress.Track className="bg-gray-4 h-2 w-full overflow-hidden rounded-full">
         <BaseProgress.Indicator
           className={cn(
-            "bg-accent-9 h-full rounded-full transition-all duration-300 ease-out",
+            "bg-accent-solid h-full rounded-full transition-all duration-300 ease-out",
             "data-[indeterminate]:w-2/5 data-[indeterminate]:animate-pulse",
             barClassName
           )}

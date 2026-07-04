@@ -32,7 +32,7 @@ function Meter({
 }: MeterProps) {
   const pct = ((value - min) / (max - min)) * 100
   const fill = !colorByLevel
-    ? "bg-accent-9"
+    ? "bg-accent-solid"
     : pct >= 85
       ? "bg-error-9"
       : pct >= 60
