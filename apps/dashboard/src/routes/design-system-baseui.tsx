@@ -3,12 +3,14 @@ import { createFileRoute } from "@tanstack/react-router"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
+import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
+import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import { Slider as UiSlider } from "@workspace/ui/components/Slider"
 import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
@@ -146,6 +148,32 @@ function LabelDemo({ Label }: { Label: LabelLike }) {
   )
 }
 
+type RadioOpt = { value: string; label: string }
+type RadioGroupLike = ComponentType<{
+  options: RadioOpt[]
+  value?: RadioOpt
+  onChange?: (o: RadioOpt | undefined) => void
+  label?: string
+}>
+
+const radioOptions: RadioOpt[] = [
+  { value: "email", label: "Email" },
+  { value: "sms", label: "SMS" },
+  { value: "push", label: "Push" },
+]
+
+function RadioGroupDemo({ RadioGroup }: { RadioGroup: RadioGroupLike }) {
+  const [val, setVal] = useState<RadioOpt>(radioOptions[0]!)
+  return (
+    <RadioGroup
+      options={radioOptions}
+      value={val}
+      onChange={(o) => o && setVal(o)}
+      label="Notifications"
+    />
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -195,6 +223,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Slider.Root/Control/Track/Indicator/Thumb · react-aria props mapped"
           baseui={<SliderDemo Slider={BaseUiSlider} />}
           ui={<SliderDemo Slider={UiSlider} />}
+        />
+
+        <Compare
+          title="RadioGroup"
+          meta="Base UI RadioGroup + Radio.Root/Indicator · default variant"
+          baseui={<RadioGroupDemo RadioGroup={BaseUiRadioGroup} />}
+          ui={<RadioGroupDemo RadioGroup={UiRadioGroup} />}
         />
 
         <Compare
