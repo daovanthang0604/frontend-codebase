@@ -65,8 +65,10 @@ function Slider({
       ) : null}
       <BaseSlider.Control className="relative flex h-5 w-full items-center">
         <BaseSlider.Track className="bg-gray-4 relative h-1.5 w-full grow rounded-full">
-          <BaseSlider.Indicator className="bg-accent-9 absolute h-full rounded-full" />
-          <BaseSlider.Thumb className="border-accent-9 size-4 rounded-full border-2 bg-white shadow-sm outline-none transition-[width,height] data-dragging:size-[18px] data-[focus-visible]:ring-accent-7 data-[focus-visible]:ring-2 data-disabled:cursor-not-allowed data-disabled:opacity-50" />
+          {/* accent-solid (navy) to match Switch/Checkbox/Radio — ui's own Slider
+              uses the blue accent-9, an inconsistency we drop in base-ui. */}
+          <BaseSlider.Indicator className="bg-accent-solid absolute h-full rounded-full" />
+          <BaseSlider.Thumb className="border-accent-solid size-4 rounded-full border-2 bg-white shadow-sm outline-none transition-[width,height] data-dragging:size-[18px] data-[focus-visible]:ring-accent-7 data-[focus-visible]:ring-2 data-disabled:cursor-not-allowed data-disabled:opacity-50" />
         </BaseSlider.Track>
       </BaseSlider.Control>
     </BaseSlider.Root>
