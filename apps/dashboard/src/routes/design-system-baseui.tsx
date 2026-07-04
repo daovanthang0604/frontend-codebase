@@ -46,6 +46,7 @@ import {
 import { Progress as BaseUiProgress } from "@workspace/base-ui/components/Progress"
 import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
 import { ScrollArea as BaseUiScrollArea } from "@workspace/base-ui/components/ScrollArea"
+import { SegmentedControl as BaseUiSegmentedControl } from "@workspace/base-ui/components/SegmentedControl"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import {
   SheetContent as BaseUiSheetContent,
@@ -114,6 +115,7 @@ import {
 import { Progress as UiProgress } from "@workspace/ui/components/Progress"
 import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
 import { ScrollArea as UiScrollArea } from "@workspace/ui/components/ScrollArea"
+import { SegmentedControl as UiSegmentedControl } from "@workspace/ui/components/SegmentedControl"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import {
   SheetContent as UiSheetContent,
@@ -758,6 +760,30 @@ function UiNumberInputDemo() {
   )
 }
 
+const segmentOptions = [
+  { value: "day", label: "Day" },
+  { value: "week", label: "Week" },
+  { value: "month", label: "Month" },
+]
+
+function BaseUiSegmentedControlDemo() {
+  const [val, setVal] = useState("week")
+  return (
+    <BaseUiSegmentedControl
+      options={segmentOptions}
+      value={val}
+      onChange={setVal}
+    />
+  )
+}
+
+function UiSegmentedControlDemo() {
+  const [val, setVal] = useState("week")
+  return (
+    <UiSegmentedControl options={segmentOptions} value={val} onChange={setVal} />
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -838,6 +864,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI NumberField Root/Group/Input/Increment/Decrement · stepper + type"
           baseui={<BaseUiNumberInputDemo />}
           ui={<UiNumberInputDemo />}
+        />
+
+        <Compare
+          title="SegmentedControl"
+          meta="Base UI ToggleGroup (single-select) · pick-one pill switcher · arrow-key nav"
+          baseui={<BaseUiSegmentedControlDemo />}
+          ui={<UiSegmentedControlDemo />}
         />
 
         <Compare
