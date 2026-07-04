@@ -1,9 +1,13 @@
 import { useState, type ComponentType, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
+import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
+import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import { Button as UiButton } from "@workspace/ui/components/Button"
+import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
+import { Label as UiLabel } from "@workspace/ui/components/Label"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
 
@@ -81,6 +85,41 @@ function SwitchDemo({ Switch }: { Switch: SwitchLike }) {
   )
 }
 
+type CheckboxLike = ComponentType<{
+  isSelected?: boolean
+  isIndeterminate?: boolean
+  isDisabled?: boolean
+  onChange?: (v: boolean) => void
+  "aria-label"?: string
+}>
+
+function CheckboxDemo({ Checkbox }: { Checkbox: CheckboxLike }) {
+  const [on, setOn] = useState(true)
+  return (
+    <div className="flex items-center gap-5">
+      <Checkbox isSelected={on} onChange={setOn} aria-label="checked" />
+      <Checkbox isSelected={false} onChange={() => {}} aria-label="unchecked" />
+      <Checkbox isIndeterminate aria-label="indeterminate" />
+      <Checkbox isSelected isDisabled aria-label="disabled" />
+    </div>
+  )
+}
+
+type LabelLike = ComponentType<{
+  withAsterisk?: boolean
+  className?: string
+  children?: ReactNode
+}>
+
+function LabelDemo({ Label }: { Label: LabelLike }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <Label>Field label</Label>
+      <Label withAsterisk>Required field</Label>
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -116,6 +155,20 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Switch.Root/Thumb · react-aria props mapped · on/off/disabled"
           baseui={<SwitchDemo Switch={BaseUiSwitch} />}
           ui={<SwitchDemo Switch={UiSwitch} />}
+        />
+
+        <Compare
+          title="Checkbox"
+          meta="Base UI Checkbox.Root/Indicator · checked/unchecked/indeterminate/disabled"
+          baseui={<CheckboxDemo Checkbox={BaseUiCheckbox} />}
+          ui={<CheckboxDemo Checkbox={UiCheckbox} />}
+        />
+
+        <Compare
+          title="Label"
+          meta="styled native label · withAsterisk (tooltip variant deferred)"
+          baseui={<LabelDemo Label={BaseUiLabel} />}
+          ui={<LabelDemo Label={UiLabel} />}
         />
       </div>
     </div>
