@@ -53,16 +53,31 @@ function Tooltip({ children, placement = "top", className }: TooltipProps) {
         <BaseTooltip.Popup
           className={cn(
             "group bg-gray-2 border-gray-6 pointer-events-none max-w-lg rounded-md border px-2 py-1 text-sm drop-shadow-lg will-change-transform",
-            // Base UI drives enter/exit via data-attributes (not react-aria
-            // render props); fade + a small directional slide to match WDS.
-            "origin-[var(--transform-origin)] transition-[transform,opacity] duration-150 ease-out",
-            "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+            // Enter/exit is driven by Base UI's data-[starting|ending-style]. Scale
+            // up from the trigger (Base UI sets --transform-origin to point at it) +
+            // fade + a small directional slide; exit is ~20% quicker.
+            // NB: Tailwind v4 emits scale/translate as their OWN css properties, so
+            // the transition list must name them — `transform` alone won't animate
+            // them (this is what made the old fade-only feel unpolished).
+            "origin-[var(--transform-origin)] transition-[opacity,scale,translate] duration-200 ease-out",
+            "data-[starting-style]:opacity-0 data-[starting-style]:scale-95",
             "data-[starting-style]:data-[side=top]:translate-y-1 data-[starting-style]:data-[side=bottom]:-translate-y-1 data-[starting-style]:data-[side=left]:translate-x-1 data-[starting-style]:data-[side=right]:-translate-x-1",
+            "data-[ending-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:duration-150",
             className
           )}
         >
           {children}
-          <BaseTooltip.Arrow>
+          <BaseTooltip.Arrow
+            className={cn(
+              // Base UI centers the cross-axis (inline left/top) but leaves the
+              // main-axis offset to us — without this the arrow falls into the
+              // popup's content flow. `*-full` seats it against the edge; since the
+              // abs arrow resolves against the popup's padding box, 100% lands 1px
+              // inside the border, so the caret's flat base blends in (no seam).
+              "data-[side=top]:top-full data-[side=bottom]:bottom-full",
+              "data-[side=left]:left-full data-[side=right]:right-full"
+            )}
+          >
             <svg
               width={8}
               height={8}
