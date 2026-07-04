@@ -7,6 +7,11 @@ import {
   AccordionItem as BaseUiAccordionItem,
   AccordionTrigger as BaseUiAccordionTrigger,
 } from "@workspace/base-ui/components/Accordion"
+import {
+  Avatar as BaseUiAvatar,
+  AvatarFallback as BaseUiAvatarFallback,
+  AvatarImage as BaseUiAvatarImage,
+} from "@workspace/base-ui/components/Avatar"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
 import {
@@ -31,11 +36,13 @@ import {
   MenuSeparator as BaseUiMenuSeparator,
   MenuTrigger as BaseUiMenuTrigger,
 } from "@workspace/base-ui/components/Menu"
+import { Meter as BaseUiMeter } from "@workspace/base-ui/components/Meter"
 import {
   Popover as BaseUiPopover,
   PopoverDialog as BaseUiPopoverDialog,
   PopoverTrigger as BaseUiPopoverTrigger,
 } from "@workspace/base-ui/components/Popover"
+import { Progress as BaseUiProgress } from "@workspace/base-ui/components/Progress"
 import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import {
@@ -63,6 +70,11 @@ import {
   AccordionItem as UiAccordionItem,
   AccordionTrigger as UiAccordionTrigger,
 } from "@workspace/ui/components/Accordion"
+import {
+  Avatar as UiAvatar,
+  AvatarFallback as UiAvatarFallback,
+  AvatarImage as UiAvatarImage,
+} from "@workspace/ui/components/Avatar"
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
 import {
@@ -86,11 +98,13 @@ import {
   MenuSeparator as UiMenuSeparator,
   MenuTrigger as UiMenuTrigger,
 } from "@workspace/ui/components/Menu"
+import { Meter as UiMeter } from "@workspace/ui/components/Meter"
 import {
   Popover as UiPopover,
   PopoverDialog as UiPopoverDialog,
   PopoverTrigger as UiPopoverTrigger,
 } from "@workspace/ui/components/Popover"
+import { Progress as UiProgress } from "@workspace/ui/components/Progress"
 import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import {
@@ -562,6 +576,84 @@ function UiTabsDemo() {
   )
 }
 
+function BaseUiProgressDemo() {
+  return (
+    <div className="w-64 space-y-4">
+      <BaseUiProgress value={40} label="Uploading" showValue />
+      <BaseUiProgress value={78} label="Almost there" showValue />
+    </div>
+  )
+}
+
+function UiProgressDemo() {
+  return (
+    <div className="w-64 space-y-4">
+      <UiProgress value={40} label="Uploading" showValue />
+      <UiProgress value={78} label="Almost there" showValue />
+    </div>
+  )
+}
+
+function BaseUiMeterDemo() {
+  return (
+    <div className="w-64 space-y-4">
+      <BaseUiMeter value={45} label="Disk — ok" />
+      <BaseUiMeter value={72} label="Disk — warn" />
+      <BaseUiMeter value={92} label="Disk — full" />
+    </div>
+  )
+}
+
+function UiMeterDemo() {
+  return (
+    <div className="w-64 space-y-4">
+      <UiMeter value={45} label="Disk — ok" />
+      <UiMeter value={72} label="Disk — warn" />
+      <UiMeter value={92} label="Disk — full" />
+    </div>
+  )
+}
+
+function BaseUiAvatarDemo() {
+  return (
+    <div className="flex items-center gap-3">
+      <BaseUiAvatar>
+        <BaseUiAvatarImage src="https://i.pravatar.cc/64?img=5" alt="User" />
+        <BaseUiAvatarFallback>JD</BaseUiAvatarFallback>
+      </BaseUiAvatar>
+      <BaseUiAvatar>
+        <BaseUiAvatarFallback>AB</BaseUiAvatarFallback>
+      </BaseUiAvatar>
+      <BaseUiAvatar size="sm">
+        <BaseUiAvatarFallback>S</BaseUiAvatarFallback>
+      </BaseUiAvatar>
+      <BaseUiAvatar size="lg">
+        <BaseUiAvatarFallback>L</BaseUiAvatarFallback>
+      </BaseUiAvatar>
+    </div>
+  )
+}
+
+function UiAvatarDemo() {
+  return (
+    <div className="flex items-center gap-3">
+      <UiAvatar>
+        <UiAvatarImage src="https://i.pravatar.cc/64?img=5" alt="User" />
+        <UiAvatarFallback>JD</UiAvatarFallback>
+      </UiAvatar>
+      <UiAvatar>
+        <UiAvatarFallback>AB</UiAvatarFallback>
+      </UiAvatar>
+      <UiAvatar size="sm">
+        <UiAvatarFallback>S</UiAvatarFallback>
+      </UiAvatar>
+      <UiAvatar size="lg">
+        <UiAvatarFallback>L</UiAvatarFallback>
+      </UiAvatar>
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -710,6 +802,27 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Root/List/Tab/Panel · underline (data-active) · arrow-key nav"
           baseui={<BaseUiTabsDemo />}
           ui={<UiTabsDemo />}
+        />
+
+        <Compare
+          title="Progress"
+          meta="Base UI Root/Track/Indicator/Value/Label · determinate bar (accent-9, see note)"
+          baseui={<BaseUiProgressDemo />}
+          ui={<UiProgressDemo />}
+        />
+
+        <Compare
+          title="Meter"
+          meta="Base UI Root/Track/Indicator · level tints green→amber→red"
+          baseui={<BaseUiMeterDemo />}
+          ui={<UiMeterDemo />}
+        />
+
+        <Compare
+          title="Avatar"
+          meta="Base UI Root/Image/Fallback (was Radix) · image with initials fallback · sizes"
+          baseui={<BaseUiAvatarDemo />}
+          ui={<UiAvatarDemo />}
         />
       </div>
     </div>
