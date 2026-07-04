@@ -14,6 +14,13 @@ import {
 } from "@workspace/base-ui/components/Dialog"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
 import {
+  Menu as BaseUiMenu,
+  MenuItem as BaseUiMenuItem,
+  MenuPopover as BaseUiMenuPopover,
+  MenuSeparator as BaseUiMenuSeparator,
+  MenuTrigger as BaseUiMenuTrigger,
+} from "@workspace/base-ui/components/Menu"
+import {
   Popover as BaseUiPopover,
   PopoverDialog as BaseUiPopoverDialog,
   PopoverTrigger as BaseUiPopoverTrigger,
@@ -44,6 +51,13 @@ import {
   DialogTrigger as UiDialogTrigger,
 } from "@workspace/ui/components/Dialog"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
+import {
+  Menu as UiMenu,
+  MenuItem as UiMenuItem,
+  MenuPopover as UiMenuPopover,
+  MenuSeparator as UiMenuSeparator,
+  MenuTrigger as UiMenuTrigger,
+} from "@workspace/ui/components/Menu"
 import {
   Popover as UiPopover,
   PopoverDialog as UiPopoverDialog,
@@ -380,6 +394,42 @@ function UiSheetDemo() {
   )
 }
 
+function BaseUiMenuDemo() {
+  return (
+    <BaseUiMenuTrigger>
+      <BaseUiButton variant="outline" intent="secondary">
+        Actions
+      </BaseUiButton>
+      <BaseUiMenuPopover>
+        <BaseUiMenu>
+          <BaseUiMenuItem onAction={() => {}}>Edit</BaseUiMenuItem>
+          <BaseUiMenuItem onAction={() => {}}>Duplicate</BaseUiMenuItem>
+          <BaseUiMenuSeparator />
+          <BaseUiMenuItem onAction={() => {}}>Delete</BaseUiMenuItem>
+        </BaseUiMenu>
+      </BaseUiMenuPopover>
+    </BaseUiMenuTrigger>
+  )
+}
+
+function UiMenuDemo() {
+  return (
+    <UiMenuTrigger>
+      <UiButton variant="outline" intent="secondary">
+        Actions
+      </UiButton>
+      <UiMenuPopover>
+        <UiMenu>
+          <UiMenuItem onAction={() => {}}>Edit</UiMenuItem>
+          <UiMenuItem onAction={() => {}}>Duplicate</UiMenuItem>
+          <UiMenuSeparator />
+          <UiMenuItem onAction={() => {}}>Delete</UiMenuItem>
+        </UiMenu>
+      </UiMenuPopover>
+    </UiMenuTrigger>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -500,6 +550,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI dialog anchored to an edge · slides in from the right"
           baseui={<BaseUiSheetDemo />}
           ui={<UiSheetDemo />}
+        />
+
+        <Compare
+          title="Menu"
+          meta="Base UI Root/Trigger/Popup/Item · dropdown · click / arrow-key nav (collection API deferred)"
+          baseui={<BaseUiMenuDemo />}
+          ui={<UiMenuDemo />}
         />
       </div>
     </div>
