@@ -28,6 +28,12 @@ import {
   DialogTitle as BaseUiDialogTitle,
   DialogTrigger as BaseUiDialogTrigger,
 } from "@workspace/base-ui/components/Dialog"
+import {
+  Input as BaseUiInput,
+  PasswordInput as BaseUiPasswordInput,
+  SearchInput as BaseUiSearchInput,
+  TextArea as BaseUiTextArea,
+} from "@workspace/base-ui/components/Input"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
 import {
   Menu as BaseUiMenu,
@@ -101,6 +107,12 @@ import {
   DialogTitle as UiDialogTitle,
   DialogTrigger as UiDialogTrigger,
 } from "@workspace/ui/components/Dialog"
+import {
+  Input as UiInput,
+  PasswordInput as UiPasswordInput,
+  SearchInput as UiSearchInput,
+  TextArea as UiTextArea,
+} from "@workspace/ui/components/Input"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
 import {
   Menu as UiMenu,
@@ -832,6 +844,34 @@ function UiToolbarDemo() {
   )
 }
 
+function BaseUiInputDemo() {
+  const [search, setSearch] = useState("")
+  return (
+    <div className="w-64 space-y-3">
+      <BaseUiInput label="Email" placeholder="you@example.com" />
+      <BaseUiPasswordInput label="Password" placeholder="••••••••" />
+      <BaseUiTextArea label="Notes" placeholder="Write something…" />
+      <BaseUiSearchInput
+        placeholder="Search…"
+        value={search}
+        onChange={setSearch}
+      />
+    </div>
+  )
+}
+
+function UiInputDemo() {
+  const [search, setSearch] = useState("")
+  return (
+    <div className="w-64 space-y-3">
+      <UiInput label="Email" placeholder="you@example.com" />
+      <UiPasswordInput label="Password" placeholder="••••••••" />
+      <UiTextArea label="Notes" placeholder="Write something…" />
+      <UiSearchInput placeholder="Search…" value={search} onChange={setSearch} />
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -898,6 +938,13 @@ function DesignSystemBaseUiRoute() {
           meta="styled native label · withAsterisk (tooltip variant deferred)"
           baseui={<LabelDemo Label={BaseUiLabel} />}
           ui={<LabelDemo Label={UiLabel} />}
+        />
+
+        <Compare
+          title="Input"
+          meta="Base UI Field Root/Label/Control · text / password / textarea / search"
+          baseui={<BaseUiInputDemo />}
+          ui={<UiInputDemo />}
         />
 
         <Compare
