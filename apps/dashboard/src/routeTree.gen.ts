@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DesignSystemBaseuiRouteImport } from './routes/design-system-baseui'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as UnauthenticatedRouteImport } from './routes/_unauthenticated'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as UnauthenticatedIndexRouteImport } from './routes/_unauthenticated/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
+const DesignSystemBaseuiRoute = DesignSystemBaseuiRouteImport.update({
+  id: '/design-system-baseui',
+  path: '/design-system-baseui',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignSystemRoute = DesignSystemRouteImport.update({
   id: '/design-system',
   path: '/design-system',
@@ -42,11 +48,13 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof UnauthenticatedIndexRoute
   '/design-system': typeof DesignSystemRoute
+  '/design-system-baseui': typeof DesignSystemBaseuiRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof UnauthenticatedIndexRoute
   '/design-system': typeof DesignSystemRoute
+  '/design-system-baseui': typeof DesignSystemBaseuiRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesById {
@@ -54,19 +62,21 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_unauthenticated': typeof UnauthenticatedRouteWithChildren
   '/design-system': typeof DesignSystemRoute
+  '/design-system-baseui': typeof DesignSystemBaseuiRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_unauthenticated/': typeof UnauthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/design-system' | '/dashboard'
+  fullPaths: '/' | '/design-system' | '/design-system-baseui' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/design-system' | '/dashboard'
+  to: '/' | '/design-system' | '/design-system-baseui' | '/dashboard'
   id:
     | '__root__'
     | '/_authenticated'
     | '/_unauthenticated'
     | '/design-system'
+    | '/design-system-baseui'
     | '/_authenticated/dashboard'
     | '/_unauthenticated/'
   fileRoutesById: FileRoutesById
@@ -75,10 +85,18 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   UnauthenticatedRoute: typeof UnauthenticatedRouteWithChildren
   DesignSystemRoute: typeof DesignSystemRoute
+  DesignSystemBaseuiRoute: typeof DesignSystemBaseuiRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/design-system-baseui': {
+      id: '/design-system-baseui'
+      path: '/design-system-baseui'
+      fullPath: '/design-system-baseui'
+      preLoaderRoute: typeof DesignSystemBaseuiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-system': {
       id: '/design-system'
       path: '/design-system'
@@ -145,6 +163,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   UnauthenticatedRoute: UnauthenticatedRouteWithChildren,
   DesignSystemRoute: DesignSystemRoute,
+  DesignSystemBaseuiRoute: DesignSystemBaseuiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
