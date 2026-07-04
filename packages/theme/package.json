@@ -13,7 +13,6 @@
     "./provider": "./src/provider.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
     "gen:css": "tsx scripts/generate-default-theme-css.ts"
   },
   "keywords": [
@@ -45,8 +44,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
-    "@workspace/eslint-config": "workspace:^",
-    "eslint": "^9.32.0",
     "@turbo/gen": "^2.5.5",
     "@types/lodash": "catalog:",
     "@types/node": "catalog:",

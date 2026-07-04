@@ -5,22 +5,19 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
+    "lint": "oxlint --deny-warnings",
     "check-types": "turbo check-types",
     "test": "turbo run test",
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "format": "prettier . --write",
     "knip": "knip",
-    "syncpack": "syncpack lint",
-    "oxlint": "oxlint"
+    "syncpack": "syncpack lint"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.0",
     "@vitest/coverage-v8": "^4.1.0",
-    "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
-    "eslint": "^9.32.0",
     "knip": "^6.24.0",
     "oxlint": "^1.72.0",
     "prettier": "3.6.2",

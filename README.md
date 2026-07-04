@@ -24,7 +24,6 @@ frontend-codebase/
 │  ├─ ui/                 # @workspace/ui   — component library (consumed from source)
 │  ├─ theme/              # @workspace/theme — design tokens + Tailwind/PostCSS preset (consumed from source)
 │  ├─ shared/             # @workspace/shared — framework-agnostic utilities
-│  ├─ eslint-config/      # @workspace/eslint-config
 │  └─ typescript-config/  # @workspace/typescript-config
 ├─ pnpm-workspace.yaml    # workspaces + dependency catalog (pinned versions)
 └─ turbo.json
@@ -42,7 +41,7 @@ Other scripts (run from the repo root):
 ```bash
 pnpm build        # build packages + app
 pnpm check-types  # tsc --noEmit across the workspace
-pnpm lint         # eslint across the workspace
+pnpm lint         # oxlint across the workspace
 pnpm test         # vitest (test harness is set up; no tests ship by default)
 ```
 

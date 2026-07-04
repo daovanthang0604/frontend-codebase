@@ -22,7 +22,6 @@ client are stubbed seams** you replace with your own. There is no backend.
 | `packages/ui`                | `@workspace/ui`                 | Component library (consumed from source)                    |
 | `packages/theme`             | `@workspace/theme`              | Design tokens + Tailwind/PostCSS preset (consumed from source) |
 | `packages/shared`            | `@workspace/shared`             | Framework-agnostic utilities                                |
-| `packages/eslint-config`     | `@workspace/eslint-config`     | Shared ESLint config                                        |
 | `packages/typescript-config` | `@workspace/typescript-config` | Shared tsconfig bases                                       |
 
 ## Commands (run from the repo root)
@@ -32,7 +31,7 @@ pnpm install
 pnpm dev          # turbo dev — grouped TUI, one tab per task
 pnpm build        # build packages + app
 pnpm check-types  # tsc --noEmit across the workspace
-pnpm lint         # eslint --max-warnings 0 across the workspace
+pnpm lint         # oxlint across the workspace
 pnpm test         # vitest (harness is set up; no tests ship by default)
 pnpm format       # prettier --write .
 ```

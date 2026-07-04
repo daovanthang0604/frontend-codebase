@@ -8,7 +8,6 @@
     "build": "vite build",
     "check-types": "tsc --noEmit",
     "serve": "vite preview",
-    "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
     "test:watch": "vitest",
     "i18n:extract": "i18next-cli extract"
@@ -53,10 +52,8 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "^5.2.0",
-    "@workspace/eslint-config": "workspace:^",
     "@workspace/typescript-config": "workspace:*",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9.32.0",
     "i18next-cli": "^1.12.1",
     "jsdom": "^27.0.0",
     "typescript": "catalog:",

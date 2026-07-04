@@ -37,7 +37,6 @@ import {
 import { useDataTableSettings } from "./hooks/use-data-table-settings"
 
 declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface ColumnMeta<TData, TValue> extends DataTableColumnMeta {}
 }
 export const DEFAULT_PAGE_SIZE = 20
