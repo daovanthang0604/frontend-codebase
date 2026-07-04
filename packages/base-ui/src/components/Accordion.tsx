@@ -93,18 +93,21 @@ function AccordionContent({
 }) {
   return (
     <BaseAccordion.Panel
-      // Identical to ui: keepMounted (Base UI unmounts on close; react-aria doesn't)
-      // + grid-rows 0fr<->1fr on data-open. `grid` beats [hidden] so the closed
-      // panel is an in-flow 0fr grid.
+      // Base UI is engineered to animate the panel's own `height` against the
+      // `--accordion-panel-height` var it measures and sets inline (it also owns
+      // the mount/`hidden` lifecycle). We ride that: transition height, collapsing
+      // to 0 on the enter/exit frames (`data-starting-style`/`data-ending-style`).
+      // Same visual as ui's grid-rows (0 -> content height, 200ms ease-out) but on
+      // Base UI's native path — no grid-vs-height double-driver jank. keepMounted
+      // keeps content in the DOM, matching ui (react-aria never unmounts).
       keepMounted
       className={cn(
-        "grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-out data-[open]:grid-rows-[1fr] motion-reduce:transition-none",
+        "h-(--accordion-panel-height) overflow-hidden transition-[height] duration-200 ease-out",
+        "data-[starting-style]:h-0 data-[ending-style]:h-0 motion-reduce:transition-none",
         className
       )}
     >
-      <div className="min-h-0 overflow-hidden">
-        <div className="text-gray-11 px-4 pb-4 text-sm">{children}</div>
-      </div>
+      <div className="text-gray-11 px-4 pb-4 text-sm">{children}</div>
     </BaseAccordion.Panel>
   )
 }

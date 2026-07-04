@@ -6,8 +6,7 @@ import { Collapsible as BaseCollapsible } from "@base-ui/react/collapsible"
 import { cn } from "@workspace/base-ui/lib/utils"
 
 // Drop-in for @workspace/ui/Collapsible, rebuilt on Base UI (Root/Trigger/Panel).
-// Base UI's Panel exposes --collapsible-panel-height for a real height transition
-// (vs ui's grid-rows trick). Prop names line up (open/onOpenChange/defaultOpen).
+// Prop names line up (open/onOpenChange/defaultOpen).
 
 interface CollapsibleProps {
   children: ReactNode
@@ -58,19 +57,23 @@ function CollapsibleContent({
 }: ComponentProps<typeof BaseCollapsible.Panel>) {
   return (
     <BaseCollapsible.Panel
-      // Identical to ui's mechanism: grid-rows 0fr<->1fr on the open state, with an
-      // always-mounted panel. ui gets "always mounted" from react-aria; Base UI
-      // unmounts on close, so keepMounted restores it. `grid` (author) beats the
-      // [hidden] UA rule, keeping the closed panel a 0fr grid (collapsed, in-flow).
+      // Base UI is engineered to animate the panel's own `height` against the
+      // `--collapsible-panel-height` var it measures and sets inline (it also owns
+      // the mount/`hidden` lifecycle). We ride that: transition height, collapsing
+      // to 0 on the enter/exit frames (`data-starting-style`/`data-ending-style`).
+      // Same visual as ui's grid-rows (0 -> content height, 200ms ease-out) but on
+      // Base UI's native path — no grid-vs-height double-driver jank. keepMounted
+      // keeps content in the DOM, matching ui (react-aria never unmounts).
       keepMounted
       className={cn(
-        "grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-out data-[open]:grid-rows-[1fr]",
+        "h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-200 ease-out",
+        "data-[starting-style]:h-0 data-[ending-style]:h-0",
         "motion-reduce:transition-none",
         className
       )}
       {...props}
     >
-      <div className="min-h-0 overflow-hidden">{children}</div>
+      {children}
     </BaseCollapsible.Panel>
   )
 }
