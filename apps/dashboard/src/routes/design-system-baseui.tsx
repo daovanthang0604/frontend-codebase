@@ -1,11 +1,15 @@
-import type { ReactNode } from "react"
+import { useState, type ComponentType, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
+import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
+import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import { Button as UiButton } from "@workspace/ui/components/Button"
+import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
+import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
 
 // Dev/QA surface for the Base UI migration — intentionally NOT wrapped in
 // <PageShell> and NOT i18n'd, same exemption as /design-system. Each migrated
-// component adds a <Compare> section here (base-ui left, @workspace/ui right).
+// component adds a <Compare> section (base-ui left, @workspace/ui right).
 function Compare({
   title,
   meta,
@@ -39,6 +43,44 @@ function Compare({
   )
 }
 
+type SeparatorLike = ComponentType<{
+  orientation?: "horizontal" | "vertical"
+  className?: string
+}>
+
+function SeparatorDemo({ Separator }: { Separator: SeparatorLike }) {
+  return (
+    <div className="w-48">
+      <div className="text-gray-11 text-ui-sm">Above the line</div>
+      <Separator className="my-3" />
+      <div className="text-gray-11 text-ui-sm">Below the line</div>
+      <div className="text-gray-11 text-ui-sm mt-4 flex h-8 items-center gap-3">
+        <span>Left</span>
+        <Separator orientation="vertical" />
+        <span>Right</span>
+      </div>
+    </div>
+  )
+}
+
+type SwitchLike = ComponentType<{
+  isSelected?: boolean
+  onChange?: (v: boolean) => void
+  isDisabled?: boolean
+}>
+
+function SwitchDemo({ Switch }: { Switch: SwitchLike }) {
+  const [on, setOn] = useState(true)
+  return (
+    <div className="flex items-center gap-5">
+      <Switch isSelected={on} onChange={setOn} />
+      <Switch isSelected={false} onChange={() => {}} />
+      <Switch isSelected isDisabled />
+      <Switch isDisabled />
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -60,6 +102,20 @@ function DesignSystemBaseUiRoute() {
           meta="facade → ui (Base UI ships no Button; Tier B)"
           baseui={<BaseUiButton>Base&nbsp;UI Button</BaseUiButton>}
           ui={<UiButton>UI Button</UiButton>}
+        />
+
+        <Compare
+          title="Separator"
+          meta="Base UI Separator · data-orientation dimensions"
+          baseui={<SeparatorDemo Separator={BaseUiSeparator} />}
+          ui={<SeparatorDemo Separator={UiSeparator} />}
+        />
+
+        <Compare
+          title="Switch"
+          meta="Base UI Switch.Root/Thumb · react-aria props mapped · on/off/disabled"
+          baseui={<SwitchDemo Switch={BaseUiSwitch} />}
+          ui={<SwitchDemo Switch={UiSwitch} />}
         />
       </div>
     </div>
