@@ -44,6 +44,7 @@ import {
 } from "@workspace/base-ui/components/Popover"
 import { Progress as BaseUiProgress } from "@workspace/base-ui/components/Progress"
 import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
+import { ScrollArea as BaseUiScrollArea } from "@workspace/base-ui/components/ScrollArea"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import {
   SheetContent as BaseUiSheetContent,
@@ -106,6 +107,7 @@ import {
 } from "@workspace/ui/components/Popover"
 import { Progress as UiProgress } from "@workspace/ui/components/Progress"
 import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
+import { ScrollArea as UiScrollArea } from "@workspace/ui/components/ScrollArea"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import {
   SheetContent as UiSheetContent,
@@ -654,6 +656,30 @@ function UiAvatarDemo() {
   )
 }
 
+function BaseUiScrollAreaDemo() {
+  return (
+    <BaseUiScrollArea className="border-gray-a5 h-40 w-64 rounded-lg border">
+      <div className="text-gray-11 space-y-2 p-3 text-sm">
+        {Array.from({ length: 18 }).map((_, i) => (
+          <p key={i}>Scrollable line {i + 1}</p>
+        ))}
+      </div>
+    </BaseUiScrollArea>
+  )
+}
+
+function UiScrollAreaDemo() {
+  return (
+    <UiScrollArea className="border-gray-a5 h-40 w-64 rounded-lg border">
+      <div className="text-gray-11 space-y-2 p-3 text-sm">
+        {Array.from({ length: 18 }).map((_, i) => (
+          <p key={i}>Scrollable line {i + 1}</p>
+        ))}
+      </div>
+    </UiScrollArea>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -823,6 +849,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Root/Image/Fallback (was Radix) · image with initials fallback · sizes"
           baseui={<BaseUiAvatarDemo />}
           ui={<UiAvatarDemo />}
+        />
+
+        <Compare
+          title="ScrollArea"
+          meta="Base UI Root/Viewport/Scrollbar/Thumb (was Radix) · overlay scrollbar on scroll/hover"
+          baseui={<BaseUiScrollAreaDemo />}
+          ui={<UiScrollAreaDemo />}
         />
       </div>
     </div>
