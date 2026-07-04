@@ -1,8 +1,19 @@
 import { useState, type ComponentType, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
+import {
+  Accordion as BaseUiAccordion,
+  AccordionContent as BaseUiAccordionContent,
+  AccordionItem as BaseUiAccordionItem,
+  AccordionTrigger as BaseUiAccordionTrigger,
+} from "@workspace/base-ui/components/Accordion"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
+import {
+  Collapsible as BaseUiCollapsible,
+  CollapsibleContent as BaseUiCollapsibleContent,
+  CollapsibleTrigger as BaseUiCollapsibleTrigger,
+} from "@workspace/base-ui/components/Collapsible"
 import {
   DialogClose as BaseUiDialogClose,
   DialogContent as BaseUiDialogContent,
@@ -37,11 +48,28 @@ import {
 import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import {
+  Tab as BaseUiTab,
+  TabList as BaseUiTabList,
+  TabPanel as BaseUiTabPanel,
+  Tabs as BaseUiTabs,
+} from "@workspace/base-ui/components/Tabs"
+import {
   Tooltip as BaseUiTooltip,
   TooltipTrigger as BaseUiTooltipTrigger,
 } from "@workspace/base-ui/components/Tooltip"
+import {
+  Accordion as UiAccordion,
+  AccordionContent as UiAccordionContent,
+  AccordionItem as UiAccordionItem,
+  AccordionTrigger as UiAccordionTrigger,
+} from "@workspace/ui/components/Accordion"
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
+import {
+  Collapsible as UiCollapsible,
+  CollapsibleContent as UiCollapsibleContent,
+  CollapsibleTrigger as UiCollapsibleTrigger,
+} from "@workspace/ui/components/Collapsible"
 import {
   DialogContent as UiDialogContent,
   DialogDescription as UiDialogDescription,
@@ -74,6 +102,12 @@ import {
 } from "@workspace/ui/components/Sheet"
 import { Slider as UiSlider } from "@workspace/ui/components/Slider"
 import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
+import {
+  Tab as UiTab,
+  TabList as UiTabList,
+  TabPanel as UiTabPanel,
+  Tabs as UiTabs,
+} from "@workspace/ui/components/Tabs"
 import {
   Tooltip as UiTooltip,
   TooltipTrigger as UiTooltipTrigger,
@@ -430,6 +464,104 @@ function UiMenuDemo() {
   )
 }
 
+function BaseUiCollapsibleDemo() {
+  return (
+    <BaseUiCollapsible defaultOpen className="w-full max-w-md">
+      <BaseUiCollapsibleTrigger className="text-accent-11 text-sm font-semibold">
+        Toggle details
+      </BaseUiCollapsibleTrigger>
+      <BaseUiCollapsibleContent>
+        <p className="text-gray-11 max-w-prose pt-2 text-sm">
+          Smoothly revealed content sits here.
+        </p>
+      </BaseUiCollapsibleContent>
+    </BaseUiCollapsible>
+  )
+}
+
+function UiCollapsibleDemo() {
+  return (
+    <UiCollapsible defaultOpen className="w-full max-w-md">
+      <UiCollapsibleTrigger className="text-accent-11 text-sm font-semibold">
+        Toggle details
+      </UiCollapsibleTrigger>
+      <UiCollapsibleContent>
+        <p className="text-gray-11 max-w-prose pt-2 text-sm">
+          Smoothly revealed content sits here.
+        </p>
+      </UiCollapsibleContent>
+    </UiCollapsible>
+  )
+}
+
+function BaseUiAccordionDemo() {
+  return (
+    <BaseUiAccordion defaultExpandedKeys={["a"]} className="w-full max-w-md">
+      <BaseUiAccordionItem id="a">
+        <BaseUiAccordionTrigger>What is this?</BaseUiAccordionTrigger>
+        <BaseUiAccordionContent>
+          A Base UI accordion styled to the kit.
+        </BaseUiAccordionContent>
+      </BaseUiAccordionItem>
+      <BaseUiAccordionItem id="b">
+        <BaseUiAccordionTrigger>How does it animate?</BaseUiAccordionTrigger>
+        <BaseUiAccordionContent>
+          Panels expand with a height transition (--accordion-panel-height).
+        </BaseUiAccordionContent>
+      </BaseUiAccordionItem>
+    </BaseUiAccordion>
+  )
+}
+
+function UiAccordionDemo() {
+  return (
+    <UiAccordion defaultExpandedKeys={["a"]} className="w-full max-w-md">
+      <UiAccordionItem id="a">
+        <UiAccordionTrigger>What is this?</UiAccordionTrigger>
+        <UiAccordionContent>
+          A react-aria disclosure group styled to the kit.
+        </UiAccordionContent>
+      </UiAccordionItem>
+      <UiAccordionItem id="b">
+        <UiAccordionTrigger>How does it animate?</UiAccordionTrigger>
+        <UiAccordionContent>
+          Panels expand with a CSS grid-rows height transition.
+        </UiAccordionContent>
+      </UiAccordionItem>
+    </UiAccordion>
+  )
+}
+
+function BaseUiTabsDemo() {
+  return (
+    <BaseUiTabs defaultSelectedKey="overview" className="w-full max-w-md">
+      <BaseUiTabList>
+        <BaseUiTab id="overview">Overview</BaseUiTab>
+        <BaseUiTab id="activity">Activity</BaseUiTab>
+        <BaseUiTab id="settings">Settings</BaseUiTab>
+      </BaseUiTabList>
+      <BaseUiTabPanel id="overview">Overview panel content.</BaseUiTabPanel>
+      <BaseUiTabPanel id="activity">Activity panel content.</BaseUiTabPanel>
+      <BaseUiTabPanel id="settings">Settings panel content.</BaseUiTabPanel>
+    </BaseUiTabs>
+  )
+}
+
+function UiTabsDemo() {
+  return (
+    <UiTabs defaultSelectedKey="overview" className="w-full max-w-md">
+      <UiTabList>
+        <UiTab id="overview">Overview</UiTab>
+        <UiTab id="activity">Activity</UiTab>
+        <UiTab id="settings">Settings</UiTab>
+      </UiTabList>
+      <UiTabPanel id="overview">Overview panel content.</UiTabPanel>
+      <UiTabPanel id="activity">Activity panel content.</UiTabPanel>
+      <UiTabPanel id="settings">Settings panel content.</UiTabPanel>
+    </UiTabs>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -557,6 +689,27 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI Root/Trigger/Popup/Item · dropdown · click / arrow-key nav (collection API deferred)"
           baseui={<BaseUiMenuDemo />}
           ui={<UiMenuDemo />}
+        />
+
+        <Compare
+          title="Collapsible"
+          meta="Base UI Root/Trigger/Panel · height transition via --collapsible-panel-height"
+          baseui={<BaseUiCollapsibleDemo />}
+          ui={<UiCollapsibleDemo />}
+        />
+
+        <Compare
+          title="Accordion"
+          meta="Base UI Root/Item/Header/Trigger/Panel · single-open · chevron rotates · height transition"
+          baseui={<BaseUiAccordionDemo />}
+          ui={<UiAccordionDemo />}
+        />
+
+        <Compare
+          title="Tabs"
+          meta="Base UI Root/List/Tab/Panel · underline (data-active) · arrow-key nav"
+          baseui={<BaseUiTabsDemo />}
+          ui={<UiTabsDemo />}
         />
       </div>
     </div>
