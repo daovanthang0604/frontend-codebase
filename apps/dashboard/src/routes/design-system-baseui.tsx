@@ -68,6 +68,10 @@ import {
   ToggleGroup as BaseUiToggleGroup,
 } from "@workspace/base-ui/components/Toggle"
 import {
+  Toolbar as BaseUiToolbar,
+  ToolbarSeparator as BaseUiToolbarSeparator,
+} from "@workspace/base-ui/components/Toolbar"
+import {
   Tooltip as BaseUiTooltip,
   TooltipTrigger as BaseUiTooltipTrigger,
 } from "@workspace/base-ui/components/Tooltip"
@@ -136,6 +140,10 @@ import {
   Toggle as UiToggle,
   ToggleGroup as UiToggleGroup,
 } from "@workspace/ui/components/Toggle"
+import {
+  Toolbar as UiToolbar,
+  ToolbarSeparator as UiToolbarSeparator,
+} from "@workspace/ui/components/Toolbar"
 import {
   Tooltip as UiTooltip,
   TooltipTrigger as UiTooltipTrigger,
@@ -784,6 +792,46 @@ function UiSegmentedControlDemo() {
   )
 }
 
+function BaseUiToolbarDemo() {
+  return (
+    <BaseUiToolbar aria-label="Formatting">
+      <BaseUiButton size="sm" variant="ghost" intent="secondary">
+        Undo
+      </BaseUiButton>
+      <BaseUiButton size="sm" variant="ghost" intent="secondary">
+        Redo
+      </BaseUiButton>
+      <BaseUiToolbarSeparator />
+      <BaseUiToggle size="sm" aria-label="Bold" className="font-bold">
+        B
+      </BaseUiToggle>
+      <BaseUiToggle size="sm" aria-label="Italic" className="italic">
+        I
+      </BaseUiToggle>
+    </BaseUiToolbar>
+  )
+}
+
+function UiToolbarDemo() {
+  return (
+    <UiToolbar aria-label="Formatting">
+      <UiButton size="sm" variant="ghost" intent="secondary">
+        Undo
+      </UiButton>
+      <UiButton size="sm" variant="ghost" intent="secondary">
+        Redo
+      </UiButton>
+      <UiToolbarSeparator />
+      <UiToggle size="sm" aria-label="Bold" className="font-bold">
+        B
+      </UiToggle>
+      <UiToggle size="sm" aria-label="Italic" className="italic">
+        I
+      </UiToggle>
+    </UiToolbar>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -871,6 +919,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI ToggleGroup (single-select) · pick-one pill switcher · arrow-key nav"
           baseui={<BaseUiSegmentedControlDemo />}
           ui={<UiSegmentedControlDemo />}
+        />
+
+        <Compare
+          title="Toolbar"
+          meta="Base UI Toolbar Root/Separator · control tray · roving arrow-key focus"
+          baseui={<BaseUiToolbarDemo />}
+          ui={<UiToolbarDemo />}
         />
 
         <Compare
