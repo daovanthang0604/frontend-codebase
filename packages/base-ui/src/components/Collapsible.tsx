@@ -58,17 +58,19 @@ function CollapsibleContent({
 }: ComponentProps<typeof BaseCollapsible.Panel>) {
   return (
     <BaseCollapsible.Panel
+      // Identical to ui's mechanism: grid-rows 0fr<->1fr on the open state, with an
+      // always-mounted panel. ui gets "always mounted" from react-aria; Base UI
+      // unmounts on close, so keepMounted restores it. `grid` (author) beats the
+      // [hidden] UA rule, keeping the closed panel a 0fr grid (collapsed, in-flow).
+      keepMounted
       className={cn(
-        // Base UI sets --collapsible-panel-height to the content height; animate
-        // height from 0 at the starting/ending styles.
-        "h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] duration-200 ease-out",
-        "data-[starting-style]:h-0 data-[ending-style]:h-0",
+        "grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-out data-[open]:grid-rows-[1fr]",
         "motion-reduce:transition-none",
         className
       )}
       {...props}
     >
-      {children}
+      <div className="min-h-0 overflow-hidden">{children}</div>
     </BaseCollapsible.Panel>
   )
 }

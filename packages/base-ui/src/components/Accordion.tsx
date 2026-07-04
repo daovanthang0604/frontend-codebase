@@ -93,13 +93,18 @@ function AccordionContent({
 }) {
   return (
     <BaseAccordion.Panel
+      // Identical to ui: keepMounted (Base UI unmounts on close; react-aria doesn't)
+      // + grid-rows 0fr<->1fr on data-open. `grid` beats [hidden] so the closed
+      // panel is an in-flow 0fr grid.
+      keepMounted
       className={cn(
-        "h-[var(--accordion-panel-height)] overflow-hidden transition-[height] duration-200 ease-out motion-reduce:transition-none",
-        "data-[starting-style]:h-0 data-[ending-style]:h-0",
+        "grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-200 ease-out data-[open]:grid-rows-[1fr] motion-reduce:transition-none",
         className
       )}
     >
-      <div className="text-gray-11 px-4 pb-4 text-sm">{children}</div>
+      <div className="min-h-0 overflow-hidden">
+        <div className="text-gray-11 px-4 pb-4 text-sm">{children}</div>
+      </div>
     </BaseAccordion.Panel>
   )
 }
