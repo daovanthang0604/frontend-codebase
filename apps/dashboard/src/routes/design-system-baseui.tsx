@@ -8,6 +8,10 @@ import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/Ra
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
+import {
+  Tooltip as BaseUiTooltip,
+  TooltipTrigger as BaseUiTooltipTrigger,
+} from "@workspace/base-ui/components/Tooltip"
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
@@ -15,6 +19,10 @@ import { RadioGroup as UiRadioGroup } from "@workspace/ui/components/RadioGroup"
 import { Separator as UiSeparator } from "@workspace/ui/components/Separator"
 import { Slider as UiSlider } from "@workspace/ui/components/Slider"
 import { Switch as UiSwitch } from "@workspace/ui/components/Switch"
+import {
+  Tooltip as UiTooltip,
+  TooltipTrigger as UiTooltipTrigger,
+} from "@workspace/ui/components/Tooltip"
 
 // Dev/QA surface for the Base UI migration — intentionally NOT wrapped in
 // <PageShell> and NOT i18n'd, same exemption as /design-system. Each migrated
@@ -175,6 +183,39 @@ function RadioGroupDemo({ RadioGroup }: { RadioGroup: RadioGroupLike }) {
   )
 }
 
+type TooltipTriggerLike = ComponentType<{
+  children: ReactNode
+  delay?: number
+  closeDelay?: number
+}>
+type TooltipLike = ComponentType<{
+  children: ReactNode
+  placement?: "top" | "bottom" | "left" | "right"
+}>
+type ButtonLike = ComponentType<{ children?: ReactNode }>
+
+function TooltipDemo({
+  TooltipTrigger,
+  Tooltip,
+  Button,
+}: {
+  TooltipTrigger: TooltipTriggerLike
+  Tooltip: TooltipLike
+  Button: ButtonLike
+}) {
+  // One trigger per side to exercise the caret arrow's per-placement rotation.
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {(["top", "bottom", "left", "right"] as const).map((side) => (
+        <TooltipTrigger key={side}>
+          <Button>{side}</Button>
+          <Tooltip placement={side}>Tooltip on {side}</Tooltip>
+        </TooltipTrigger>
+      ))}
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -241,6 +282,25 @@ function DesignSystemBaseUiRoute() {
           meta="styled native label · withAsterisk (tooltip variant deferred)"
           baseui={<LabelDemo Label={BaseUiLabel} />}
           ui={<LabelDemo Label={UiLabel} />}
+        />
+
+        <Compare
+          title="Tooltip"
+          meta="Base UI Portal/Positioner/Popup/Arrow · hover a trigger · 4 placements"
+          baseui={
+            <TooltipDemo
+              TooltipTrigger={BaseUiTooltipTrigger}
+              Tooltip={BaseUiTooltip}
+              Button={BaseUiButton}
+            />
+          }
+          ui={
+            <TooltipDemo
+              TooltipTrigger={UiTooltipTrigger}
+              Tooltip={UiTooltip}
+              Button={UiButton}
+            />
+          }
         />
       </div>
     </div>
