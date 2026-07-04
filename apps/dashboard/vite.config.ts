@@ -21,8 +21,9 @@ export default defineConfig({
       autoCodeSplitting: true,
     }),
     // React Compiler (v1.0) — build-time auto-memoization. Pinned exact because
-    // memoization output can shift across versions. It safely skips components
-    // it can't optimize (e.g. the @tanstack-based DataTable).
+    // memoization output can shift across versions. NOTE: it does NOT auto-skip
+    // incompatible components — TanStack Table's stable-ref/mutable-state pattern
+    // breaks it, so the DataTable render fns opt out via "use no memo".
     viteReact({ babel: { plugins: ["babel-plugin-react-compiler"] } }),
   ],
   resolve: {
