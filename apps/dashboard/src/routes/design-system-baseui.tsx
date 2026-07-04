@@ -3,6 +3,15 @@ import { createFileRoute } from "@tanstack/react-router"
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
+import {
+  DialogClose as BaseUiDialogClose,
+  DialogContent as BaseUiDialogContent,
+  DialogDescription as BaseUiDialogDescription,
+  DialogFooter as BaseUiDialogFooter,
+  DialogHeader as BaseUiDialogHeader,
+  DialogTitle as BaseUiDialogTitle,
+  DialogTrigger as BaseUiDialogTrigger,
+} from "@workspace/base-ui/components/Dialog"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
 import {
   Popover as BaseUiPopover,
@@ -19,6 +28,14 @@ import {
 } from "@workspace/base-ui/components/Tooltip"
 import { Button as UiButton } from "@workspace/ui/components/Button"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
+import {
+  DialogContent as UiDialogContent,
+  DialogDescription as UiDialogDescription,
+  DialogFooter as UiDialogFooter,
+  DialogHeader as UiDialogHeader,
+  DialogTitle as UiDialogTitle,
+  DialogTrigger as UiDialogTrigger,
+} from "@workspace/ui/components/Dialog"
 import { Label as UiLabel } from "@workspace/ui/components/Label"
 import {
   Popover as UiPopover,
@@ -263,6 +280,56 @@ function PopoverDemo({
   )
 }
 
+// Dialog gets per-kit demos (not the shared-component pattern) because the close
+// APIs differ: Base UI uses <DialogClose>, react-aria uses a Button slot="close".
+function BaseUiDialogDemo() {
+  return (
+    <BaseUiDialogTrigger>
+      <BaseUiButton>Open dialog</BaseUiButton>
+      <BaseUiDialogContent>
+        <BaseUiDialogHeader>
+          <BaseUiDialogTitle>Confirm action</BaseUiDialogTitle>
+          <BaseUiDialogDescription>
+            This is a sample dialog on a white panel.
+          </BaseUiDialogDescription>
+        </BaseUiDialogHeader>
+        <BaseUiDialogFooter>
+          <BaseUiDialogClose
+            render={
+              <BaseUiButton variant="ghost" intent="secondary">
+                Cancel
+              </BaseUiButton>
+            }
+          />
+          <BaseUiButton>Confirm</BaseUiButton>
+        </BaseUiDialogFooter>
+      </BaseUiDialogContent>
+    </BaseUiDialogTrigger>
+  )
+}
+
+function UiDialogDemo() {
+  return (
+    <UiDialogTrigger>
+      <UiButton>Open dialog</UiButton>
+      <UiDialogContent>
+        <UiDialogHeader>
+          <UiDialogTitle>Confirm action</UiDialogTitle>
+          <UiDialogDescription>
+            This is a sample dialog on a white panel.
+          </UiDialogDescription>
+        </UiDialogHeader>
+        <UiDialogFooter>
+          <UiButton variant="ghost" intent="secondary" slot="close">
+            Cancel
+          </UiButton>
+          <UiButton>Confirm</UiButton>
+        </UiDialogFooter>
+      </UiDialogContent>
+    </UiDialogTrigger>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -369,6 +436,13 @@ function DesignSystemBaseUiRoute() {
               Button={UiButton}
             />
           }
+        />
+
+        <Compare
+          title="Dialog"
+          meta="Base UI Root/Backdrop/Popup · modal · focus trap + Esc + scrim-click"
+          baseui={<BaseUiDialogDemo />}
+          ui={<UiDialogDemo />}
         />
       </div>
     </div>
