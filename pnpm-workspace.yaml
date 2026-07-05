@@ -43,7 +43,9 @@ catalog:
   next-themes: 0.4.6
   "@base-ui/react": 1.2.0
   "react-aria-components": 1.13.0
+  "react-day-picker": 9.14.0
   recharts: ^3.2.1
+  streamdown: 2.5.0
 
   # Utilities
   usehooks-ts: 3.1.1
