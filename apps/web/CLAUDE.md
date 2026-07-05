@@ -1,6 +1,6 @@
-# CLAUDE.md — dashboard (Frontend)
+# CLAUDE.md — web (Frontend)
 
-App-specific notes for the `dashboard` starter app (`apps/dashboard`). This is a
+App-specific notes for the `web` starter app (`apps/web`). This is a
 frontend-only template extracted from a larger product; the backend, its API
 client, and the auth vendor were removed. See the root `README.md` for what is
 stubbed and how to wire a real backend.

@@ -5,7 +5,7 @@ import { cn } from "@workspace/ui/lib/utils"
 // (`p-5`), the centering (`mx-auto`), the `max-w-7xl` content cap, the title +
 // optional description block, and the right-side actions slot. Every listing /
 // detail / dashboard page in the CRM consumes this — see
-// apps/dashboard/CLAUDE.md "Page layout" rule.
+// apps/web/CLAUDE.md "Page layout" rule.
 //
 // Why this exists: before the shell, every page hand-rolled
 // `<div className="mx-auto space-y-6 p-5">` + `<h1 className="text-gray-12

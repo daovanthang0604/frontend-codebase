@@ -2,14 +2,14 @@
 
 Conventions and rules for this repository. This is the **single source of
 truth** for both human and AI contributors. `CLAUDE.md` imports this file;
-app-specific details live in `apps/dashboard/CLAUDE.md`.
+app-specific details live in `apps/web/CLAUDE.md`.
 
 ---
 
 ## What this is
 
 A frontend-only **starter template** — a pnpm + Turborepo monorepo with one app
-(`apps/dashboard`, Vite + React 19 + TanStack Router) built on a shared UI kit,
+(`apps/web`, Vite + React 19 + TanStack Router) built on a shared UI kit,
 theme, and utilities. It was extracted from a larger product: the backend, its
 generated API client, and the auth vendor were removed, so **auth and the API
 client are stubbed seams** you replace with your own. There is no backend.
@@ -18,7 +18,7 @@ client are stubbed seams** you replace with your own. There is no backend.
 
 | Path                         | Package                        | Role                                                        |
 | ---------------------------- | ------------------------------ | ----------------------------------------------------------- |
-| `apps/dashboard`             | `dashboard`                    | The app — Vite + React + TanStack Router (dev on port 3000) |
+| `apps/web`             | `web`                    | The app — Vite + React + TanStack Router (dev on port 3000) |
 | `packages/ui`                | `@workspace/ui`                 | Component library (consumed from source)                    |
 | `packages/theme`             | `@workspace/theme`              | Design tokens + Tailwind/PostCSS preset (consumed from source) |
 | `packages/shared`            | `@workspace/shared`             | Framework-agnostic utilities                                |
@@ -86,7 +86,7 @@ these. For UI changes, also confirm the dev server renders (`pnpm dev`).
 
 ## Routing (TanStack Router)
 
-- File-based routes live under `apps/dashboard/src/routes`.
+- File-based routes live under `apps/web/src/routes`.
 - **`routeTree.gen.ts` is generated** by the Vite plugin — never edit it by hand.
 - Layout routes: `_authenticated` (guarded by the auth boundary) and
   `_unauthenticated`. A 404 and redirect guards already exist.
@@ -118,9 +118,9 @@ services/<name>/
   to prime detail) on mutations.
 - **Components import from `.queries` or the `@/services` barrel only** — never
   call the api functions directly.
-- **Register new domains** in `apps/dashboard/src/services/index.ts`.
+- **Register new domains** in `apps/web/src/services/index.ts`.
 - **`project/` is the reference example** — copy the folder, rename it, swap the
-  shapes. See `apps/dashboard/src/services/README.md`.
+  shapes. See `apps/web/src/services/README.md`.
 
 Shared pieces already in `services/`:
 
@@ -135,7 +135,7 @@ Shared pieces already in `services/`:
   guards (`SignedIn` / `SignedOut` / `_authenticated`) work against it. Replace
   `signIn`/`signOut` with your provider so they store a real token via
   `authStorage.setIdToken(...)`.
-- **API base URL** is `VITE_BASE_API` (`apps/dashboard/.env.example`). The
+- **API base URL** is `VITE_BASE_API` (`apps/web/.env.example`). The
   `refreshIdToken` in `api.ts` is a stub returning `null` — re-implement it for
   real silent refresh.
 
