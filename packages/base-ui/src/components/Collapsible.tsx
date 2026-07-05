@@ -78,5 +78,12 @@ function CollapsibleContent({
   )
 }
 
+type CollapsibleTriggerProps = ComponentProps<typeof CollapsibleTrigger>
+type CollapsibleContentProps = ComponentProps<typeof CollapsibleContent>
+
 export { Collapsible, CollapsibleContent, CollapsibleTrigger }
-export type { CollapsibleProps }
+export type {
+  CollapsibleContentProps,
+  CollapsibleProps,
+  CollapsibleTriggerProps,
+}
