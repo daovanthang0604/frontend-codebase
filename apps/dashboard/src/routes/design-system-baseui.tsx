@@ -1,4 +1,11 @@
-import { useState, type ComponentType, type ReactNode } from "react"
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentType,
+  type ReactNode,
+} from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import type { Column, ColumnDef } from "@tanstack/react-table"
 import {
@@ -8,21 +15,91 @@ import {
   AccordionTrigger as BaseUiAccordionTrigger,
 } from "@workspace/base-ui/components/Accordion"
 import {
+  Alert as BaseUiAlert,
+  AlertDescription as BaseUiAlertDescription,
+  AlertTitle as BaseUiAlertTitle,
+} from "@workspace/base-ui/components/Alert"
+import {
+  AlertDialog as BaseUiAlertDialog,
+  AlertDialogAction as BaseUiAlertDialogAction,
+  AlertDialogCancel as BaseUiAlertDialogCancel,
+  AlertDialogContent as BaseUiAlertDialogContent,
+  AlertDialogDescription as BaseUiAlertDialogDescription,
+  AlertDialogFooter as BaseUiAlertDialogFooter,
+  AlertDialogHeader as BaseUiAlertDialogHeader,
+  AlertDialogTitle as BaseUiAlertDialogTitle,
+  AlertDialogTrigger as BaseUiAlertDialogTrigger,
+} from "@workspace/base-ui/components/AlertDialog"
+import { AspectRatio as BaseUiAspectRatio } from "@workspace/base-ui/components/AspectRatio"
+import {
+  Autocomplete as BaseUiAutocomplete,
+  AutocompleteContent as BaseUiAutocompleteContent,
+  AutocompleteInput as BaseUiAutocompleteInput,
+  AutocompleteItem as BaseUiAutocompleteItem,
+} from "@workspace/base-ui/components/Autocomplete"
+import {
   Avatar as BaseUiAvatar,
   AvatarFallback as BaseUiAvatarFallback,
   AvatarImage as BaseUiAvatarImage,
 } from "@workspace/base-ui/components/Avatar"
+import { Badge as BaseUiBadge } from "@workspace/base-ui/components/Badge"
+import {
+  BreadcrumbEllipsis as BaseUiBreadcrumbEllipsis,
+  BreadcrumbItem as BaseUiBreadcrumbItem,
+  BreadcrumbLink as BaseUiBreadcrumbLink,
+  BreadcrumbPage as BaseUiBreadcrumbPage,
+  Breadcrumbs as BaseUiBreadcrumbs,
+  BreadcrumbSeparator as BaseUiBreadcrumbSeparator,
+} from "@workspace/base-ui/components/Breadcrumbs"
 import { Button as BaseUiButton } from "@workspace/base-ui/components/Button"
+import {
+  Calendar as BaseUiCalendar,
+  type DateRange as BaseUiDateRange,
+} from "@workspace/base-ui/components/Calendar"
+import {
+  Card as BaseUiCard,
+  CardContent as BaseUiCardContent,
+  CardDescription as BaseUiCardDescription,
+  CardHeader as BaseUiCardHeader,
+  CardTitle as BaseUiCardTitle,
+} from "@workspace/base-ui/components/Card"
 import { Checkbox as BaseUiCheckbox } from "@workspace/base-ui/components/Checkbox"
+import {
+  CheckboxGroup as BaseUiCheckboxGroup,
+  CheckboxGroupItem as BaseUiCheckboxGroupItem,
+} from "@workspace/base-ui/components/CheckboxGroup"
 import {
   Collapsible as BaseUiCollapsible,
   CollapsibleContent as BaseUiCollapsibleContent,
   CollapsibleTrigger as BaseUiCollapsibleTrigger,
 } from "@workspace/base-ui/components/Collapsible"
 import {
+  Combobox as BaseUiCombobox,
+  ComboboxContent as BaseUiComboboxContent,
+  ComboboxItem as BaseUiComboboxItem,
+  ComboboxTrigger as BaseUiComboboxTrigger,
+  type ComboboxOption as BaseUiComboboxOption,
+} from "@workspace/base-ui/components/Combobox"
+import {
+  ContextMenu as BaseUiContextMenu,
+  ContextMenuCheckboxItem as BaseUiContextMenuCheckboxItem,
+  ContextMenuContent as BaseUiContextMenuContent,
+  ContextMenuItem as BaseUiContextMenuItem,
+  ContextMenuSeparator as BaseUiContextMenuSeparator,
+  ContextMenuShortcut as BaseUiContextMenuShortcut,
+  ContextMenuSub as BaseUiContextMenuSub,
+  ContextMenuSubContent as BaseUiContextMenuSubContent,
+  ContextMenuSubTrigger as BaseUiContextMenuSubTrigger,
+  ContextMenuTrigger as BaseUiContextMenuTrigger,
+} from "@workspace/base-ui/components/ContextMenu"
+import {
   DataTable as BaseUiDataTable,
   DataTableColumnHeader as BaseUiDataTableColumnHeader,
 } from "@workspace/base-ui/components/DataTable"
+import {
+  DatePicker as BaseUiDatePicker,
+  DateRangePicker as BaseUiDateRangePicker,
+} from "@workspace/base-ui/components/DatePicker"
 import {
   DialogClose as BaseUiDialogClose,
   DialogContent as BaseUiDialogContent,
@@ -33,30 +110,91 @@ import {
   DialogTrigger as BaseUiDialogTrigger,
 } from "@workspace/base-ui/components/Dialog"
 import {
+  DateModeRowValue as BaseUiDateModeRowValue,
+  Filter as BaseUiFilter,
+  FilterBar as BaseUiFilterBar,
+  FilterDateMode as BaseUiFilterDateMode,
+  FilterSelect as BaseUiFilterSelect,
+  type FilterBuilderEntry as BaseUiFilterBuilderEntry,
+  type FilterValue as BaseUiFilterValue,
+} from "@workspace/base-ui/components/Filter"
+import {
   Input as BaseUiInput,
   PasswordInput as BaseUiPasswordInput,
   SearchInput as BaseUiSearchInput,
   TextArea as BaseUiTextArea,
 } from "@workspace/base-ui/components/Input"
+import { Kbd as BaseUiKbd } from "@workspace/base-ui/components/Kbd"
 import { Label as BaseUiLabel } from "@workspace/base-ui/components/Label"
 import {
   Menu as BaseUiMenu,
+  MenuCheckboxItem as BaseUiMenuCheckboxItem,
+  MenuGroupLabel as BaseUiMenuGroupLabel,
   MenuItem as BaseUiMenuItem,
   MenuPopover as BaseUiMenuPopover,
+  MenuRadioGroup as BaseUiMenuRadioGroup,
+  MenuRadioItem as BaseUiMenuRadioItem,
   MenuSeparator as BaseUiMenuSeparator,
+  MenuShortcut as BaseUiMenuShortcut,
+  MenuSub as BaseUiMenuSub,
+  MenuSubContent as BaseUiMenuSubContent,
+  MenuSubTrigger as BaseUiMenuSubTrigger,
   MenuTrigger as BaseUiMenuTrigger,
 } from "@workspace/base-ui/components/Menu"
+import {
+  Menubar as BaseUiMenubar,
+  MenubarContent as BaseUiMenubarContent,
+  MenubarItem as BaseUiMenubarItem,
+  MenubarMenu as BaseUiMenubarMenu,
+  MenubarSeparator as BaseUiMenubarSeparator,
+  MenubarShortcut as BaseUiMenubarShortcut,
+  MenubarSub as BaseUiMenubarSub,
+  MenubarSubContent as BaseUiMenubarSubContent,
+  MenubarSubTrigger as BaseUiMenubarSubTrigger,
+  MenubarTrigger as BaseUiMenubarTrigger,
+} from "@workspace/base-ui/components/Menubar"
 import { Meter as BaseUiMeter } from "@workspace/base-ui/components/Meter"
+import {
+  NavigationMenu as BaseUiNavigationMenu,
+  NavigationMenuContent as BaseUiNavigationMenuContent,
+  NavigationMenuItem as BaseUiNavigationMenuItem,
+  NavigationMenuLink as BaseUiNavigationMenuLink,
+  NavigationMenuTrigger as BaseUiNavigationMenuTrigger,
+  NavigationMenuViewport as BaseUiNavigationMenuViewport,
+} from "@workspace/base-ui/components/NavigationMenu"
 import { NumberInput as BaseUiNumberInput } from "@workspace/base-ui/components/NumberInput"
+import {
+  Pagination as BaseUiPagination,
+  PaginationContent as BaseUiPaginationContent,
+  PaginationEllipsis as BaseUiPaginationEllipsis,
+  PaginationItem as BaseUiPaginationItem,
+  PaginationLink as BaseUiPaginationLink,
+  PaginationNext as BaseUiPaginationNext,
+  PaginationPrevious as BaseUiPaginationPrevious,
+} from "@workspace/base-ui/components/Pagination"
 import {
   Popover as BaseUiPopover,
   PopoverDialog as BaseUiPopoverDialog,
   PopoverTrigger as BaseUiPopoverTrigger,
 } from "@workspace/base-ui/components/Popover"
+import {
+  PreviewCard as BaseUiPreviewCard,
+  PreviewCardContent as BaseUiPreviewCardContent,
+  PreviewCardTrigger as BaseUiPreviewCardTrigger,
+} from "@workspace/base-ui/components/PreviewCard"
 import { Progress as BaseUiProgress } from "@workspace/base-ui/components/Progress"
 import { RadioGroup as BaseUiRadioGroup } from "@workspace/base-ui/components/RadioGroup"
 import { ScrollArea as BaseUiScrollArea } from "@workspace/base-ui/components/ScrollArea"
 import { SegmentedControl as BaseUiSegmentedControl } from "@workspace/base-ui/components/SegmentedControl"
+import {
+  Select as BaseUiSelect,
+  SelectContent as BaseUiSelectContent,
+  SelectGroup as BaseUiSelectGroup,
+  SelectGroupLabel as BaseUiSelectGroupLabel,
+  SelectItem as BaseUiSelectItem,
+  SelectSeparator as BaseUiSelectSeparator,
+  SelectTrigger as BaseUiSelectTrigger,
+} from "@workspace/base-ui/components/Select"
 import { Separator as BaseUiSeparator } from "@workspace/base-ui/components/Separator"
 import {
   SheetContent as BaseUiSheetContent,
@@ -65,6 +203,15 @@ import {
   SheetTitle as BaseUiSheetTitle,
   SheetTrigger as BaseUiSheetTrigger,
 } from "@workspace/base-ui/components/Sheet"
+import {
+  SidebarCollapseTrigger as BaseUiSidebarCollapseTrigger,
+  SidebarNavTree as BaseUiSidebarNavTree,
+  SidebarProvider as BaseUiSidebarProvider,
+  SidebarViewport as BaseUiSidebarViewport,
+  useSidebar as useBaseUiSidebar,
+  type SidebarNavNode as BaseUiSidebarNavNode,
+} from "@workspace/base-ui/components/Sidebar"
+import { Skeleton as BaseUiSkeleton } from "@workspace/base-ui/components/Skeleton"
 import { Slider as BaseUiSlider } from "@workspace/base-ui/components/Slider"
 import { Switch as BaseUiSwitch } from "@workspace/base-ui/components/Switch"
 import {
@@ -74,9 +221,17 @@ import {
   Tabs as BaseUiTabs,
 } from "@workspace/base-ui/components/Tabs"
 import {
+  toast as baseUiToast,
+  ToastProvider as BaseUiToastProvider,
+} from "@workspace/base-ui/components/Toast"
+import {
   Toggle as BaseUiToggle,
   ToggleGroup as BaseUiToggleGroup,
 } from "@workspace/base-ui/components/Toggle"
+import {
+  ToggleGroupItem as BaseUiToggleGroupItem,
+  ToggleGroup as BaseUiToggleGroupRoot,
+} from "@workspace/base-ui/components/ToggleGroup"
 import {
   Toolbar as BaseUiToolbar,
   ToolbarSeparator as BaseUiToolbarSeparator,
@@ -85,6 +240,44 @@ import {
   Tooltip as BaseUiTooltip,
   TooltipTrigger as BaseUiTooltipTrigger,
 } from "@workspace/base-ui/components/Tooltip"
+// AI / Chat kit
+import {
+  Conversation as BaseUiConversation,
+  ConversationContent as BaseUiConversationContent,
+  ConversationScrollButton as BaseUiConversationScrollButton,
+} from "@workspace/base-ui/components/Conversation"
+import { Loader as BaseUiLoader } from "@workspace/base-ui/components/Loader"
+import {
+  Message as BaseUiMessage,
+  MessageAvatar as BaseUiMessageAvatar,
+  MessageContent as BaseUiMessageContent,
+} from "@workspace/base-ui/components/Message"
+import {
+  PromptInput as BaseUiPromptInput,
+  PromptInputButton as BaseUiPromptInputButton,
+  PromptInputSubmit as BaseUiPromptInputSubmit,
+  PromptInputTextarea as BaseUiPromptInputTextarea,
+  PromptInputToolbar as BaseUiPromptInputToolbar,
+  PromptInputTools as BaseUiPromptInputTools,
+} from "@workspace/base-ui/components/PromptInput"
+import {
+  Reasoning as BaseUiReasoning,
+  ReasoningContent as BaseUiReasoningContent,
+  ReasoningTrigger as BaseUiReasoningTrigger,
+} from "@workspace/base-ui/components/Reasoning"
+import { Response as BaseUiResponse } from "@workspace/base-ui/components/Response"
+import {
+  Suggestion as BaseUiSuggestion,
+  Suggestions as BaseUiSuggestions,
+} from "@workspace/base-ui/components/Suggestions"
+import {
+  Tool as BaseUiTool,
+  ToolContent as BaseUiToolContent,
+  ToolHeader as BaseUiToolHeader,
+  ToolInput as BaseUiToolInput,
+  ToolOutput as BaseUiToolOutput,
+} from "@workspace/base-ui/components/Tool"
+import { cn } from "@workspace/base-ui/lib/utils"
 import {
   Accordion as UiAccordion,
   AccordionContent as UiAccordionContent,
@@ -97,6 +290,7 @@ import {
   AvatarImage as UiAvatarImage,
 } from "@workspace/ui/components/Avatar"
 import { Button as UiButton } from "@workspace/ui/components/Button"
+import { EgCalendar as UiEgCalendar } from "@workspace/ui/components/Calendar"
 import { Checkbox as UiCheckbox } from "@workspace/ui/components/Checkbox"
 import {
   Collapsible as UiCollapsible,
@@ -168,6 +362,24 @@ import {
   Tooltip as UiTooltip,
   TooltipTrigger as UiTooltipTrigger,
 } from "@workspace/ui/components/Tooltip"
+import {
+  AlertCircle,
+  AlignCenter,
+  AlignLeft,
+  AlignRight,
+  CalendarClock,
+  ChartLine,
+  CheckCircle2,
+  CircleDashed,
+  Info,
+  LayoutDashboard,
+  Megaphone,
+  PanelLeft,
+  Paperclip,
+  Settings,
+  Sparkles,
+  UserRound,
+} from "lucide-react"
 
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 
@@ -206,6 +418,392 @@ function Compare({
         </div>
       </div>
     </section>
+  )
+}
+
+// Full-width, base-ui-only showcase — for the 9ui-parity components that have no
+// @workspace/ui counterpart. Mirrors the Filter / Sidebar section pattern.
+function BaseUiSection({
+  title,
+  meta,
+  children,
+}: {
+  title: string
+  meta?: string
+  children: ReactNode
+}) {
+  return (
+    <section className="border-gray-a4 border-t py-7">
+      <header className="mb-4 flex flex-col gap-1">
+        <h2 className="text-gray-12 text-ui-lg font-semibold">{title}</h2>
+        {meta ? <span className="text-gray-10 text-ui-sm">{meta}</span> : null}
+      </header>
+      <div>
+        <div className="text-gray-10 text-eyebrow mb-3 uppercase">base-ui</div>
+        {children}
+      </div>
+    </section>
+  )
+}
+
+function BaseUiCalendarDemo() {
+  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [range, setRange] = useState<BaseUiDateRange | undefined>(undefined)
+  return (
+    <div className="flex flex-wrap gap-6">
+      <div>
+        <div className="text-gray-10 text-eyebrow mb-2 uppercase">single</div>
+        <div className="border-gray-a4 bg-panel w-fit rounded-lg border shadow-sm">
+          <BaseUiCalendar mode="single" selected={date} onSelect={setDate} />
+        </div>
+      </div>
+      <div>
+        <div className="text-gray-10 text-eyebrow mb-2 uppercase">range</div>
+        <div className="border-gray-a4 bg-panel w-fit rounded-lg border shadow-sm">
+          <BaseUiCalendar mode="range" selected={range} onSelect={setRange} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function UiCalendarDemo() {
+  const [date, setDate] = useState<string | undefined>(undefined)
+  return (
+    <div>
+      <div className="text-gray-10 text-eyebrow mb-2 uppercase">single</div>
+      <UiEgCalendar value={date} onChange={setDate} />
+    </div>
+  )
+}
+
+const FILTER_STATUS_OPTIONS = [
+  { label: "Active", value: "active" },
+  { label: "Paused", value: "paused" },
+  { label: "Draft", value: "draft" },
+  { label: "Archived", value: "archived" },
+]
+
+const FILTER_OWNER_OPTIONS = [
+  { label: "Alex Kim", value: "alex" },
+  { label: "Sam Rivera", value: "sam" },
+  { label: "Jordan Lee", value: "jordan" },
+  { label: "Taylor Chen", value: "taylor" },
+]
+
+function BaseUiFilterDemo() {
+  const [value, setValue] = useState<BaseUiFilterValue>({})
+  const items = useMemo<BaseUiFilterBuilderEntry[]>(
+    () => [
+      {
+        field: "status",
+        label: "Status",
+        icon: <CircleDashed className="size-4" />,
+        multi: true,
+        options: FILTER_STATUS_OPTIONS,
+        render: () => <BaseUiFilterSelect />,
+      },
+      {
+        field: "owner",
+        label: "Owner",
+        icon: <UserRound className="size-4" />,
+        multi: false,
+        options: FILTER_OWNER_OPTIONS,
+        render: () => <BaseUiFilterSelect multi={false} />,
+      },
+      {
+        field: "created",
+        label: "Created",
+        icon: <CalendarClock className="size-4" />,
+        render: () => <BaseUiFilterDateMode />,
+        renderRowValue: ({ value, field }) => (
+          <BaseUiDateModeRowValue value={value} field={field} />
+        ),
+      },
+    ],
+    []
+  )
+
+  return (
+    <BaseUiFilter value={value} onChange={setValue}>
+      <BaseUiFilterBar items={items} />
+    </BaseUiFilter>
+  )
+}
+
+const SIDEBAR_NODES: BaseUiSidebarNavNode[] = [
+  {
+    type: "item",
+    to: "/overview",
+    label: "Overview",
+    icon: <LayoutDashboard />,
+  },
+  { type: "item", to: "/analytics", label: "Analytics", icon: <ChartLine /> },
+  {
+    type: "folder",
+    label: "Campaigns",
+    icon: <Megaphone />,
+    defaultOpen: true,
+    items: [
+      { type: "item", to: "/campaigns/active", label: "Active" },
+      { type: "item", to: "/campaigns/drafts", label: "Drafts" },
+      { type: "item", to: "/campaigns/archived", label: "Archived" },
+    ],
+  },
+  { type: "item", to: "/settings", label: "Settings", icon: <Settings /> },
+]
+
+function BaseUiSidebarDemo() {
+  const [pathname, setPathname] = useState("/campaigns/active")
+  return (
+    <BaseUiSidebarProvider pathname={pathname}>
+      <SidebarFrame pathname={pathname} onNavigate={setPathname} />
+    </BaseUiSidebarProvider>
+  )
+}
+
+function SidebarFrame({
+  pathname,
+  onNavigate,
+}: {
+  pathname: string
+  onNavigate: (to: string) => void
+}) {
+  const { collapsed } = useBaseUiSidebar()
+  return (
+    <div
+      className={cn(
+        "bg-panel border-gray-a5 flex h-[440px] flex-col overflow-hidden rounded-lg border text-sm shadow-sm",
+        "transition-[width] duration-200 ease-in-out motion-reduce:transition-none",
+        collapsed ? "w-16" : "w-64"
+      )}
+    >
+      <div
+        className={cn(
+          "border-gray-a5 flex h-12 items-center gap-2 border-b",
+          collapsed ? "justify-center px-2" : "px-3"
+        )}
+      >
+        {!collapsed && (
+          <span className="text-gray-12 flex-1 font-semibold">Acme</span>
+        )}
+        <BaseUiSidebarCollapseTrigger>
+          <PanelLeft className="size-4" />
+        </BaseUiSidebarCollapseTrigger>
+      </div>
+      <BaseUiSidebarViewport>
+        <BaseUiSidebarNavTree
+          nodes={SIDEBAR_NODES}
+          pathname={pathname}
+          renderLink={(node) => (
+            <button type="button" onClick={() => onNavigate(node.to)}>
+              {node.label}
+            </button>
+          )}
+        />
+      </BaseUiSidebarViewport>
+    </div>
+  )
+}
+
+const CHAT_SUGGESTIONS = [
+  "How do I stream responses?",
+  "Show me a code example",
+  "What is streamdown?",
+]
+
+const CHAT_REASONING =
+  "The user wants a streaming setup. I'll outline the route handler, how tokens flow from the model, and how the kit renders them — then offer to expand any step."
+
+const CHAT_ANSWER = `Here's a tight way to wire **streaming** responses:
+
+1. Scaffold the route handler
+2. Stream tokens from the model
+3. Render them with \`<Response>\`
+
+\`\`\`ts
+export async function POST(req: Request) {
+  const { messages } = await req.json()
+  const result = streamText({ model, messages })
+  return result.toTextStreamResponse()
+}
+\`\`\`
+
+| Piece  | Owner   |
+| ------ | ------- |
+| Route  | you     |
+| Render | the kit |
+
+That's the gist — want me to expand any step?`
+
+type ChatMsg = {
+  id: number
+  role: "user" | "assistant"
+  content: string
+  reasoning?: string
+  reasoningStreaming?: boolean
+  duration?: number
+  tool?: boolean
+}
+
+function BaseUiChatDemo() {
+  const [messages, setMessages] = useState<ChatMsg[]>([])
+  const [status, setStatus] = useState<"ready" | "submitted" | "streaming">(
+    "ready"
+  )
+  const idRef = useRef(0)
+  const timers = useRef<number[]>([])
+
+  useEffect(
+    () => () => {
+      timers.current.forEach((t) => window.clearTimeout(t))
+    },
+    []
+  )
+
+  const after = (ms: number, fn: () => void) => {
+    timers.current.push(window.setTimeout(fn, ms))
+  }
+
+  const send = (text: string) => {
+    if (status !== "ready" || !text.trim()) return
+    const userId = ++idRef.current
+    const asstId = ++idRef.current
+    setMessages((m) => [...m, { id: userId, role: "user", content: text }])
+    setStatus("submitted")
+
+    // Simulate: brief "typing", then a streaming reasoning + tool + answer.
+    after(450, () => {
+      setMessages((m) => [
+        ...m,
+        {
+          id: asstId,
+          role: "assistant",
+          content: "",
+          reasoning: CHAT_REASONING,
+          reasoningStreaming: true,
+          tool: true,
+        },
+      ])
+      setStatus("streaming")
+
+      after(750, () => {
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === asstId
+              ? { ...msg, reasoningStreaming: false, duration: 1 }
+              : msg
+          )
+        )
+        let i = 0
+        const step = () => {
+          i = Math.min(i + 4, CHAT_ANSWER.length)
+          const slice = CHAT_ANSWER.slice(0, i)
+          setMessages((m) =>
+            m.map((msg) =>
+              msg.id === asstId ? { ...msg, content: slice } : msg
+            )
+          )
+          if (i < CHAT_ANSWER.length) {
+            after(16, step)
+          } else {
+            setStatus("ready")
+          }
+        }
+        step()
+      })
+    })
+  }
+
+  return (
+    <div className="border-gray-a5 bg-panel flex h-[600px] flex-col overflow-hidden rounded-xl border shadow-sm">
+      <BaseUiConversation>
+        <BaseUiConversationContent>
+          {messages.length === 0 ? (
+            <div className="flex min-h-[440px] flex-col items-center justify-center gap-5 text-center">
+              <div className="max-w-sm space-y-1">
+                <p className="text-gray-12 text-ui-lg font-semibold">
+                  How can I help?
+                </p>
+                <p className="text-gray-11 text-sm">
+                  Responses stream in as Markdown — code, tables, and lists
+                  render live.
+                </p>
+              </div>
+              <BaseUiSuggestions className="justify-center">
+                {CHAT_SUGGESTIONS.map((s) => (
+                  <BaseUiSuggestion key={s} suggestion={s} onClick={send} />
+                ))}
+              </BaseUiSuggestions>
+            </div>
+          ) : (
+            messages.map((msg) => (
+              <BaseUiMessage key={msg.id} from={msg.role}>
+                {msg.role === "assistant" && <BaseUiMessageAvatar name="AI" />}
+                <BaseUiMessageContent>
+                  {msg.role === "assistant" ? (
+                    <div className="space-y-3">
+                      {msg.reasoning ? (
+                        <BaseUiReasoning
+                          isStreaming={msg.reasoningStreaming}
+                          duration={msg.duration}
+                          defaultOpen
+                        >
+                          <BaseUiReasoningTrigger />
+                          <BaseUiReasoningContent>
+                            {msg.reasoning}
+                          </BaseUiReasoningContent>
+                        </BaseUiReasoning>
+                      ) : null}
+                      {msg.tool ? (
+                        <BaseUiTool>
+                          <BaseUiToolHeader
+                            type="web_search"
+                            state="output-available"
+                          />
+                          <BaseUiToolContent>
+                            <BaseUiToolInput
+                              input={{ query: "streaming markdown react" }}
+                            />
+                            <BaseUiToolOutput output="3 results · streamdown · prompt-kit · ai-sdk" />
+                          </BaseUiToolContent>
+                        </BaseUiTool>
+                      ) : null}
+                      <BaseUiResponse>{msg.content}</BaseUiResponse>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
+                </BaseUiMessageContent>
+              </BaseUiMessage>
+            ))
+          )}
+          {status === "submitted" ? (
+            <BaseUiMessage from="assistant">
+              <BaseUiMessageAvatar name="AI" />
+              <BaseUiMessageContent>
+                <BaseUiLoader />
+              </BaseUiMessageContent>
+            </BaseUiMessage>
+          ) : null}
+        </BaseUiConversationContent>
+        <BaseUiConversationScrollButton />
+      </BaseUiConversation>
+
+      <div className="border-gray-a5 border-t p-3">
+        <BaseUiPromptInput onSubmit={send}>
+          <BaseUiPromptInputTextarea placeholder="Ask anything…" />
+          <BaseUiPromptInputToolbar>
+            <BaseUiPromptInputTools>
+              <BaseUiPromptInputButton>
+                <Paperclip />
+              </BaseUiPromptInputButton>
+            </BaseUiPromptInputTools>
+            <BaseUiPromptInputSubmit status={status} />
+          </BaseUiPromptInputToolbar>
+        </BaseUiPromptInput>
+      </div>
+    </div>
   )
 }
 
@@ -489,17 +1087,59 @@ function UiSheetDemo() {
 }
 
 function BaseUiMenuDemo() {
+  const [showGrid, setShowGrid] = useState(true)
+  const [density, setDensity] = useState<unknown>("comfortable")
   return (
     <BaseUiMenuTrigger>
       <BaseUiButton variant="outline" intent="secondary">
         Actions
       </BaseUiButton>
-      <BaseUiMenuPopover>
+      <BaseUiMenuPopover className="min-w-52">
         <BaseUiMenu>
-          <BaseUiMenuItem onAction={() => {}}>Edit</BaseUiMenuItem>
-          <BaseUiMenuItem onAction={() => {}}>Duplicate</BaseUiMenuItem>
+          <BaseUiMenuGroupLabel>Edit</BaseUiMenuGroupLabel>
+          <BaseUiMenuItem onAction={() => {}}>
+            Undo
+            <BaseUiMenuShortcut>⌘Z</BaseUiMenuShortcut>
+          </BaseUiMenuItem>
+          <BaseUiMenuItem onAction={() => {}}>
+            Redo
+            <BaseUiMenuShortcut>⇧⌘Z</BaseUiMenuShortcut>
+          </BaseUiMenuItem>
+
+          <BaseUiMenuSub>
+            <BaseUiMenuSubTrigger>Share</BaseUiMenuSubTrigger>
+            <BaseUiMenuSubContent>
+              <BaseUiMenu>
+                <BaseUiMenuItem onAction={() => {}}>Copy link</BaseUiMenuItem>
+                <BaseUiMenuItem onAction={() => {}}>Email</BaseUiMenuItem>
+                <BaseUiMenuItem onAction={() => {}}>Embed</BaseUiMenuItem>
+              </BaseUiMenu>
+            </BaseUiMenuSubContent>
+          </BaseUiMenuSub>
+
           <BaseUiMenuSeparator />
-          <BaseUiMenuItem onAction={() => {}}>Delete</BaseUiMenuItem>
+
+          <BaseUiMenuCheckboxItem
+            checked={showGrid}
+            onCheckedChange={setShowGrid}
+          >
+            Show grid
+          </BaseUiMenuCheckboxItem>
+
+          <BaseUiMenuSeparator />
+
+          <BaseUiMenuGroupLabel>Density</BaseUiMenuGroupLabel>
+          <BaseUiMenuRadioGroup value={density} onValueChange={setDensity}>
+            <BaseUiMenuRadioItem value="comfortable">
+              Comfortable
+            </BaseUiMenuRadioItem>
+            <BaseUiMenuRadioItem value="compact">Compact</BaseUiMenuRadioItem>
+          </BaseUiMenuRadioGroup>
+
+          <BaseUiMenuSeparator />
+          <BaseUiMenuItem onAction={() => {}} className="text-error-11">
+            Delete
+          </BaseUiMenuItem>
         </BaseUiMenu>
       </BaseUiMenuPopover>
     </BaseUiMenuTrigger>
@@ -979,6 +1619,535 @@ function makeDtColumns(
 const baseUiDtColumns = makeDtColumns(BaseUiDataTableColumnHeader)
 const uiDtColumns = makeDtColumns(UiDataTableColumnHeader)
 
+// ── 9ui-parity component demos (no @workspace/ui counterpart; full-width) ──
+
+function BaseUiBadgeDemo() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <BaseUiBadge color="success" dot>
+        Active
+      </BaseUiBadge>
+      <BaseUiBadge color="warning" dot>
+        Pending
+      </BaseUiBadge>
+      <BaseUiBadge color="error" dot>
+        Failed
+      </BaseUiBadge>
+      <BaseUiBadge color="info">Info</BaseUiBadge>
+      <BaseUiBadge color="accent">Accent</BaseUiBadge>
+      <BaseUiBadge color="gray">Neutral</BaseUiBadge>
+      <BaseUiBadge color="success" size="sm">
+        sm
+      </BaseUiBadge>
+      <BaseUiBadge color="success" size="lg">
+        lg
+      </BaseUiBadge>
+    </div>
+  )
+}
+
+function BaseUiCardDemo() {
+  return (
+    <BaseUiCard className="w-80">
+      <BaseUiCardHeader>
+        <BaseUiCardTitle>Monthly report</BaseUiCardTitle>
+        <BaseUiCardDescription>
+          Performance across every active campaign.
+        </BaseUiCardDescription>
+      </BaseUiCardHeader>
+      <BaseUiCardContent>
+        <p className="text-gray-11 text-sm">
+          Reach is up 12% week over week, with email driving the largest share
+          of new signups.
+        </p>
+      </BaseUiCardContent>
+    </BaseUiCard>
+  )
+}
+
+function BaseUiAlertDemo() {
+  return (
+    <div className="w-full max-w-lg space-y-3">
+      <BaseUiAlert variant="info" icon={<Info />}>
+        <BaseUiAlertTitle>Heads up</BaseUiAlertTitle>
+        <BaseUiAlertDescription>
+          A new billing cycle starts on the 1st.
+        </BaseUiAlertDescription>
+      </BaseUiAlert>
+      <BaseUiAlert variant="success" icon={<CheckCircle2 />}>
+        <BaseUiAlertTitle>Saved</BaseUiAlertTitle>
+        <BaseUiAlertDescription>
+          Your changes have been published.
+        </BaseUiAlertDescription>
+      </BaseUiAlert>
+      <BaseUiAlert variant="error" icon={<AlertCircle />}>
+        <BaseUiAlertTitle>Payment failed</BaseUiAlertTitle>
+        <BaseUiAlertDescription>
+          We couldn&apos;t charge your card. Update it to continue.
+        </BaseUiAlertDescription>
+      </BaseUiAlert>
+    </div>
+  )
+}
+
+function BaseUiKbdDemo() {
+  return (
+    <div className="flex flex-wrap items-center gap-4 text-sm">
+      <span className="flex items-center gap-1">
+        <BaseUiKbd>⌘</BaseUiKbd>
+        <BaseUiKbd>K</BaseUiKbd>
+      </span>
+      <span className="flex items-center gap-1">
+        <BaseUiKbd>⇧</BaseUiKbd>
+        <BaseUiKbd>⌘</BaseUiKbd>
+        <BaseUiKbd>P</BaseUiKbd>
+      </span>
+      <BaseUiKbd>Esc</BaseUiKbd>
+    </div>
+  )
+}
+
+function BaseUiSkeletonDemo() {
+  return (
+    <div className="flex w-72 items-center gap-3">
+      <BaseUiSkeleton className="size-10 rounded-full" />
+      <div className="flex-1 space-y-2">
+        <BaseUiSkeleton className="h-4 w-3/4" />
+        <BaseUiSkeleton className="h-4 w-1/2" />
+      </div>
+    </div>
+  )
+}
+
+function BaseUiAspectRatioDemo() {
+  return (
+    <div className="w-72">
+      <BaseUiAspectRatio ratio={16 / 9} className="rounded-lg">
+        <div className="from-accent-9 to-accent-11 flex h-full w-full items-center justify-center bg-gradient-to-br text-sm font-semibold text-white">
+          16 / 9
+        </div>
+      </BaseUiAspectRatio>
+    </div>
+  )
+}
+
+const selectFruits = [
+  { value: "apple", label: "Apple" },
+  { value: "banana", label: "Banana" },
+  { value: "cherry", label: "Cherry" },
+  { value: "grape", label: "Grape" },
+]
+
+function BaseUiSelectDemo() {
+  // Base UI Select emits string | null (null when cleared), so widen the state.
+  const [value, setValue] = useState<string | null>("apple")
+  return (
+    <div className="w-64">
+      <BaseUiSelect value={value} onValueChange={setValue}>
+        <BaseUiSelectTrigger placeholder="Pick a fruit" />
+        <BaseUiSelectContent>
+          <BaseUiSelectGroup>
+            <BaseUiSelectGroupLabel>Fruit</BaseUiSelectGroupLabel>
+            {selectFruits.map((f) => (
+              <BaseUiSelectItem key={f.value} value={f.value}>
+                {f.label}
+              </BaseUiSelectItem>
+            ))}
+          </BaseUiSelectGroup>
+          <BaseUiSelectSeparator />
+          <BaseUiSelectItem value="none">No preference</BaseUiSelectItem>
+        </BaseUiSelectContent>
+      </BaseUiSelect>
+    </div>
+  )
+}
+
+const comboFrameworks: BaseUiComboboxOption[] = [
+  { value: "next", label: "Next.js" },
+  { value: "remix", label: "Remix" },
+  { value: "astro", label: "Astro" },
+  { value: "nuxt", label: "Nuxt" },
+  { value: "svelte", label: "SvelteKit" },
+]
+
+function BaseUiComboboxDemo() {
+  const [value, setValue] = useState<BaseUiComboboxOption | null>(null)
+  return (
+    <div className="w-64">
+      <BaseUiCombobox
+        items={comboFrameworks}
+        value={value}
+        onValueChange={setValue}
+        placeholder="Pick a framework"
+      >
+        <BaseUiComboboxTrigger />
+        <BaseUiComboboxContent
+          searchPlaceholder="Search frameworks…"
+          emptyMessage="No frameworks"
+        >
+          {(item) => <BaseUiComboboxItem key={item.value} item={item} />}
+        </BaseUiComboboxContent>
+      </BaseUiCombobox>
+    </div>
+  )
+}
+
+const autoFruits = [
+  "Apple",
+  "Apricot",
+  "Banana",
+  "Blueberry",
+  "Cherry",
+  "Grape",
+  "Mango",
+  "Orange",
+]
+
+function BaseUiAutocompleteDemo() {
+  const [value, setValue] = useState("")
+  return (
+    <div className="w-64">
+      <BaseUiAutocomplete
+        items={autoFruits}
+        value={value}
+        onValueChange={setValue}
+      >
+        <BaseUiAutocompleteInput placeholder="Search fruit…" />
+        <BaseUiAutocompleteContent emptyMessage="No matches">
+          {(item) => <BaseUiAutocompleteItem key={item} value={item} />}
+        </BaseUiAutocompleteContent>
+      </BaseUiAutocomplete>
+    </div>
+  )
+}
+
+function BaseUiToggleGroupDemo() {
+  const [align, setAlign] = useState<string[]>(["left"])
+  return (
+    <BaseUiToggleGroupRoot value={align} onValueChange={setAlign}>
+      <BaseUiToggleGroupItem value="left" aria-label="Align left">
+        <AlignLeft />
+      </BaseUiToggleGroupItem>
+      <BaseUiToggleGroupItem value="center" aria-label="Align center">
+        <AlignCenter />
+      </BaseUiToggleGroupItem>
+      <BaseUiToggleGroupItem value="right" aria-label="Align right">
+        <AlignRight />
+      </BaseUiToggleGroupItem>
+    </BaseUiToggleGroupRoot>
+  )
+}
+
+function BaseUiCheckboxGroupDemo() {
+  const [value, setValue] = useState<string[]>(["read"])
+  return (
+    <BaseUiCheckboxGroup
+      value={value}
+      onValueChange={setValue}
+      label="Permissions"
+      description="Choose what this role can do."
+    >
+      <BaseUiCheckboxGroupItem value="read">Read</BaseUiCheckboxGroupItem>
+      <BaseUiCheckboxGroupItem value="write">Write</BaseUiCheckboxGroupItem>
+      <BaseUiCheckboxGroupItem value="delete">Delete</BaseUiCheckboxGroupItem>
+    </BaseUiCheckboxGroup>
+  )
+}
+
+function BaseUiAlertDialogDemo() {
+  return (
+    <BaseUiAlertDialog>
+      <BaseUiAlertDialogTrigger>
+        <BaseUiButton variant="outline" intent="danger">
+          Delete project
+        </BaseUiButton>
+      </BaseUiAlertDialogTrigger>
+      <BaseUiAlertDialogContent>
+        <BaseUiAlertDialogHeader>
+          <BaseUiAlertDialogTitle>Delete project?</BaseUiAlertDialogTitle>
+          <BaseUiAlertDialogDescription>
+            This permanently removes the project and all of its campaigns. This
+            action cannot be undone.
+          </BaseUiAlertDialogDescription>
+        </BaseUiAlertDialogHeader>
+        <BaseUiAlertDialogFooter>
+          <BaseUiAlertDialogCancel>Cancel</BaseUiAlertDialogCancel>
+          <BaseUiAlertDialogAction intent="danger">
+            Delete
+          </BaseUiAlertDialogAction>
+        </BaseUiAlertDialogFooter>
+      </BaseUiAlertDialogContent>
+    </BaseUiAlertDialog>
+  )
+}
+
+function BaseUiPreviewCardDemo() {
+  return (
+    <p className="text-gray-11 text-sm">
+      Created by&nbsp;
+      <BaseUiPreviewCard>
+        <BaseUiPreviewCardTrigger>
+          <a
+            href="#"
+            className="text-accent-11 font-medium underline-offset-2 hover:underline"
+          >
+            @ada
+          </a>
+        </BaseUiPreviewCardTrigger>
+        <BaseUiPreviewCardContent>
+          <div className="flex items-center gap-3">
+            <BaseUiAvatar>
+              <BaseUiAvatarFallback>AL</BaseUiAvatarFallback>
+            </BaseUiAvatar>
+            <div>
+              <div className="text-gray-12 text-sm font-semibold">
+                Ada Lovelace
+              </div>
+              <div className="text-gray-10 text-xs">@ada · Engineering</div>
+            </div>
+          </div>
+          <p className="text-gray-11 mt-3 text-sm">
+            Building the analytics pipeline. The card reveals on hover after a
+            short delay.
+          </p>
+        </BaseUiPreviewCardContent>
+      </BaseUiPreviewCard>
+    </p>
+  )
+}
+
+function BaseUiContextMenuDemo() {
+  const [bookmarks, setBookmarks] = useState(true)
+  return (
+    <BaseUiContextMenu>
+      <BaseUiContextMenuTrigger className="border-gray-a5 text-gray-11 flex h-28 w-full max-w-md items-center justify-center rounded-lg border border-dashed text-sm select-none">
+        Right-click anywhere in this box
+      </BaseUiContextMenuTrigger>
+      <BaseUiContextMenuContent>
+        <BaseUiContextMenuItem onAction={() => {}}>
+          Back
+          <BaseUiContextMenuShortcut>⌘[</BaseUiContextMenuShortcut>
+        </BaseUiContextMenuItem>
+        <BaseUiContextMenuItem onAction={() => {}}>
+          Forward
+          <BaseUiContextMenuShortcut>⌘]</BaseUiContextMenuShortcut>
+        </BaseUiContextMenuItem>
+        <BaseUiContextMenuSeparator />
+        <BaseUiContextMenuCheckboxItem
+          checked={bookmarks}
+          onCheckedChange={setBookmarks}
+        >
+          Show bookmarks bar
+        </BaseUiContextMenuCheckboxItem>
+        <BaseUiContextMenuSeparator />
+        <BaseUiContextMenuSub>
+          <BaseUiContextMenuSubTrigger>More tools</BaseUiContextMenuSubTrigger>
+          <BaseUiContextMenuSubContent>
+            <BaseUiContextMenuItem onAction={() => {}}>
+              Save page as…
+            </BaseUiContextMenuItem>
+            <BaseUiContextMenuItem onAction={() => {}}>
+              Developer tools
+            </BaseUiContextMenuItem>
+          </BaseUiContextMenuSubContent>
+        </BaseUiContextMenuSub>
+      </BaseUiContextMenuContent>
+    </BaseUiContextMenu>
+  )
+}
+
+function BaseUiMenubarDemo() {
+  return (
+    <BaseUiMenubar>
+      <BaseUiMenubarMenu>
+        <BaseUiMenubarTrigger>File</BaseUiMenubarTrigger>
+        <BaseUiMenubarContent>
+          <BaseUiMenubarItem>
+            New Tab
+            <BaseUiMenubarShortcut>⌘T</BaseUiMenubarShortcut>
+          </BaseUiMenubarItem>
+          <BaseUiMenubarItem>
+            New Window
+            <BaseUiMenubarShortcut>⌘N</BaseUiMenubarShortcut>
+          </BaseUiMenubarItem>
+          <BaseUiMenubarSeparator />
+          <BaseUiMenubarSub>
+            <BaseUiMenubarSubTrigger>Share</BaseUiMenubarSubTrigger>
+            <BaseUiMenubarSubContent>
+              <BaseUiMenubarItem>Email link</BaseUiMenubarItem>
+              <BaseUiMenubarItem>Copy link</BaseUiMenubarItem>
+            </BaseUiMenubarSubContent>
+          </BaseUiMenubarSub>
+          <BaseUiMenubarSeparator />
+          <BaseUiMenubarItem>
+            Print…
+            <BaseUiMenubarShortcut>⌘P</BaseUiMenubarShortcut>
+          </BaseUiMenubarItem>
+        </BaseUiMenubarContent>
+      </BaseUiMenubarMenu>
+      <BaseUiMenubarMenu>
+        <BaseUiMenubarTrigger>Edit</BaseUiMenubarTrigger>
+        <BaseUiMenubarContent>
+          <BaseUiMenubarItem>Undo</BaseUiMenubarItem>
+          <BaseUiMenubarItem>Redo</BaseUiMenubarItem>
+          <BaseUiMenubarSeparator />
+          <BaseUiMenubarItem>Cut</BaseUiMenubarItem>
+          <BaseUiMenubarItem>Copy</BaseUiMenubarItem>
+          <BaseUiMenubarItem>Paste</BaseUiMenubarItem>
+        </BaseUiMenubarContent>
+      </BaseUiMenubarMenu>
+      <BaseUiMenubarMenu>
+        <BaseUiMenubarTrigger>View</BaseUiMenubarTrigger>
+        <BaseUiMenubarContent>
+          <BaseUiMenubarItem>Zoom in</BaseUiMenubarItem>
+          <BaseUiMenubarItem>Zoom out</BaseUiMenubarItem>
+          <BaseUiMenubarSeparator />
+          <BaseUiMenubarItem>Reload</BaseUiMenubarItem>
+        </BaseUiMenubarContent>
+      </BaseUiMenubarMenu>
+    </BaseUiMenubar>
+  )
+}
+
+function BaseUiNavigationMenuDemo() {
+  return (
+    <BaseUiNavigationMenu>
+      <BaseUiNavigationMenuItem>
+        <BaseUiNavigationMenuTrigger>Products</BaseUiNavigationMenuTrigger>
+        <BaseUiNavigationMenuContent>
+          <div className="grid w-64 gap-1">
+            <BaseUiNavigationMenuLink
+              href="#"
+              title="Analytics"
+              description="Track reach and conversions in real time."
+            />
+            <BaseUiNavigationMenuLink
+              href="#"
+              title="Campaigns"
+              description="Plan and schedule multi-channel sends."
+            />
+            <BaseUiNavigationMenuLink
+              href="#"
+              title="Audiences"
+              description="Segment contacts by behavior."
+            />
+          </div>
+        </BaseUiNavigationMenuContent>
+      </BaseUiNavigationMenuItem>
+      <BaseUiNavigationMenuItem>
+        <BaseUiNavigationMenuTrigger>Resources</BaseUiNavigationMenuTrigger>
+        <BaseUiNavigationMenuContent>
+          <div className="grid w-56 gap-1">
+            <BaseUiNavigationMenuLink
+              href="#"
+              title="Docs"
+              description="Guides and API reference."
+            />
+            <BaseUiNavigationMenuLink
+              href="#"
+              title="Blog"
+              description="Product news and tips."
+            />
+            <BaseUiNavigationMenuLink
+              href="#"
+              title="Support"
+              description="Reach the team directly."
+            />
+          </div>
+        </BaseUiNavigationMenuContent>
+      </BaseUiNavigationMenuItem>
+      <BaseUiNavigationMenuViewport />
+    </BaseUiNavigationMenu>
+  )
+}
+
+function BaseUiToastDemo() {
+  return (
+    <BaseUiToastProvider>
+      <BaseUiButton
+        variant="outline"
+        intent="secondary"
+        onClick={() =>
+          baseUiToast.success("Saved", {
+            description: "Your changes have been saved.",
+          })
+        }
+      >
+        Show toast
+      </BaseUiButton>
+    </BaseUiToastProvider>
+  )
+}
+
+function BaseUiBreadcrumbsDemo() {
+  return (
+    <BaseUiBreadcrumbs>
+      <BaseUiBreadcrumbItem>
+        <BaseUiBreadcrumbLink href="#">Home</BaseUiBreadcrumbLink>
+      </BaseUiBreadcrumbItem>
+      <BaseUiBreadcrumbSeparator />
+      <BaseUiBreadcrumbItem>
+        <BaseUiBreadcrumbEllipsis />
+      </BaseUiBreadcrumbItem>
+      <BaseUiBreadcrumbSeparator />
+      <BaseUiBreadcrumbItem>
+        <BaseUiBreadcrumbLink href="#">Projects</BaseUiBreadcrumbLink>
+      </BaseUiBreadcrumbItem>
+      <BaseUiBreadcrumbSeparator />
+      <BaseUiBreadcrumbItem>
+        <BaseUiBreadcrumbPage>Settings</BaseUiBreadcrumbPage>
+      </BaseUiBreadcrumbItem>
+    </BaseUiBreadcrumbs>
+  )
+}
+
+function BaseUiPaginationDemo() {
+  return (
+    <BaseUiPagination>
+      <BaseUiPaginationContent>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationPrevious href="#" />
+        </BaseUiPaginationItem>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationLink href="#">1</BaseUiPaginationLink>
+        </BaseUiPaginationItem>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationLink href="#" isActive>
+            2
+          </BaseUiPaginationLink>
+        </BaseUiPaginationItem>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationLink href="#">3</BaseUiPaginationLink>
+        </BaseUiPaginationItem>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationEllipsis />
+        </BaseUiPaginationItem>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationLink href="#">10</BaseUiPaginationLink>
+        </BaseUiPaginationItem>
+        <BaseUiPaginationItem>
+          <BaseUiPaginationNext href="#" />
+        </BaseUiPaginationItem>
+      </BaseUiPaginationContent>
+    </BaseUiPagination>
+  )
+}
+
+function BaseUiDatePickerDemo() {
+  const [date, setDate] = useState<Date | undefined>(undefined)
+  const [range, setRange] = useState<BaseUiDateRange | undefined>(undefined)
+  return (
+    <div className="flex flex-wrap gap-3">
+      <div className="w-56">
+        <BaseUiDatePicker value={date} onChange={setDate} />
+      </div>
+      <div className="w-64">
+        <BaseUiDateRangePicker value={range} onChange={setRange} />
+      </div>
+    </div>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -1138,7 +2307,7 @@ function DesignSystemBaseUiRoute() {
 
         <Compare
           title="Menu"
-          meta="Base UI Root/Trigger/Popup/Item · dropdown · click / arrow-key nav (collection API deferred)"
+          meta="Base UI menu · full anatomy: submenu · checkbox · radio group · group label · shortcut · arrow-key nav (ui side is the drop-in core)"
           baseui={<BaseUiMenuDemo />}
           ui={<UiMenuDemo />}
         />
@@ -1191,6 +2360,220 @@ function DesignSystemBaseUiRoute() {
           baseui={<BaseUiScrollAreaDemo />}
           ui={<UiScrollAreaDemo />}
         />
+
+        <Compare
+          title="Calendar"
+          meta="react-day-picker · single + range · month/year dropdowns · WDS skin (accent selection, accent-4 range) · ui kit ships a single-date EgCalendar only"
+          baseui={<BaseUiCalendarDemo />}
+          ui={<UiCalendarDemo />}
+        />
+
+        {/* Sidebar / DashboardLayout — framed so the docked rail (collapse) and
+            folder tree show without the full-page layout taking over. */}
+        <section className="border-gray-a4 border-t py-7">
+          <header className="mb-4 flex flex-col gap-1">
+            <h2 className="text-gray-12 text-ui-lg font-semibold">
+              Sidebar &amp; DashboardLayout
+            </h2>
+            <span className="text-gray-10 text-ui-sm">
+              Collapsible folders + ScrollArea + Button-tooltip rail · collapses
+              to a 64px icon rail (click the panel button) · plain &lt;a&gt;
+              links, routing via renderLink/asChild · DashboardLayout composes
+              this full-page
+            </span>
+          </header>
+          <div>
+            <div className="text-gray-10 text-eyebrow mb-3 uppercase">
+              base-ui
+            </div>
+            <BaseUiSidebarDemo />
+          </div>
+        </section>
+
+        {/* ── AI / Chat kit ── */}
+        <section className="border-gray-a4 border-t py-7">
+          <header className="mb-4 flex flex-col gap-1">
+            <h2 className="text-gray-12 text-ui-lg flex items-center gap-2 font-semibold">
+              <Sparkles className="text-accent-11 size-4" /> AI / Chat kit
+            </h2>
+            <span className="text-gray-10 text-ui-sm">
+              streamdown Response (streaming Markdown + shiki code) ·
+              Conversation (stick-to-bottom) · Message · PromptInput · Reasoning
+              · Tool · Suggestions · Loader — send a message to watch it stream
+            </span>
+          </header>
+          <div>
+            <div className="text-gray-10 text-eyebrow mb-3 uppercase">
+              base-ui
+            </div>
+            <div className="mx-auto max-w-2xl">
+              <BaseUiChatDemo />
+            </div>
+          </div>
+        </section>
+
+        {/* ── 9ui-parity components ── */}
+        {/* Newly-added Base UI components with no @workspace/ui counterpart, so
+            each is shown full-width on the base-ui kit only. */}
+
+        <BaseUiSection
+          title="Badge"
+          meta="styled span · status colors + optional leading dot · sm / md / lg"
+        >
+          <BaseUiBadgeDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Card"
+          meta="Card / Header / Title / Description / Content · white paper surface"
+        >
+          <BaseUiCardDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Alert"
+          meta="inline callout · info / success / error variants with a leading icon"
+        >
+          <BaseUiAlertDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Kbd"
+          meta="keyboard cap · string several together for a shortcut"
+        >
+          <BaseUiKbdDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Skeleton"
+          meta="pulsing loading placeholder · size with width/height utilities"
+        >
+          <BaseUiSkeletonDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="AspectRatio"
+          meta="native CSS aspect-ratio · 16 / 9 box"
+        >
+          <BaseUiAspectRatioDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Select"
+          meta="Base UI Select · Trigger / Content / Item / Group / GroupLabel / Separator · single-select"
+        >
+          <BaseUiSelectDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Combobox"
+          meta="Base UI Combobox · trigger + in-popup search · object items matched by value"
+        >
+          <BaseUiComboboxDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Autocomplete"
+          meta="Base UI Autocomplete · free-text input + suggestions · value is the typed string"
+        >
+          <BaseUiAutocompleteDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="ToggleGroup"
+          meta="Base UI ToggleGroup + Toggle · single-select icon row · data-pressed"
+        >
+          <BaseUiToggleGroupDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="CheckboxGroup"
+          meta="Base UI checkbox-group · shared array value · label + description"
+        >
+          <BaseUiCheckboxGroupDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="AlertDialog"
+          meta="Base UI alert-dialog · modal confirm · no outside-click / Esc dismissal · Cancel / Action"
+        >
+          <BaseUiAlertDialogDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="PreviewCard"
+          meta="Base UI preview-card · hover a link to reveal a floating card after a short delay"
+        >
+          <BaseUiPreviewCardDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="ContextMenu"
+          meta="Base UI context-menu · right-click target · checkbox item + submenu + shortcut"
+        >
+          <BaseUiContextMenuDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Menubar"
+          meta="Base UI Menubar + Menu · File / Edit / View · dropdowns, submenu, shortcuts"
+        >
+          <BaseUiMenubarDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="NavigationMenu"
+          meta="Base UI navigation-menu · dropdown link panels moved into one shared Viewport"
+        >
+          <BaseUiNavigationMenuDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Toast"
+          meta="Base UI toast · ToastProvider + global toast helper · fires a status card top-right"
+        >
+          <BaseUiToastDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Breadcrumbs"
+          meta="semantic nav > ol · link / ellipsis / current page · chevron separators"
+        >
+          <BaseUiBreadcrumbsDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Pagination"
+          meta="semantic nav > ul on buttonVariants · prev / numbers / active / ellipsis / next"
+        >
+          <BaseUiPaginationDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="DatePicker"
+          meta="Popover + Calendar · single date (commits on click) + range (drafts, commits on Apply)"
+        >
+          <BaseUiDatePickerDemo />
+        </BaseUiSection>
+
+        {/* Filter is a composite with no ui-side demo, so it's shown full-width
+            on the base-ui kit only. */}
+        <section className="border-gray-a4 border-t py-7">
+          <header className="mb-4 flex flex-col gap-1">
+            <h2 className="text-gray-12 text-ui-lg font-semibold">Filter</h2>
+            <span className="text-gray-10 text-ui-sm">
+              Base UI Menu submenu picker + Combobox (search / multi-select) +
+              Popover + the new Calendar · add filters from the funnel, then
+              edit or remove the row chips
+            </span>
+          </header>
+          <div>
+            <div className="text-gray-10 text-eyebrow mb-3 uppercase">
+              base-ui
+            </div>
+            <BaseUiFilterDemo />
+          </div>
+        </section>
 
         {/* DataTable is a wide composite, so it's stacked full-width (base-ui
             above ui) rather than squeezed into the two-column Compare grid. */}
