@@ -277,6 +277,59 @@ import {
   ToolInput as BaseUiToolInput,
   ToolOutput as BaseUiToolOutput,
 } from "@workspace/base-ui/components/Tool"
+// group ④: data & advanced
+import {
+  ChartContainer as BaseUiChartContainer,
+  ChartLegend as BaseUiChartLegend,
+  ChartLegendContent as BaseUiChartLegendContent,
+  ChartTooltip as BaseUiChartTooltip,
+  ChartTooltipContent as BaseUiChartTooltipContent,
+  type ChartConfig as BaseUiChartConfig,
+} from "@workspace/base-ui/components/Chart"
+import {
+  CommandDialog as BaseUiCommandDialog,
+  CommandEmpty as BaseUiCommandEmpty,
+  CommandGroup as BaseUiCommandGroup,
+  CommandInput as BaseUiCommandInput,
+  CommandItem as BaseUiCommandItem,
+  CommandList as BaseUiCommandList,
+  CommandSeparator as BaseUiCommandSeparator,
+  CommandShortcut as BaseUiCommandShortcut,
+} from "@workspace/base-ui/components/Command"
+import {
+  FileUpload as BaseUiFileUpload,
+  FileUploadItem as BaseUiFileUploadItem,
+  FileUploadList as BaseUiFileUploadList,
+} from "@workspace/base-ui/components/FileUpload"
+import {
+  Field as BaseUiField,
+  FieldControl as BaseUiFieldControl,
+  FieldDescription as BaseUiFieldDescription,
+  FieldError as BaseUiFieldError,
+  FieldLabel as BaseUiFieldLabel,
+  Fieldset as BaseUiFieldset,
+  FieldsetLegend as BaseUiFieldsetLegend,
+  Form as BaseUiForm,
+} from "@workspace/base-ui/components/Form"
+import { InputOTP as BaseUiInputOTP } from "@workspace/base-ui/components/InputOTP"
+import {
+  KanbanBoard as BaseUiKanbanBoard,
+  type KanbanColumnData as BaseUiKanbanColumnData,
+} from "@workspace/base-ui/components/Kanban"
+import {
+  Timeline as BaseUiTimeline,
+  TimelineConnector as BaseUiTimelineConnector,
+  TimelineContent as BaseUiTimelineContent,
+  TimelineDescription as BaseUiTimelineDescription,
+  TimelineDot as BaseUiTimelineDot,
+  TimelineItem as BaseUiTimelineItem,
+  TimelineTime as BaseUiTimelineTime,
+  TimelineTitle as BaseUiTimelineTitle,
+} from "@workspace/base-ui/components/Timeline"
+import {
+  TreeView as BaseUiTreeView,
+  type TreeNode as BaseUiTreeNode,
+} from "@workspace/base-ui/components/Tree"
 import { cn } from "@workspace/base-ui/lib/utils"
 import {
   Accordion as UiAccordion,
@@ -371,6 +424,7 @@ import {
   ChartLine,
   CheckCircle2,
   CircleDashed,
+  CreditCard,
   Info,
   LayoutDashboard,
   Megaphone,
@@ -380,6 +434,7 @@ import {
   Sparkles,
   UserRound,
 } from "lucide-react"
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 
@@ -2148,6 +2203,316 @@ function BaseUiDatePickerDemo() {
   )
 }
 
+// ── group ④: data & advanced ──
+
+// Command — a ⌘K palette (Base UI Dialog + Combobox). Grouped actions filter as
+// you type; ⌘K toggles it open, the familiar command-menu shortcut.
+function BaseUiCommandDemo() {
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault()
+        setOpen((prev) => !prev)
+      }
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => document.removeEventListener("keydown", onKeyDown)
+  }, [])
+
+  const dismiss = () => setOpen(false)
+
+  return (
+    <>
+      <BaseUiButton
+        variant="outline"
+        intent="secondary"
+        onClick={() => setOpen(true)}
+      >
+        Open command menu
+        <BaseUiKbd className="ml-2">⌘K</BaseUiKbd>
+      </BaseUiButton>
+      <BaseUiCommandDialog open={open} onOpenChange={setOpen}>
+        <BaseUiCommandInput placeholder="Type a command or search…" />
+        <BaseUiCommandList>
+          <BaseUiCommandEmpty>No results found.</BaseUiCommandEmpty>
+          <BaseUiCommandGroup heading="Suggestions">
+            <BaseUiCommandItem value="Create campaign" onSelect={dismiss}>
+              <Megaphone />
+              Create campaign
+              <BaseUiCommandShortcut>⌘N</BaseUiCommandShortcut>
+            </BaseUiCommandItem>
+            <BaseUiCommandItem value="View analytics" onSelect={dismiss}>
+              <ChartLine />
+              View analytics
+            </BaseUiCommandItem>
+            <BaseUiCommandItem value="Invite teammate" onSelect={dismiss}>
+              <UserRound />
+              Invite teammate
+            </BaseUiCommandItem>
+          </BaseUiCommandGroup>
+          <BaseUiCommandSeparator />
+          <BaseUiCommandGroup heading="Settings">
+            <BaseUiCommandItem value="Billing" onSelect={dismiss}>
+              <CreditCard />
+              Billing
+            </BaseUiCommandItem>
+            <BaseUiCommandItem value="Preferences" onSelect={dismiss}>
+              <Settings />
+              Preferences
+              <BaseUiCommandShortcut>⌘,</BaseUiCommandShortcut>
+            </BaseUiCommandItem>
+          </BaseUiCommandGroup>
+        </BaseUiCommandList>
+      </BaseUiCommandDialog>
+    </>
+  )
+}
+
+// Chart — recharts themed to WDS. `config` names each series and feeds the
+// per-series --color-* vars the Area strokes/fills reference.
+const CHART_DATA = [
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+  { month: "Apr", desktop: 173, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "Jun", desktop: 264, mobile: 140 },
+]
+
+const CHART_CONFIG: BaseUiChartConfig = {
+  desktop: { label: "Desktop", color: "var(--accent-9)" },
+  mobile: { label: "Mobile", color: "var(--grass-9)" },
+}
+
+function BaseUiChartDemo() {
+  return (
+    <div className="border-gray-a5 bg-panel max-w-xl rounded-xl border p-4 shadow-sm">
+      <div className="mb-2 px-1">
+        <div className="text-gray-12 text-sm font-semibold">Visitors</div>
+        <div className="text-gray-10 text-xs">
+          Desktop vs. mobile · last 6 months
+        </div>
+      </div>
+      <BaseUiChartContainer config={CHART_CONFIG}>
+        <AreaChart data={CHART_DATA} margin={{ left: 4, right: 8, top: 8 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+          />
+          <BaseUiChartTooltip content={<BaseUiChartTooltipContent />} />
+          <BaseUiChartLegend content={<BaseUiChartLegendContent />} />
+          <Area
+            dataKey="mobile"
+            type="natural"
+            stackId="a"
+            stroke="var(--color-mobile)"
+            fill="var(--color-mobile)"
+            fillOpacity={0.4}
+          />
+          <Area
+            dataKey="desktop"
+            type="natural"
+            stackId="a"
+            stroke="var(--color-desktop)"
+            fill="var(--color-desktop)"
+            fillOpacity={0.4}
+          />
+        </AreaChart>
+      </BaseUiChartContainer>
+    </div>
+  )
+}
+
+// Kanban — dnd-kit board, fully controlled: onColumnsChange hands back the next
+// columns array on every drag, so persisting it to state makes the move stick.
+const INITIAL_KANBAN: BaseUiKanbanColumnData[] = [
+  {
+    id: "backlog",
+    title: "Backlog",
+    cards: [
+      { id: "k1", title: "Draft Q3 campaign brief" },
+      { id: "k2", title: "Audit landing-page copy" },
+      { id: "k3", title: "Collect customer testimonials" },
+    ],
+  },
+  {
+    id: "in-progress",
+    title: "In progress",
+    cards: [
+      { id: "k4", title: "Design email templates" },
+      { id: "k5", title: "Wire up analytics events" },
+    ],
+  },
+  {
+    id: "done",
+    title: "Done",
+    cards: [{ id: "k6", title: "Finalize the media budget" }],
+  },
+]
+
+function BaseUiKanbanDemo() {
+  const [columns, setColumns] =
+    useState<BaseUiKanbanColumnData[]>(INITIAL_KANBAN)
+  return <BaseUiKanbanBoard columns={columns} onColumnsChange={setColumns} />
+}
+
+// Tree — data-driven file tree. Folders are Base UI Collapsibles; leaves are
+// selectable rows with controlled selection.
+const TREE_DATA: BaseUiTreeNode[] = [
+  {
+    id: "src",
+    label: "src",
+    children: [
+      {
+        id: "components",
+        label: "components",
+        children: [
+          { id: "button", label: "Button.tsx" },
+          { id: "input", label: "Input.tsx" },
+          { id: "card", label: "Card.tsx" },
+        ],
+      },
+      { id: "app", label: "App.tsx" },
+      { id: "main", label: "main.tsx" },
+    ],
+  },
+  { id: "package", label: "package.json" },
+  { id: "readme", label: "README.md" },
+]
+
+function BaseUiTreeDemo() {
+  const [selectedId, setSelectedId] = useState("button")
+  return (
+    <BaseUiTreeView
+      data={TREE_DATA}
+      selectedId={selectedId}
+      onSelect={(node) => setSelectedId(node.id)}
+      defaultExpandedIds={["src", "components"]}
+      className="border-gray-a5 bg-panel w-64 rounded-lg border p-2"
+    />
+  )
+}
+
+// Timeline — activity feed. `status` on each item tints its dot; the connector
+// draws the rail between them.
+function BaseUiTimelineDemo() {
+  return (
+    <BaseUiTimeline className="max-w-md">
+      <BaseUiTimelineItem status="done">
+        <BaseUiTimelineDot />
+        <BaseUiTimelineConnector />
+        <BaseUiTimelineContent>
+          <BaseUiTimelineTitle>Account created</BaseUiTimelineTitle>
+          <BaseUiTimelineTime>Mon · 9:14 AM</BaseUiTimelineTime>
+          <BaseUiTimelineDescription>
+            Workspace provisioned and the team invites went out.
+          </BaseUiTimelineDescription>
+        </BaseUiTimelineContent>
+      </BaseUiTimelineItem>
+      <BaseUiTimelineItem status="done">
+        <BaseUiTimelineDot />
+        <BaseUiTimelineConnector />
+        <BaseUiTimelineContent>
+          <BaseUiTimelineTitle>Email verified</BaseUiTimelineTitle>
+          <BaseUiTimelineTime>Mon · 9:20 AM</BaseUiTimelineTime>
+        </BaseUiTimelineContent>
+      </BaseUiTimelineItem>
+      <BaseUiTimelineItem status="current">
+        <BaseUiTimelineDot />
+        <BaseUiTimelineConnector />
+        <BaseUiTimelineContent>
+          <BaseUiTimelineTitle>Uploading assets</BaseUiTimelineTitle>
+          <BaseUiTimelineTime>Now</BaseUiTimelineTime>
+          <BaseUiTimelineDescription>
+            3 of 8 files transferred to the media library.
+          </BaseUiTimelineDescription>
+        </BaseUiTimelineContent>
+      </BaseUiTimelineItem>
+      <BaseUiTimelineItem status="pending">
+        <BaseUiTimelineDot />
+        <BaseUiTimelineConnector />
+        <BaseUiTimelineContent>
+          <BaseUiTimelineTitle>Review &amp; publish</BaseUiTimelineTitle>
+          <BaseUiTimelineTime>Up next</BaseUiTimelineTime>
+        </BaseUiTimelineContent>
+      </BaseUiTimelineItem>
+    </BaseUiTimeline>
+  )
+}
+
+// InputOTP — one-time-code field on input-otp; a controlled 6-digit value.
+function BaseUiInputOTPDemo() {
+  const [otp, setOtp] = useState("")
+  return (
+    <div className="space-y-2">
+      <BaseUiInputOTP maxLength={6} value={otp} onChange={setOtp} />
+      <p className="text-gray-10 text-xs">
+        Entered:&nbsp;
+        <span className="text-gray-12 tabular-nums">{otp || "—"}</span>
+      </p>
+    </div>
+  )
+}
+
+// FileUpload — a dropzone that hands picked files back through onFiles; the
+// caller owns the list (here, appended to state and removable).
+function BaseUiFileUploadDemo() {
+  const [files, setFiles] = useState<File[]>([])
+  return (
+    <div className="max-w-md">
+      <BaseUiFileUpload
+        multiple
+        onFiles={(picked) => setFiles((prev) => [...prev, ...picked])}
+      />
+      {files.length > 0 ? (
+        <BaseUiFileUploadList>
+          {files.map((file, index) => (
+            <BaseUiFileUploadItem
+              key={`${file.name}-${index}`}
+              name={file.name}
+              size={file.size}
+              onRemove={() =>
+                setFiles((prev) => prev.filter((_, i) => i !== index))
+              }
+            />
+          ))}
+        </BaseUiFileUploadList>
+      ) : null}
+    </div>
+  )
+}
+
+// Form — Base UI Form / Fieldset / Field. The control wires to its label,
+// description, and error; Base UI v1.2.0 has no Form.Root, so <Form> is the form
+// element and submission runs through native onSubmit.
+function BaseUiFormDemo() {
+  return (
+    <BaseUiForm className="max-w-sm" onSubmit={(event) => event.preventDefault()}>
+      <BaseUiFieldset>
+        <BaseUiFieldsetLegend>Newsletter</BaseUiFieldsetLegend>
+        <BaseUiField name="email">
+          <BaseUiFieldLabel>Email</BaseUiFieldLabel>
+          <BaseUiFieldControl
+            type="email"
+            required
+            placeholder="you@example.com"
+          />
+          <BaseUiFieldDescription>
+            We&apos;ll send a confirmation to this address.
+          </BaseUiFieldDescription>
+          <BaseUiFieldError />
+        </BaseUiField>
+      </BaseUiFieldset>
+      <BaseUiButton type="submit">Subscribe</BaseUiButton>
+    </BaseUiForm>
+  )
+}
+
 function DesignSystemBaseUiRoute() {
   return (
     <div className="bg-gray-1 min-h-svh">
@@ -2389,6 +2754,66 @@ function DesignSystemBaseUiRoute() {
             <BaseUiSidebarDemo />
           </div>
         </section>
+
+        {/* ── group ④: data & advanced ── */}
+        {/* Newly-added Base UI data/advanced components with no @workspace/ui
+            counterpart, so each is shown full-width on the base-ui kit only. */}
+
+        <BaseUiSection
+          title="Command"
+          meta="Base UI Dialog + Combobox · ⌘K palette · grouped actions filter as you type · shortcuts"
+        >
+          <BaseUiCommandDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Chart"
+          meta="recharts themed to WDS · per-series config drives the --color-* vars · stacked AreaChart + grid + tooltip + legend"
+        >
+          <BaseUiChartDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Kanban"
+          meta="dnd-kit board · drag cards within and across columns · fully controlled via onColumnsChange"
+        >
+          <BaseUiKanbanDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Tree"
+          meta="data-driven file tree · Collapsible folders + selectable leaves · controlled selection"
+        >
+          <BaseUiTreeDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Timeline"
+          meta="activity feed · status dots (done / current / pending) on a hairline rail"
+        >
+          <BaseUiTimelineDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="InputOTP"
+          meta="one-time-code field on input-otp · 6 boxed cells with a blinking caret"
+        >
+          <BaseUiInputOTPDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="FileUpload"
+          meta="dashed dropzone · drag-and-drop or click to browse · picked files listed with remove"
+        >
+          <BaseUiFileUploadDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="Form"
+          meta="Base UI Form / Fieldset / Field · label + control + description + native validation error"
+        >
+          <BaseUiFormDemo />
+        </BaseUiSection>
 
         {/* ── AI / Chat kit ── */}
         <section className="border-gray-a4 border-t py-7">
