@@ -17,7 +17,10 @@ import { cn } from "@workspace/base-ui/lib/utils"
 // The bordered control tray shared by every input in the family.
 const fieldGroup = cn(
   "bg-panel border-gray-a7 relative flex h-11 w-full items-center overflow-hidden rounded-md border px-3.5 transition-[box-shadow,border-color] duration-150 md:text-sm",
-  "border focus-within:border-accent-8 focus-within:ring-ring/30 focus-within:ring-[3px]",
+  // On focus: a soft translucent-accent border (accent-a8, ~44%) that reads as a
+  // gentle blue edge, not a hard dark line, graduating into the softer ring —
+  // both derived from accent-9 so it's one cohesive soft-blue focus halo.
+  "border focus-within:border-accent-a8 focus-within:ring-ring/30 focus-within:ring-2",
   "group-data-[disabled]:opacity-60 group-data-[disabled]:cursor-not-allowed",
   "group-data-[invalid]:border-error-9 group-data-[invalid]:ring-error-9",
   "[&_svg]:text-gray-9 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
@@ -181,7 +184,7 @@ function TextArea({
           // WDS textarea: white paper + hairline border + accent focus halo.
           "bg-panel placeholder:text-gray-8 border-gray-a7 field-sizing-content flex min-h-[80px] w-full rounded-md border px-3.5 py-2.5 outline-none md:text-sm",
           "transition-[box-shadow,border-color] duration-150",
-          "focus-visible:border-accent-8 focus-visible:ring-ring/30 focus-visible:ring-[3px]",
+          "focus-visible:border-accent-a8 focus-visible:ring-ring/30 focus-visible:ring-2",
           "group-data-[disabled]:cursor-not-allowed group-data-[disabled]:opacity-60",
           "group-data-[invalid]:border-error-9 group-data-[invalid]:ring-error-9",
           className
