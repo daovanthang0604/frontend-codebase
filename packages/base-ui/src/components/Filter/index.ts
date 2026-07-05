@@ -1,7 +1,9 @@
-// Filter type contracts live here first so DataTable (which types its filter
-// props against FilterValue) can migrate ahead of the Filter components. The
-// component exports (Filter / FilterBar / FilterBuilder / FilterField) are added
-// when the Filter composite itself is ported.
+export { Filter } from "./Filter"
+export { FilterBar } from "./FilterBar"
+export { FilterBuilder } from "./FilterBuilder"
+
+export * from "./FilterField"
+
 export type {
   FilterBuilderEntry,
   FilterValue,
