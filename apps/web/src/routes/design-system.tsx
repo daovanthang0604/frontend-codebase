@@ -430,7 +430,7 @@ function DesignSystemRoute() {
                 <Swatch token="--success-9" label="success" />
                 <Swatch token="--warning-9" label="warning" />
                 <Swatch token="--red-9" label="error" />
-                <Swatch token="--blue-9" label="info" />
+                <Swatch token="--cyan-9" label="info" />
                 <Swatch token="--accent-solid" label="solid" />
                 <Swatch token="--panel" label="panel" />
               </div>

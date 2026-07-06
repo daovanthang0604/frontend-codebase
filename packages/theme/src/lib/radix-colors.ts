@@ -13,8 +13,10 @@ const grayScaleNames = ['gray', 'mauve'] as const;
 // prettier-ignore
 // `green` + `orange` added for the WDS semantic palette (success = emerald,
 // warning = burnt orange); semantic.css points --color-success/-warning at them.
+// `cyan` gives `info` its own hue so status-blue no longer collides with the
+// (blue-hued) brand accent; semantic.css points --color-info-* at it.
 // `grass`/`amber` are kept (still used directly across the app) and migrate later.
-const scaleNames = [...grayScaleNames, 'red', 'blue', 'grass', 'amber', 'green', 'orange'] as const;
+const scaleNames = [...grayScaleNames, 'red', 'blue', 'grass', 'amber', 'green', 'orange', 'cyan'] as const;
 
 const lightColors = Object.fromEntries(
   scaleNames.map((scaleName) => [

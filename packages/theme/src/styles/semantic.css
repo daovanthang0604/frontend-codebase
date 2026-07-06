@@ -1,8 +1,8 @@
-/* Semantic aliases. WDS palette: success = emerald, warning = burnt orange,
-   error = red, info = blue. success/warning now point at the EXACT DS ramps
-   (--success-* / --warning-*, seeded from #10B981 / #C2701C in globals.css)
-   rather than the Radix stock green/orange, which drifted in hue and brightness
-   from the DS. error/info still track the Radix red/blue scales (already close). */
+/* Semantic aliases. WDS palette: success = emerald, warning = clean amber,
+   error = red, info = cyan. success/warning point at the fixed --success-* /
+   --warning-* ramps (seeded from #10B981 / #dc8817 in globals.css). error tracks
+   the Radix red scale; info tracks the dedicated cyan scale (distinct from the
+   blue-hued brand accent). */
 @theme inline {
   /* Canonical focus-ring color, so `ring-ring` resolves (shadcn-origin components
      reference it; it was undefined = invisible rings). = accent-9, identical to the
@@ -56,23 +56,23 @@
   --color-success-11: var(--success-11);
   --color-success-12: var(--success-12);
 
-  /* `info` intentionally tracks the FIXED Radix blue scale, not the white-label
-     --accent-* scale. It only looks identical to the brand on blue-accent
-     tenants (the default brand #1A56DB ≈ Radix blue); for any other brand accent
-     the two diverge automatically. `info` is currently used in one place (the
-     Sonner info toast). To make it distinct even on blue brands, add a scale
-     (e.g. `cyan`) to scaleNames in lib/radix-colors.ts, regenerate generated.css,
-     and remap these tokens to var(--cyan-*). */
-  --color-info-1: var(--blue-1);
-  --color-info-2: var(--blue-2);
-  --color-info-3: var(--blue-3);
-  --color-info-4: var(--blue-4);
-  --color-info-5: var(--blue-5);
-  --color-info-6: var(--blue-6);
-  --color-info-7: var(--blue-7);
-  --color-info-8: var(--blue-8);
-  --color-info-9: var(--blue-9);
-  --color-info-10: var(--blue-10);
-  --color-info-11: var(--blue-11);
-  --color-info-12: var(--blue-12);
+  /* `info` tracks the FIXED cyan scale (hue ~221), a distinct teal that stays
+     visually separate from the white-label brand accent even on blue/navy
+     tenants (the default brand #11324F is a blue hue ~248, near Radix blue, so
+     `info` on `blue` used to read as the brand color). cyan is generated into
+     generated.css from scaleNames in lib/radix-colors.ts (regenerate with
+     `pnpm --filter @workspace/theme gen:css`). Currently consumed by the Sonner
+     info toast and the `info` Badge tone. */
+  --color-info-1: var(--cyan-1);
+  --color-info-2: var(--cyan-2);
+  --color-info-3: var(--cyan-3);
+  --color-info-4: var(--cyan-4);
+  --color-info-5: var(--cyan-5);
+  --color-info-6: var(--cyan-6);
+  --color-info-7: var(--cyan-7);
+  --color-info-8: var(--cyan-8);
+  --color-info-9: var(--cyan-9);
+  --color-info-10: var(--cyan-10);
+  --color-info-11: var(--cyan-11);
+  --color-info-12: var(--cyan-12);
 }

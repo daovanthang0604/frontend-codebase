@@ -32,6 +32,7 @@ const STATUS_SCALES = [
   "amber",
   "green",
   "orange",
+  "cyan",
 ]
 const ALL_SCALES = ["accent", "gray", ...STATUS_SCALES]
 

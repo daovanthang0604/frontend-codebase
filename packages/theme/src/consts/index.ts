@@ -29,7 +29,10 @@ export interface ThemeContextValue {
 
 export const BACKGROUND_LEVEL_OPTIONS = [
   { label: "Soft", value: "#f9f9f9", valueDark: "#202020" },
-  { label: "Medium", value: "#F6F6F5", valueDark: "#191919" }, // WDS cream canvas
+  // WDS cream canvas — a warm paper (not neutral grey) that lets white cards lift,
+  // with a matching warm near-black in dark mode so the "warm ink on paper"
+  // identity holds in BOTH modes. Kept bright (L~97%) so the page never reads dim.
+  { label: "Medium", value: "#f9f5ef", valueDark: "#1a1816" },
   { label: "Deep", value: "#ffffff", valueDark: "#111111" },
 ]
 

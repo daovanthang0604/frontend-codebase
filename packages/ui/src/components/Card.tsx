@@ -8,9 +8,14 @@ const cardVariants = cva(
     variants: {
       variant: {
         // WDS: white paper card (bg-panel) on the cream page, hairline + soft
-        // warm shadow so it reads as a separate liftable object.
-        default: "border-gray-a5 bg-panel shadow-sm dark:shadow-none",
-        elevated: "border-gray-a4 bg-panel shadow-md dark:shadow-lg",
+        // warm shadow so it reads as a separate liftable object. In dark mode a
+        // black drop shadow is invisible on the charcoal page, so cards get a
+        // 1px top inner-highlight instead — the standard dark-surface trick that
+        // reads as a lifted edge catching light.
+        default:
+          "border-gray-a5 bg-panel shadow-sm dark:shadow-[inset_0_1px_0_0_rgb(255_255_255/0.045)]",
+        elevated:
+          "border-gray-a4 bg-panel shadow-md dark:shadow-[inset_0_1px_0_0_rgb(255_255_255/0.07),0_8px_24px_-6px_rgb(0_0_0/0.55)]",
         glass: "border-gray-a5 bg-panel/70 shadow-xl backdrop-blur-md",
       },
     },

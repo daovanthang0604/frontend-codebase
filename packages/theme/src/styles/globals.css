@@ -123,13 +123,16 @@
    opt in (e.g. `font-serif text-display-lg`, `uppercase text-eyebrow`) during the
    component phase; the body default (text-sm) is untouched here. */
 @theme {
+  /* Optical sizing: the large serif steps carry a lighter 600 (Lora Semibold,
+     loaded) so big editorial headlines read refined rather than newsprint-heavy;
+     the small steps stay 700 so card/section titles keep presence at 18-24px. */
   --text-display-xl: 44px;
   --text-display-xl--line-height: 1.08;
-  --text-display-xl--font-weight: 700;
+  --text-display-xl--font-weight: 600;
   --text-display-xl--letter-spacing: -0.015em;
   --text-display-lg: 33px;
   --text-display-lg--line-height: 1.1;
-  --text-display-lg--font-weight: 700;
+  --text-display-lg--font-weight: 600;
   --text-display-lg--letter-spacing: -0.015em;
   --text-display-md: 24px;
   --text-display-md--line-height: 1.15;
@@ -175,13 +178,14 @@
        theme's foregroundColor (packages/ui/.../ag-table-theme.ts). */
     --table-ink: #3a342c;
 
-    /* WDS semantic ramps — exact DS values (success = emerald #10B981,
-       warning = burnt orange #C2701C), copied verbatim from the DS hue-relative
-       ramps (packages/ui/design-system/tokens/scales.css). These are FIXED (not
-       white-labeled) and are NOT runtime-injected (ThemeStylePreview is
-       accentOnly), so defining them here is authoritative. Light-mode values; the
-       DS is light-only, so .dark falls back to the generated ramp below.
-       semantic.css points --color-success-* / --color-warning-* at these. */
+    /* WDS semantic ramps. success = emerald #10B981 (exact DS value). warning is
+       a clean amber #dc8817 (oklch ~70% .15 66) — brightened from the DS burnt
+       orange #C2701C, which read muddy/brownish on the warm cream page and closer
+       to "disabled" than "caution". These are FIXED (not white-labeled) and are
+       NOT runtime-injected (ThemeStylePreview is accentOnly), so defining them
+       here is authoritative. Light-mode values; .dark repoints below (success →
+       generated green, warning → generated amber). semantic.css points
+       --color-success-* / --color-warning-* at these. */
     --success-1: oklch(0.992 0.006 162.48);
     --success-2: oklch(0.972 0.02 162.48);
     --success-3: oklch(0.957 0.028 162.48);
@@ -195,18 +199,18 @@
     --success-11: oklch(0.55 0.12 162.48);
     --success-12: oklch(0.37 0.08 162.48);
 
-    --warning-1: oklch(0.992 0.008 59.68);
-    --warning-2: oklch(0.972 0.026 59.68);
-    --warning-3: oklch(0.958 0.034 59.68);
-    --warning-4: oklch(0.935 0.05 59.68);
-    --warning-5: oklch(0.91 0.064 59.68);
-    --warning-6: oklch(0.879 0.076 59.68);
-    --warning-7: oklch(0.838 0.092 59.68);
-    --warning-8: oklch(0.778 0.118 59.68);
-    --warning-9: #c2701c;
-    --warning-10: oklch(0.585 0.13 59.68);
-    --warning-11: oklch(0.52 0.11 59.68);
-    --warning-12: oklch(0.37 0.07 59.68);
+    --warning-1: oklch(0.992 0.008 66);
+    --warning-2: oklch(0.972 0.028 66);
+    --warning-3: oklch(0.958 0.038 66);
+    --warning-4: oklch(0.935 0.056 66);
+    --warning-5: oklch(0.91 0.072 66);
+    --warning-6: oklch(0.879 0.09 66);
+    --warning-7: oklch(0.84 0.108 66);
+    --warning-8: oklch(0.795 0.13 66);
+    --warning-9: #dc8817;
+    --warning-10: oklch(0.65 0.15 66);
+    --warning-11: oklch(0.52 0.115 66);
+    --warning-12: oklch(0.37 0.072 66);
   }
 
   * {
@@ -230,8 +234,9 @@
     /* Dark mode: body ink stays at the near-white --gray-12 (no softening). */
     --table-ink: var(--gray-12);
 
-    /* Dark semantics: the DS is light-only, so reuse the generated green/orange
-       dark ramp (legible on dark) for success/warning. */
+    /* Dark semantics: the DS is light-only, so reuse the generated dark ramps
+       (legible on dark) — success → green, warning → amber (matches the light
+       cleaner-amber warning; brighter and clearer on dark than the old orange). */
     --success-1: var(--green-1);
     --success-2: var(--green-2);
     --success-3: var(--green-3);
@@ -245,18 +250,18 @@
     --success-11: var(--green-11);
     --success-12: var(--green-12);
 
-    --warning-1: var(--orange-1);
-    --warning-2: var(--orange-2);
-    --warning-3: var(--orange-3);
-    --warning-4: var(--orange-4);
-    --warning-5: var(--orange-5);
-    --warning-6: var(--orange-6);
-    --warning-7: var(--orange-7);
-    --warning-8: var(--orange-8);
-    --warning-9: var(--orange-9);
-    --warning-10: var(--orange-10);
-    --warning-11: var(--orange-11);
-    --warning-12: var(--orange-12);
+    --warning-1: var(--amber-1);
+    --warning-2: var(--amber-2);
+    --warning-3: var(--amber-3);
+    --warning-4: var(--amber-4);
+    --warning-5: var(--amber-5);
+    --warning-6: var(--amber-6);
+    --warning-7: var(--amber-7);
+    --warning-8: var(--amber-8);
+    --warning-9: var(--amber-9);
+    --warning-10: var(--amber-10);
+    --warning-11: var(--amber-11);
+    --warning-12: var(--amber-12);
 
     --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
     --shadow-sm:

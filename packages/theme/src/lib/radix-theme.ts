@@ -2,14 +2,16 @@ import Color from "colorjs.io"
 
 import { generateRadixColors } from "./radix-colors"
 
-// Default neutral gray seeds for the generated scales. Warm-neutral but LOW
-// chroma (OKLCH hue ~70, C ~0.008) so light surfaces read as a clean warm
-// near-white, not cream/beige — WDS keeps the warmth in the ink, not the paper.
-// Previously cool blue-gray (#50545C / #7E8289, hue ~263). The CSS regeneration
-// script imports these so the static generated.css stays in sync with the
-// runtime values ThemeStylePreview injects from the same generator.
-export const DEFAULT_GRAY_SEED_LIGHT = "#565554"
-export const DEFAULT_GRAY_SEED_DARK = "#81807f"
+// Default warm gray seeds for the generated scales (OKLCH hue ~70). Light carries
+// a light warm tint in the surfaces (C ~0.006) to pair with the warm cream page;
+// dark carries a stronger warm tint (C ~0.009) so dark mode reads as a warm
+// charcoal — a night version of the "warm ink on paper" brand rather than a
+// neutral grey theme. Previously near-neutral (#565554 / #81807f); before that
+// cool blue-gray (#50545C / #7E8289, hue ~263). The CSS regeneration script
+// imports these so the static generated.css stays in sync with the runtime
+// values ThemeStylePreview injects from the same generator.
+export const DEFAULT_GRAY_SEED_LIGHT = "#575552"
+export const DEFAULT_GRAY_SEED_DARK = "#847f7b"
 
 // The Radix generator anchors step 9 on the accent seed, so a very dark brand
 // color (e.g. workspace navy #11324F) collapses steps 9-12 into a muddy, non-
