@@ -52,6 +52,7 @@ function HeaderCell({
   header: Header<any, any>
   isPinned?: "left" | "right"
 }) {
+  "use no memo" // React Compiler mis-memoizes TanStack Table: cell/header/table refs are stable but hide mutable state (selection, sort) → stale UI. Opt out.
   const isResizing = header.column.getIsResizing()
   return (
     <th
@@ -106,6 +107,7 @@ function TableCell({
   cell: Cell<any, any>
   isPinned?: "left" | "right"
 }) {
+  "use no memo" // React Compiler mis-memoizes TanStack Table: cell/header/table refs are stable but hide mutable state (selection, sort) → stale UI. Opt out.
   const cellValue = cell.getValue()
   const title =
     typeof cellValue === "string" || typeof cellValue === "number"
@@ -152,6 +154,7 @@ function TableBody({
   tableContainerRef: RefObject<HTMLDivElement | null>
   estimatedRowHeight: number
 }) {
+  "use no memo" // React Compiler mis-memoizes TanStack Table: cell/header/table refs are stable but hide mutable state (selection, sort) → stale UI. Opt out.
   const { rows } = table.getRowModel()
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
@@ -261,6 +264,7 @@ export function DataTable<
   emptyStateDescription,
   emptyStateIcon,
 }: DataTableProps<TData>) {
+  "use no memo" // React Compiler mis-memoizes TanStack Table: cell/header/table refs are stable but hide mutable state (selection, sort) → stale UI. Opt out.
   const tableContainerRef = useRef<HTMLDivElement>(null)
   // Calculate default column order from columns if not provided
   const calculatedDefaultOrder = useMemo(() => {

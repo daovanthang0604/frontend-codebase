@@ -29,7 +29,7 @@
   },
   "overrides": [
     {
-      "files": ["packages/ui/**"],
+      "files": ["packages/ui/**", "packages/base-ui/**"],
       "rules": {
         "typescript/no-explicit-any": "off",
         "react/exhaustive-deps": "off"
@@ -48,7 +48,7 @@
       }
     },
     {
-      "files": ["apps/dashboard/**"],
+      "files": ["apps/web/**"],
       "rules": {
         "typescript/no-explicit-any": "off"
       }

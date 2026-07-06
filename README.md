@@ -19,7 +19,7 @@ with the demo stub and you get a working authenticated dashboard shell to build 
 ```
 frontend-codebase/
 ├─ apps/
-│  └─ dashboard/          # the app (Vite + React). Business logic stripped.
+│  └─ web/                 # the app (Vite + React). Business logic stripped.
 ├─ packages/
 │  ├─ ui/                 # @workspace/ui   — component library (consumed from source)
 │  ├─ theme/              # @workspace/theme — design tokens + Tailwind/PostCSS preset (consumed from source)
@@ -33,7 +33,7 @@ frontend-codebase/
 
 ```bash
 pnpm install
-pnpm dev          # dashboard on http://localhost:3000
+pnpm dev          # web on http://localhost:3000
 ```
 
 Other scripts (run from the repo root):
@@ -49,19 +49,19 @@ pnpm test         # vitest (test harness is set up; no tests ship by default)
 
 This template is intentionally backend-free. Two seams are stubbed:
 
-- **Auth** — `apps/dashboard/src/services/auth`. `signIn()` mints a fake token
+- **Auth** — `apps/web/src/services/auth`. `signIn()` mints a fake token
   (persisted to `localStorage`); `signOut()` clears it; `useAuthSession()` reports
   auth purely from token presence. The route guards (`SignedIn` / `SignedOut` /
   the `_authenticated` layout) work against it. Replace `signIn`/`signOut` with
   your provider so they store a real token via `authStorage.setIdToken(...)`.
-- **API client** — `apps/dashboard/src/services/api.ts`. A configured `axios`
+- **API client** — `apps/web/src/services/api.ts`. A configured `axios`
   instance with a request interceptor (attaches the bearer token) and a 401
   response interceptor. The token-refresh function is a stub that returns `null`
   — re-implement `refreshIdToken()` against your provider to restore silent
   refresh + request replay. Point the base URL at your backend via `VITE_BASE_API`
-  (see `apps/dashboard/.env.example`).
+  (see `apps/web/.env.example`).
 
-Add your screens as routes under `apps/dashboard/src/routes` and compose them from
+Add your screens as routes under `apps/web/src/routes` and compose them from
 `@workspace/ui`. The `/design-system` route is a live catalog of the available
 components.
 

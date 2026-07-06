@@ -3,7 +3,7 @@
   "ignoreDependencies": ["tailwindcss", "tw-animate-css"],
   "ignoreBinaries": ["tsx"],
   "workspaces": {
-    "apps/dashboard": {
+    "apps/web": {
       "entry": [
         "src/reportWebVitals.ts",
         "src/routes/**/*.tsx",
