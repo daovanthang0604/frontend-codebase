@@ -224,6 +224,7 @@ import {
   toast as baseUiToast,
   ToastProvider as BaseUiToastProvider,
 } from "@workspace/base-ui/components/Toast"
+import { confirm as baseUiConfirm } from "@workspace/base-ui/components/ConfirmDialog"
 import {
   Toggle as BaseUiToggle,
   ToggleGroup as BaseUiToggleGroup,
@@ -2134,6 +2135,56 @@ function BaseUiToastDemo() {
   )
 }
 
+function BaseUiConfirmDialogDemo() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <BaseUiButton
+        variant="outline"
+        intent="secondary"
+        onClick={() =>
+          baseUiConfirm({
+            title: "Publish changes?",
+            description: "This will make your edits visible to everyone.",
+            continueText: "Publish",
+          })
+        }
+      >
+        Confirm
+      </BaseUiButton>
+      <BaseUiButton
+        variant="outline"
+        intent="danger"
+        onClick={() =>
+          baseUiConfirm({
+            title: "Delete project?",
+            description: "This action cannot be undone.",
+            continueText: "Delete",
+            intent: "danger",
+          })
+        }
+      >
+        Danger
+      </BaseUiButton>
+      <BaseUiButton
+        variant="outline"
+        intent="secondary"
+        onClick={() =>
+          baseUiConfirm({
+            title: "Save changes?",
+            description: "We'll sync your work to the server before closing.",
+            continueText: "Save",
+            onContinue: async () => {
+              await new Promise((resolve) => setTimeout(resolve, 1200))
+            },
+          })
+        }
+      >
+        Async
+      </BaseUiButton>
+    </div>
+  )
+}
+
 function BaseUiBreadcrumbsDemo() {
   return (
     <BaseUiBreadcrumbs>
@@ -2958,6 +3009,13 @@ function DesignSystemBaseUiRoute() {
           meta="Base UI toast · ToastProvider + global toast helper · fires a status card top-right"
         >
           <BaseUiToastDemo />
+        </BaseUiSection>
+
+        <BaseUiSection
+          title="ConfirmDialog"
+          meta="imperative confirm() · primary / danger intent · async keeps a pending spinner · non-dismissable by default"
+        >
+          <BaseUiConfirmDialogDemo />
         </BaseUiSection>
 
         <BaseUiSection

@@ -282,6 +282,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.7)
+      '@hookform/resolvers':
+        specifier: 'catalog:'
+        version: 5.2.2(react-hook-form@7.80.0(react@19.2.7))
       '@tanstack/react-table':
         specifier: 'catalog:'
         version: 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -318,6 +321,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.2.7(react@19.2.7)
+      react-hook-form:
+        specifier: 'catalog:'
+        version: 7.80.0(react@19.2.7)
       react-use:
         specifier: 'catalog:'
         version: 17.6.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -333,6 +339,9 @@ importers:
       tailwind-variants:
         specifier: ^3.1.1
         version: 3.2.2(tailwind-merge@3.6.0)(tailwindcss@4.3.2)
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@types/lodash':
         specifier: 'catalog:'

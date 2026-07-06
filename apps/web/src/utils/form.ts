@@ -1,4 +1,4 @@
-import { toast } from "@workspace/ui/components/Sonner"
+import { toast } from "@workspace/base-ui/components/Toast"
 import { capitalize } from "lodash"
 import type { UseFormReturn } from "react-hook-form"
 
@@ -16,8 +16,7 @@ export function showSubmitErrors(
       detailsEntries[0] && capitalize(String(detailsEntries[0]))
     const message = firstDetailMessage || error.response?.data?.message
     if (message) {
-      toast.error({
-        title: options?.toastTitle || "Error",
+      toast.error(options?.toastTitle || "Error", {
         description: message,
       })
     }

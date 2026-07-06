@@ -1,10 +1,10 @@
 import { LISTING_SEARCH_MAX_LENGTH } from "@/constants/common"
 import type { TableState } from "@tanstack/react-table"
-import { DEFAULT_PAGE_SIZE } from "@workspace/ui/components/DataTable/DataTable"
+import { DEFAULT_PAGE_SIZE } from "@workspace/base-ui/components/DataTable"
 import {
   isSelectOptionArray,
   type FilterValue,
-} from "@workspace/ui/components/Filter"
+} from "@workspace/base-ui/components/Filter"
 import { isEmpty } from "lodash"
 import z from "zod"
 

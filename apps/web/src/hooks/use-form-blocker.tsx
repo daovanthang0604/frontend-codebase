@@ -1,4 +1,4 @@
-import { confirm } from "@workspace/ui/components/ConfirmDialog"
+import { confirm } from "@workspace/base-ui/components/ConfirmDialog"
 import { useBlocker } from "@tanstack/react-router"
 
 export function useFormBlocker({ isDirty }: { isDirty: boolean }) {

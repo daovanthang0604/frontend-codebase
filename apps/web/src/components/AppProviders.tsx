@@ -1,8 +1,9 @@
 import * as React from "react"
 import { DEFAULT_THEME, type Theme } from "@workspace/theme"
 import { ThemeProvider, ThemeStylePreview } from "@workspace/theme/provider"
-import { UIProvider } from "@workspace/ui/components/Provider"
-import { Toaster } from "@workspace/ui/components/Sonner"
+import { ConfirmDialog } from "@workspace/base-ui/components/ConfirmDialog"
+import { UIProvider } from "@workspace/base-ui/components/Provider"
+import { ToastProvider } from "@workspace/base-ui/components/Toast"
 
 import { useBrandTheme } from "@/hooks/use-brand-theme"
 import { usePersistedTheme } from "@/hooks/use-persisted-theme"
@@ -23,8 +24,8 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
     <ThemeProvider defaultTheme={baseTheme} brandTheme={brandTheme}>
       <ThemeStylePreview />
       <UIProvider>
-        {children}
-        <Toaster />
+        <ToastProvider>{children}</ToastProvider>
+        <ConfirmDialog />
       </UIProvider>
     </ThemeProvider>
   )
