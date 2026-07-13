@@ -12,7 +12,7 @@ import { I18nextProvider, initReactI18next } from "react-i18next"
 // `t("someKey")` returns "someKey" — deterministic, and lets component tests
 // assert on stable translation keys / aria-labels without shipping a copy of
 // the translation catalog into the test suite.
-const testI18n = i18n.createInstance()
+const testI18n: ReturnType<typeof i18n.createInstance> = i18n.createInstance()
 void testI18n.use(initReactI18next).init({
   lng: "en",
   fallbackLng: "en",

@@ -25,7 +25,7 @@ catalog:
   "input-otp": ^1.4.2
 
   # TypeScript
-  typescript: 5.9.2
+  typescript: 7.0.2
 
   # Node types
   "@types/node": 20.19.9
