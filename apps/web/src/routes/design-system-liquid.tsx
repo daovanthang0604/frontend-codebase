@@ -1,6 +1,26 @@
 import { useState, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
-import { Button } from "@workspace/base-ui/components/Button"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@workspace/liquid-ui/components/Accordion"
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@workspace/liquid-ui/components/Alert"
+import { Avatar, AvatarFallback } from "@workspace/liquid-ui/components/Avatar"
+import { Badge } from "@workspace/liquid-ui/components/Badge"
+import { Button, GlassButton } from "@workspace/liquid-ui/components/Button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@workspace/liquid-ui/components/Card"
 import { Checkbox } from "@workspace/liquid-ui/components/Checkbox"
 import {
   CommandDialog,
@@ -26,6 +46,7 @@ import {
   SearchInput,
   TextArea,
 } from "@workspace/liquid-ui/components/Input"
+import { Kbd } from "@workspace/liquid-ui/components/Kbd"
 import {
   Menu,
   MenuItem,
@@ -47,6 +68,7 @@ import {
 } from "@workspace/liquid-ui/components/PreviewCard"
 import { Progress } from "@workspace/liquid-ui/components/Progress"
 import { RadioGroup } from "@workspace/liquid-ui/components/RadioGroup"
+import { SegmentedControl } from "@workspace/liquid-ui/components/SegmentedControl"
 import {
   Select,
   SelectContent,
@@ -70,9 +92,14 @@ import {
 } from "@workspace/liquid-ui/components/Tabs"
 import { toast, ToastProvider } from "@workspace/liquid-ui/components/Toast"
 import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@workspace/liquid-ui/components/ToggleGroup"
+import {
   Tooltip,
   TooltipTrigger,
 } from "@workspace/liquid-ui/components/Tooltip"
+import { Info, TriangleAlert } from "lucide-react"
 
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 
@@ -371,6 +398,126 @@ function OverlaysSection() {
   )
 }
 
+// Phase 3.1: glass surfaces. Card renders on GlassPanel (variant maps to tint /
+// elevation, with a `solid` fallback); Accordion items and Alerts are frosted.
+function GlassSurfacesSection() {
+  return (
+    <LiquidSection
+      title="Surfaces"
+      meta="Card is GlassPanel-backed (variant maps to tint/elevation; `solid` opts out of glass). Accordion items and Alerts are frosted; Alert keeps its severity via icon + accent bar."
+    >
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Boarding pass</CardTitle>
+            <CardDescription>Gate B12, boards 14:05</CardDescription>
+          </CardHeader>
+          <CardContent className="text-gray-11 text-ui-sm">
+            Frosted glass card, the default surface.
+          </CardContent>
+        </Card>
+        <Card variant="elevated">
+          <CardHeader>
+            <CardTitle>Elevated</CardTitle>
+          </CardHeader>
+          <CardContent className="text-gray-11 text-ui-sm">
+            Lifted hero glass for a focal card.
+          </CardContent>
+        </Card>
+        <Card variant="solid">
+          <CardHeader>
+            <CardTitle>Solid</CardTitle>
+          </CardHeader>
+          <CardContent className="text-gray-11 text-ui-sm">
+            The non-glass fallback, for dense or busy contexts.
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <Accordion defaultExpandedKeys={["baggage"]}>
+          <AccordionItem id="baggage">
+            <AccordionTrigger>Baggage allowance</AccordionTrigger>
+            <AccordionContent>
+              1 carry-on and 1 checked bag up to 23 kg.
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem id="changes">
+            <AccordionTrigger>Changes and refunds</AccordionTrigger>
+            <AccordionContent>
+              Free changes up to 24 hours before departure.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        <div className="space-y-3">
+          <Alert variant="info" icon={<Info />}>
+            <AlertTitle>Gate change</AlertTitle>
+            <AlertDescription>
+              Your flight now departs from gate B12.
+            </AlertDescription>
+          </Alert>
+          <Alert variant="warning" icon={<TriangleAlert />}>
+            <AlertTitle>Weather delay</AlertTitle>
+            <AlertDescription>
+              Departure may be delayed by about 30 minutes.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </div>
+    </LiquidSection>
+  )
+}
+
+// Phase 3.2: glass accents. A frosted GlassButton, a glass Badge chip, the glass
+// SegmentedControl (its own sliding thumb), a glass ToggleGroup rail, plus a light
+// glass Avatar ring and frosted Kbd caps.
+function GlassAccentsSection() {
+  const [tripType, setTripType] = useState("round-trip")
+
+  return (
+    <LiquidSection
+      title="Accents"
+      meta="Small glass touches: a frosted action, chip, segmented switch, toggle rail, avatar ring, and keycaps. Kept subtle so the accent reads without glass-on-everything noise."
+    >
+      <div className="flex flex-wrap items-center gap-4">
+        <Button variant="solid" intent="primary">
+          Book now
+        </Button>
+        <GlassButton intent="primary">Hold this fare</GlassButton>
+        <Badge color="success" dot>
+          On time
+        </Badge>
+        <Badge color="glass">Nonstop</Badge>
+        <Avatar>
+          <AvatarFallback>SW</AvatarFallback>
+        </Avatar>
+        <div className="text-gray-11 flex items-center gap-1">
+          <Kbd>⌘</Kbd>
+          <Kbd>K</Kbd>
+        </div>
+      </div>
+
+      <div className="mt-5 flex flex-wrap items-center gap-6">
+        <SegmentedControl
+          value={tripType}
+          onChange={setTripType}
+          options={[
+            { value: "round-trip", label: "Round trip" },
+            { value: "one-way", label: "One way" },
+            { value: "multi-city", label: "Multi-city" },
+          ]}
+        />
+        <ToggleGroup defaultValue={["nonstop"]} aria-label="Flight filters">
+          <ToggleGroupItem value="nonstop">Nonstop</ToggleGroupItem>
+          <ToggleGroupItem value="wifi">Wi-Fi</ToggleGroupItem>
+          <ToggleGroupItem value="power">Power</ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+    </LiquidSection>
+  )
+}
+
 function DesignSystemLiquidRoute() {
   return (
     <div data-theme="liquid" className="liquid-aurora text-gray-12 min-h-svh">
@@ -436,6 +583,10 @@ function DesignSystemLiquidRoute() {
         <FloatingSurfacesSection />
 
         <OverlaysSection />
+
+        <GlassSurfacesSection />
+
+        <GlassAccentsSection />
       </div>
     </div>
   )

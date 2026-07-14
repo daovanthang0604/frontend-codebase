@@ -379,6 +379,9 @@ importers:
       '@workspace/theme':
         specifier: workspace:*
         version: link:../theme
+      class-variance-authority:
+        specifier: 'catalog:'
+        version: 0.7.1
       dayjs:
         specifier: 'catalog:'
         version: 1.11.19

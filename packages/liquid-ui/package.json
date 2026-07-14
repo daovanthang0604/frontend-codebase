@@ -12,6 +12,7 @@
     "@hookform/resolvers": "catalog:",
     "@workspace/base-ui": "workspace:*",
     "@workspace/theme": "workspace:*",
+    "class-variance-authority": "catalog:",
     "dayjs": "catalog:",
     "lucide-react": "catalog:",
     "react": "catalog:",
