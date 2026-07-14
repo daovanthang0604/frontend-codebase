@@ -2,6 +2,23 @@ import { useState, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@workspace/base-ui/components/Button"
 import { Checkbox } from "@workspace/liquid-ui/components/Checkbox"
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandShortcut,
+} from "@workspace/liquid-ui/components/Command"
+import {
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@workspace/liquid-ui/components/Dialog"
 import { GlassPanel } from "@workspace/liquid-ui/components/GlassPanel"
 import {
   Input,
@@ -9,6 +26,13 @@ import {
   SearchInput,
   TextArea,
 } from "@workspace/liquid-ui/components/Input"
+import {
+  Menu,
+  MenuItem,
+  MenuPopover,
+  MenuSeparator,
+  MenuTrigger,
+} from "@workspace/liquid-ui/components/Menu"
 import { NumberInput } from "@workspace/liquid-ui/components/NumberInput"
 import {
   Popover,
@@ -23,6 +47,19 @@ import {
 } from "@workspace/liquid-ui/components/PreviewCard"
 import { Progress } from "@workspace/liquid-ui/components/Progress"
 import { RadioGroup } from "@workspace/liquid-ui/components/RadioGroup"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@workspace/liquid-ui/components/Select"
+import {
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@workspace/liquid-ui/components/Sheet"
 import { Slider } from "@workspace/liquid-ui/components/Slider"
 import { Switch } from "@workspace/liquid-ui/components/Switch"
 import {
@@ -31,6 +68,7 @@ import {
   TabPanel,
   Tabs,
 } from "@workspace/liquid-ui/components/Tabs"
+import { toast, ToastProvider } from "@workspace/liquid-ui/components/Toast"
 import {
   Tooltip,
   TooltipTrigger,
@@ -231,6 +269,108 @@ function FloatingSurfacesSection() {
   )
 }
 
+// Phase 2.2-2.5: glass dropdowns, menus, and modals. Each is base-ui's component
+// rebuilt with the glass-overlay surface (and glass-scrim backdrop for modals). The
+// risk areas verified here: dense-list legibility over glass (Select, Command, Menu)
+// and the modal/drawer scrim (Dialog, Sheet). Triggers are base-ui Buttons.
+function OverlaysSection() {
+  const [cabin, setCabin] = useState<string | null>("economy")
+  const [cmdOpen, setCmdOpen] = useState(false)
+
+  return (
+    <LiquidSection
+      title="Overlays"
+      meta="Dropdowns, menus, and modals on glass. List rows stay legible via the semi-opaque plate under the frost; modals dim the page with a glass-scrim backdrop."
+    >
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="w-56">
+          <Select value={cabin} onValueChange={setCabin}>
+            <SelectTrigger placeholder="Cabin class" />
+            <SelectContent>
+              <SelectItem value="economy">Economy</SelectItem>
+              <SelectItem value="premium">Premium Economy</SelectItem>
+              <SelectItem value="business">Business</SelectItem>
+              <SelectItem value="first">First</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <MenuTrigger>
+          <Button>Trip actions</Button>
+          <MenuPopover className="min-w-52">
+            <Menu>
+              <MenuItem>Share itinerary</MenuItem>
+              <MenuItem>Add to calendar</MenuItem>
+              <MenuSeparator />
+              <MenuItem className="text-error-11">Cancel trip</MenuItem>
+            </Menu>
+          </MenuPopover>
+        </MenuTrigger>
+
+        <Button onClick={() => setCmdOpen(true)}>Command palette</Button>
+        <CommandDialog open={cmdOpen} onOpenChange={setCmdOpen}>
+          <CommandInput placeholder="Search actions..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Trips">
+              <CommandItem value="new-trip" onSelect={() => setCmdOpen(false)}>
+                New trip
+                <CommandShortcut>⌘N</CommandShortcut>
+              </CommandItem>
+              <CommandItem
+                value="find-flights"
+                onSelect={() => setCmdOpen(false)}
+              >
+                Find flights
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </CommandDialog>
+
+        <DialogTrigger>
+          <Button>Edit traveler</Button>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit traveler</DialogTitle>
+              <DialogDescription>
+                Update the passenger details for this booking.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button>Save changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </DialogTrigger>
+
+        <SheetTrigger>
+          <Button>Open filters</Button>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>Filter flights</SheetTitle>
+              <SheetDescription>
+                Slides in on a glass panel; the glass-scrim dims the page behind
+                it.
+              </SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </SheetTrigger>
+
+        <ToastProvider>
+          <Button
+            onClick={() =>
+              toast.success("Fare locked", {
+                description: "We held this price for 24 hours.",
+              })
+            }
+          >
+            Show toast
+          </Button>
+        </ToastProvider>
+      </div>
+    </LiquidSection>
+  )
+}
+
 function DesignSystemLiquidRoute() {
   return (
     <div data-theme="liquid" className="liquid-aurora text-gray-12 min-h-svh">
@@ -294,6 +434,8 @@ function DesignSystemLiquidRoute() {
         <ThemedControlsSection />
 
         <FloatingSurfacesSection />
+
+        <OverlaysSection />
       </div>
     </div>
   )

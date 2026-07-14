@@ -29,7 +29,11 @@
   },
   "overrides": [
     {
-      "files": ["packages/ui/**", "packages/base-ui/**"],
+      "files": [
+        "packages/ui/**",
+        "packages/base-ui/**",
+        "packages/liquid-ui/**"
+      ],
       "rules": {
         "typescript/no-explicit-any": "off",
         "react/exhaustive-deps": "off"
