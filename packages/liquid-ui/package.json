@@ -25,6 +25,10 @@
   "exports": {
     "./lib/*": "./src/lib/*.ts",
     "./styles/*": "./src/styles/*.css",
+    "./components/DataTable": "./src/components/DataTable/index.ts",
+    "./components/DashboardLayout": "./src/components/DashboardLayout/index.ts",
+    "./components/Filter": "./src/components/Filter/index.ts",
+    "./components/Sidebar": "./src/components/Sidebar/index.ts",
     "./components/*": "./src/components/*.tsx"
   }
 }
