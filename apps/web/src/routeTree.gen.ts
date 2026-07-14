@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DesignSystemLiquidRouteImport } from './routes/design-system-liquid'
 import { Route as DesignSystemBaseuiRouteImport } from './routes/design-system-baseui'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
+import { Route as BookingRouteImport } from './routes/booking'
 import { Route as UnauthenticatedRouteImport } from './routes/_unauthenticated'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as UnauthenticatedIndexRouteImport } from './routes/_unauthenticated/index'
@@ -30,6 +31,11 @@ const DesignSystemBaseuiRoute = DesignSystemBaseuiRouteImport.update({
 const DesignSystemRoute = DesignSystemRouteImport.update({
   id: '/design-system',
   path: '/design-system',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookingRoute = BookingRouteImport.update({
+  id: '/booking',
+  path: '/booking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UnauthenticatedRoute = UnauthenticatedRouteImport.update({
@@ -53,6 +59,7 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof UnauthenticatedIndexRoute
+  '/booking': typeof BookingRoute
   '/design-system': typeof DesignSystemRoute
   '/design-system-baseui': typeof DesignSystemBaseuiRoute
   '/design-system-liquid': typeof DesignSystemLiquidRoute
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof UnauthenticatedIndexRoute
+  '/booking': typeof BookingRoute
   '/design-system': typeof DesignSystemRoute
   '/design-system-baseui': typeof DesignSystemBaseuiRoute
   '/design-system-liquid': typeof DesignSystemLiquidRoute
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_unauthenticated': typeof UnauthenticatedRouteWithChildren
+  '/booking': typeof BookingRoute
   '/design-system': typeof DesignSystemRoute
   '/design-system-baseui': typeof DesignSystemBaseuiRoute
   '/design-system-liquid': typeof DesignSystemLiquidRoute
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/booking'
     | '/design-system'
     | '/design-system-baseui'
     | '/design-system-liquid'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/booking'
     | '/design-system'
     | '/design-system-baseui'
     | '/design-system-liquid'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/_unauthenticated'
+    | '/booking'
     | '/design-system'
     | '/design-system-baseui'
     | '/design-system-liquid'
@@ -104,6 +116,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   UnauthenticatedRoute: typeof UnauthenticatedRouteWithChildren
+  BookingRoute: typeof BookingRoute
   DesignSystemRoute: typeof DesignSystemRoute
   DesignSystemBaseuiRoute: typeof DesignSystemBaseuiRoute
   DesignSystemLiquidRoute: typeof DesignSystemLiquidRoute
@@ -130,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/design-system'
       fullPath: '/design-system'
       preLoaderRoute: typeof DesignSystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/booking': {
+      id: '/booking'
+      path: '/booking'
+      fullPath: '/booking'
+      preLoaderRoute: typeof BookingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_unauthenticated': {
@@ -190,6 +210,7 @@ const UnauthenticatedRouteWithChildren = UnauthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   UnauthenticatedRoute: UnauthenticatedRouteWithChildren,
+  BookingRoute: BookingRoute,
   DesignSystemRoute: DesignSystemRoute,
   DesignSystemBaseuiRoute: DesignSystemBaseuiRoute,
   DesignSystemLiquidRoute: DesignSystemLiquidRoute,
