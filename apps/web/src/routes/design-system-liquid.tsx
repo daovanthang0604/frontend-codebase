@@ -23,6 +23,13 @@ import {
 } from "@workspace/liquid-ui/components/Card"
 import { Checkbox } from "@workspace/liquid-ui/components/Checkbox"
 import {
+  Combobox,
+  ComboboxContent,
+  ComboboxItem,
+  ComboboxTrigger,
+  type ComboboxOption,
+} from "@workspace/liquid-ui/components/Combobox"
+import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -36,6 +43,7 @@ import {
   ConversationContent,
   ConversationScrollButton,
 } from "@workspace/liquid-ui/components/Conversation"
+import { DatePicker } from "@workspace/liquid-ui/components/DatePicker"
 import {
   DialogContent,
   DialogDescription,
@@ -118,7 +126,7 @@ import {
   Tooltip,
   TooltipTrigger,
 } from "@workspace/liquid-ui/components/Tooltip"
-import { Info, TriangleAlert } from "lucide-react"
+import { Info, Plane, TriangleAlert } from "lucide-react"
 
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 
@@ -615,6 +623,188 @@ function CompositesSection() {
   )
 }
 
+const cities: ComboboxOption[] = [
+  { value: "lis", label: "Lisbon (LIS)" },
+  { value: "jfk", label: "New York (JFK)" },
+  { value: "lhr", label: "London (LHR)" },
+  { value: "cdg", label: "Paris (CDG)" },
+  { value: "fco", label: "Rome (FCO)" },
+  { value: "bcn", label: "Barcelona (BCN)" },
+]
+
+// Phase 5: the original use case, now COMPOSED FROM THE KIT rather than shipped as
+// bespoke components. A flight-search panel (hero GlassPanel + glass Combobox /
+// DatePicker / SegmentedControl / Select / GlassButton / Badge) beside a
+// boarding-pass card, all over the aurora. This is demo code in apps/web, not a
+// liquid-ui component.
+function FlightBookingSection() {
+  const [tripType, setTripType] = useState("round-trip")
+  const [from, setFrom] = useState<ComboboxOption | null>(cities[0] ?? null)
+  const [to, setTo] = useState<ComboboxOption | null>(cities[1] ?? null)
+  const [depart, setDepart] = useState<Date | undefined>()
+  const [returnDate, setReturnDate] = useState<Date | undefined>()
+  const [cabin, setCabin] = useState<string | null>("business")
+
+  return (
+    <section className="py-7">
+      <div className="mb-4 flex flex-col gap-1">
+        <h2 className="text-gray-12 text-ui-lg font-semibold">In the wild</h2>
+        <span className="text-gray-11 text-ui-sm">
+          A flight-search panel and a boarding pass, composed entirely from
+          liquid-ui primitives over the aurora. The original use case, now built
+          from the kit.
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <GlassPanel
+          tint="tinted"
+          elevation="hero"
+          interactive
+          className="space-y-5 p-6 md:p-8 lg:col-span-3"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <div className="text-gray-11 text-eyebrow uppercase">
+                Skyway Air
+              </div>
+              <div className="text-gray-12 text-display-sm font-serif">
+                Find your flight
+              </div>
+            </div>
+            <SegmentedControl
+              value={tripType}
+              onChange={setTripType}
+              options={[
+                { value: "round-trip", label: "Round trip" },
+                { value: "one-way", label: "One way" },
+              ]}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <div className="text-gray-11 text-ui-sm mb-1.5">From</div>
+              <Combobox
+                items={cities}
+                value={from}
+                onValueChange={setFrom}
+                placeholder="Departure city"
+              >
+                <ComboboxTrigger />
+                <ComboboxContent
+                  searchPlaceholder="Search cities"
+                  emptyMessage="No cities found"
+                >
+                  {(item) => <ComboboxItem key={item.value} item={item} />}
+                </ComboboxContent>
+              </Combobox>
+            </div>
+            <div>
+              <div className="text-gray-11 text-ui-sm mb-1.5">To</div>
+              <Combobox
+                items={cities}
+                value={to}
+                onValueChange={setTo}
+                placeholder="Destination city"
+              >
+                <ComboboxTrigger />
+                <ComboboxContent
+                  searchPlaceholder="Search cities"
+                  emptyMessage="No cities found"
+                >
+                  {(item) => <ComboboxItem key={item.value} item={item} />}
+                </ComboboxContent>
+              </Combobox>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+              <div className="text-gray-11 text-ui-sm mb-1.5">Depart</div>
+              <DatePicker
+                value={depart}
+                onChange={setDepart}
+                placeholder="Add date"
+              />
+            </div>
+            <div>
+              <div className="text-gray-11 text-ui-sm mb-1.5">Return</div>
+              <DatePicker
+                value={returnDate}
+                onChange={setReturnDate}
+                placeholder="Add date"
+              />
+            </div>
+            <div>
+              <div className="text-gray-11 text-ui-sm mb-1.5">Cabin</div>
+              <Select value={cabin} onValueChange={setCabin}>
+                <SelectTrigger placeholder="Cabin" />
+                <SelectContent>
+                  <SelectItem value="economy">Economy</SelectItem>
+                  <SelectItem value="premium">Premium Economy</SelectItem>
+                  <SelectItem value="business">Business</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge color="glass">Nonstop</Badge>
+              <Badge color="glass">Flexible dates</Badge>
+            </div>
+            <GlassButton intent="primary">Search flights</GlassButton>
+          </div>
+        </GlassPanel>
+
+        <GlassPanel elevation="float" className="flex flex-col lg:col-span-2">
+          <div className="flex items-center justify-between p-5 pb-3">
+            <div className="text-gray-11 text-eyebrow uppercase">
+              Boarding pass
+            </div>
+            <Badge color="success" dot>
+              On time
+            </Badge>
+          </div>
+
+          <div className="flex items-center justify-between gap-3 px-5">
+            <div>
+              <div className="text-gray-12 text-display-md font-serif">LIS</div>
+              <div className="text-gray-11 text-ui-sm">Lisbon</div>
+            </div>
+            <Plane className="text-accent-11 size-5 shrink-0" />
+            <div className="text-right">
+              <div className="text-gray-12 text-display-md font-serif">JFK</div>
+              <div className="text-gray-11 text-ui-sm">New York</div>
+            </div>
+          </div>
+
+          <div className="border-gray-a6 mx-5 my-4 border-t border-dashed" />
+
+          <div className="grid grid-cols-3 gap-y-4 px-5 pb-6">
+            {[
+              ["Flight", "SW 482"],
+              ["Gate", "B12"],
+              ["Seat", "14A"],
+              ["Boards", "13:20"],
+              ["Departs", "14:05"],
+              ["Class", "Business"],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <div className="text-gray-11 text-ui-xs">{label}</div>
+                <div className="text-gray-12 text-ui-sm font-medium">
+                  {value}
+                </div>
+              </div>
+            ))}
+          </div>
+        </GlassPanel>
+      </div>
+    </section>
+  )
+}
+
 function DesignSystemLiquidRoute() {
   return (
     <div data-theme="liquid" className="liquid-aurora text-gray-12 min-h-svh">
@@ -637,6 +827,8 @@ function DesignSystemLiquidRoute() {
           </div>
           <ThemeModeSwitcher />
         </header>
+
+        <FlightBookingSection />
 
         <LiquidSection
           title="GlassPanel"
