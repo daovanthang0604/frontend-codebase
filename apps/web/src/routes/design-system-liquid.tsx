@@ -32,6 +32,11 @@ import {
   CommandShortcut,
 } from "@workspace/liquid-ui/components/Command"
 import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@workspace/liquid-ui/components/Conversation"
+import {
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -54,6 +59,11 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "@workspace/liquid-ui/components/Menu"
+import {
+  Message,
+  MessageAvatar,
+  MessageContent,
+} from "@workspace/liquid-ui/components/Message"
 import { NumberInput } from "@workspace/liquid-ui/components/NumberInput"
 import {
   Popover,
@@ -90,6 +100,15 @@ import {
   TabPanel,
   Tabs,
 } from "@workspace/liquid-ui/components/Tabs"
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineTime,
+  TimelineTitle,
+} from "@workspace/liquid-ui/components/Timeline"
 import { toast, ToastProvider } from "@workspace/liquid-ui/components/Toast"
 import {
   ToggleGroup,
@@ -518,6 +537,84 @@ function GlassAccentsSection() {
   )
 }
 
+const conversation = [
+  {
+    id: 1,
+    role: "user" as const,
+    content: "Any nonstop flights to Lisbon this Friday?",
+  },
+  {
+    id: 2,
+    role: "assistant" as const,
+    content:
+      "Yes, two nonstop morning options. Want me to hold the lower fare for 24 hours?",
+  },
+]
+
+// Phase 4: composites + AI kit. These are re-exported from base-ui and re-skinned
+// by the liquid theme (no per-component glass - the heavy composites like DataTable
+// and Filter stay M2; glassing their floating popovers is deferred). Timeline and a
+// Conversation are rendered here on GlassPanels to confirm complex re-exports theme
+// cleanly under the scope.
+function CompositesSection() {
+  return (
+    <LiquidSection
+      title="Composites and AI kit"
+      meta="Re-exported from base-ui and theme-reskinned, not per-component glass. Timeline and the chat kit shown here to confirm complex composites read correctly under liquid."
+    >
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <GlassPanel elevation="float" className="p-5">
+          <div className="text-gray-12 text-ui-sm mb-4 font-medium">
+            Trip timeline
+          </div>
+          <Timeline>
+            <TimelineItem status="done">
+              <TimelineDot />
+              <TimelineConnector />
+              <TimelineContent>
+                <TimelineTitle>Booked</TimelineTitle>
+                <TimelineTime>Mon, 9:14 AM</TimelineTime>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem status="current">
+              <TimelineDot />
+              <TimelineConnector />
+              <TimelineContent>
+                <TimelineTitle>Check-in open</TimelineTitle>
+                <TimelineTime>Now</TimelineTime>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem status="pending">
+              <TimelineDot />
+              <TimelineContent>
+                <TimelineTitle>Boarding</TimelineTitle>
+                <TimelineTime>14:05</TimelineTime>
+              </TimelineContent>
+            </TimelineItem>
+          </Timeline>
+        </GlassPanel>
+
+        <GlassPanel
+          elevation="float"
+          className="flex h-80 flex-col overflow-hidden p-4"
+        >
+          <Conversation>
+            <ConversationContent>
+              {conversation.map((msg) => (
+                <Message key={msg.id} from={msg.role}>
+                  {msg.role === "assistant" && <MessageAvatar name="AI" />}
+                  <MessageContent>{msg.content}</MessageContent>
+                </Message>
+              ))}
+            </ConversationContent>
+            <ConversationScrollButton />
+          </Conversation>
+        </GlassPanel>
+      </div>
+    </LiquidSection>
+  )
+}
+
 function DesignSystemLiquidRoute() {
   return (
     <div data-theme="liquid" className="liquid-aurora text-gray-12 min-h-svh">
@@ -587,6 +684,8 @@ function DesignSystemLiquidRoute() {
         <GlassSurfacesSection />
 
         <GlassAccentsSection />
+
+        <CompositesSection />
       </div>
     </div>
   )
