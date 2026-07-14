@@ -1,14 +1,15 @@
 # @workspace/liquid-ui
 
-A glass-aesthetic parallel to **`@workspace/base-ui`**. Every one of base-ui's
-component modules is importable from liquid-ui, rendered under the generated
-**`liquid`** theme over a shared **glass-material** layer, so an app can adopt
-liquid-ui as a drop-in kit and get the "liquid glass sky" look with zero
-per-call styling.
+A **standalone** glass-aesthetic kit — a self-contained parallel to
+**`@workspace/base-ui`**, rendered under the generated **`liquid`** theme with a
+shared **glass-material** layer, so an app gets the "liquid glass sky" look with
+zero per-call styling.
 
-liquid-ui is a **glass layer over base-ui, not a fork.** base-ui stays the
-primitive foundation; liquid-ui depends on it one-way
-(`theme <- base-ui <- liquid-ui`, never the reverse).
+liquid-ui ships every component base-ui ships (its Base UI source was forked in
+and made self-contained) plus the glass surfaces layered on top. It depends only
+on `@base-ui/react` + `@workspace/theme` — **not** `@workspace/base-ui` or
+`@workspace/ui`. The two kits (warm base-ui, glass liquid-ui) are fully
+independent; base-ui is untouched, so an app can use either or both.
 
 ## The three mechanisms
 
@@ -18,13 +19,15 @@ three mechanisms, in decreasing order of coverage:
 | | Mechanism | Applies to | How it looks liquid |
 |---|---|---|---|
 | **M1** | **Theme re-skin** | ALL modules | `[data-theme="liquid"]` re-points the raw `--accent-*` / `--gray-*` / `--panel` / `--glass-*` tokens, so **every** component inside the scope renders cyan-on-slate with no class changes. |
-| **M2** | **Re-export shim** | controls, composites, AI kit, infra | a one-line `export * from "@workspace/base-ui/components/X"`. Inherits M1; no glass material (correct for text inputs, tables, etc.). |
-| **M3** | **Glass-material enhance** | surfaces + overlays | the surface part is re-implemented on the shared glass recipe (`GlassPanel` / `glass-overlay` / `glass-scrim`), composing base-ui's Base UI behavior primitives. Real `backdrop-filter` glass, rim, and sheen. |
+| **M2** | **Copied source, theme-only** | controls, composites, AI kit, infra | base-ui's Base UI source, owned by liquid-ui; no glass material (correct for text inputs, tables, etc.). Just the M1 re-skin. |
+| **M3** | **Glass-material** | surfaces + overlays | the surface part is built on the shared glass recipe (`GlassPanel` / `glass-overlay` / `glass-scrim`), composing `@base-ui/react` behavior primitives. Real `backdrop-filter` glass, rim, and sheen. |
 
 Glass belongs on **surfaces and overlays** (panels, cards, dialogs, sheets,
 popovers, menus, toasts), not on tiny controls (inputs, checkboxes, sliders)
 where it hurts legibility. So most modules are M1/M2; only the ~24 surfaces and
-overlays are M3.
+overlays are M3. `Button` / `Provider` / `Spinner` are lean, Base-UI-consistent
+standalone versions (no react-aria/xstate), since base-ui only facaded those from
+the older `@workspace/ui`.
 
 ## Using it
 
@@ -82,12 +85,13 @@ that reads it, or an ancestor theme scope can't override it by inheritance.
 ## Adding to the kit
 
 - **A component.** If it is a control / composite that only needs the theme
-  re-skin, add a re-export shim
-  (`export * from "@workspace/base-ui/components/X"`). Directory composites also
-  need an explicit `exports` entry in `package.json` (the `./components/*` glob
-  only matches files). If it is a surface / overlay that wants glass, reproduce
-  base-ui's structure and swap the solid surface recipe for `glass-overlay`
-  (backdrop -> `glass-scrim`), keeping its exports identical so it stays a drop-in.
+  re-skin, drop its `.tsx` in `src/components/` (self-contained on `@base-ui/react`
+  + `@workspace/theme`; no `@workspace/base-ui` / `@workspace/ui` imports).
+  Directory composites also need an explicit `exports` entry in `package.json`
+  (the `./components/*` glob only matches files). If it is a surface / overlay that
+  wants glass, build the surface on the shared glass recipe — swap the solid recipe
+  for `glass-overlay` (backdrop -> `glass-scrim`) — composing `@base-ui/react`
+  primitives directly.
 - **A theme.** Add a seed to `packages/theme/src/lib/themes.ts` and regenerate:
   `pnpm dlx tsx packages/theme/scripts/generate-theme-css.ts` (or
   `pnpm --filter @workspace/theme gen:themes`). Never hand-edit the generated
