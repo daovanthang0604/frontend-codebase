@@ -1,0 +1,30 @@
+{
+  "name": "@workspace/liquid-ui",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@base-ui/react": "catalog:",
+    "@workspace/base-ui": "workspace:*",
+    "@workspace/theme": "workspace:*",
+    "lucide-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@workspace/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "exports": {
+    "./lib/*": "./src/lib/*.ts",
+    "./styles/*": "./src/styles/*.css",
+    "./components/*": "./src/components/*.tsx"
+  }
+}

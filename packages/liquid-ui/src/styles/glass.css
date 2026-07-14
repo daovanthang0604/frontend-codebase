@@ -1,0 +1,145 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   liquid-ui shared glass layer — the kit-default --glass-* tokens plus the two
+   reusable surface recipes that consume them:
+
+     .glass-overlay  the floating-surface skin (popovers, menus, selects,
+                     dialogs, sheets, toasts, …) — a glass swap for base-ui's
+                     solid `bg-panel rounded-lg border shadow-lg` recipe.
+     .glass-scrim    the modal backdrop behind glass dialogs / sheets.
+
+   Tokens are promoted from GlassPanel's inline fallbacks so every glass surface
+   reads a short `var(--glass-x)`. They sit on :root as DEFAULTS; a theme scope
+   (`[data-theme="liquid"]` from @workspace/theme) overrides them by inheritance.
+   Because NO rule sets --glass-* on the element that READS them, an ancestor
+   scope always wins — no cascade fight (the CSS custom-property gotcha). Each
+   default is a `light-dark()` pair, so a bare kit (no theme loaded) still adapts
+   to the app's light/dark mode (next-themes runs with enableColorScheme).
+
+   Honest web approximation of frosted glass (backdrop blur+saturate + layered
+   translucent fill + masked rim + specular sheen) — NOT Apple's Liquid Glass,
+   which is Apple-platform-only with no public web CSS.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* lengths — plain fallbacks (light-dark() is color-only) */
+  --glass-blur: 16px;
+  --glass-radius: 24px;
+
+  /* surface fill + rim + edge lighting + shadow — the shared GlassPanel set */
+  --glass-fill-top: light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.1));
+  --glass-fill-bot: light-dark(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02));
+  --glass-rim: light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.14));
+  --glass-rim-hi: light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.4));
+  --glass-rim-lo: light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.14));
+  --glass-edge-hi: light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.22));
+  --glass-edge-lo: light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.05));
+  --glass-sheen: light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.16));
+  --glass-shadow: light-dark(rgb(16 24 40 / 0.28), rgb(0 0 0 / 0.5));
+  --glass-contact: light-dark(rgb(16 24 40 / 0.22), rgb(0 0 0 / 0.4));
+
+  /* overlay-only: a semi-opaque plate UNDER the translucent fill so dense popup
+     text (menu / select rows) stays legible while the backdrop still shows
+     through. More opaque than a hero GlassPanel on purpose — legibility over
+     glass is the standing risk for text-heavy floating surfaces. */
+  --glass-overlay-bg: light-dark(rgb(255 255 255 / 0.62), rgb(22 26 35 / 0.62));
+
+  /* near-opaque fallback for prefers-reduced-transparency */
+  --glass-solid: light-dark(rgb(255 255 255 / 0.94), rgb(20 22 30 / 0.96));
+
+  /* modal backdrop wash */
+  --glass-scrim: light-dark(rgb(16 24 40 / 0.32), rgb(0 0 0 / 0.55));
+}
+
+/* ── .glass-overlay ─────────────────────────────────────────────────────────
+   Applied to a Base UI Popup / Content element in place of `bg-panel border
+   shadow-lg`. The element still brings its own radius (Tailwind `rounded-lg`)
+   and entrance transition; this class owns the glass MATERIAL only. */
+.glass-overlay {
+  position: relative;
+  isolation: isolate; /* contain the ::before/::after blends + z-index */
+  background:
+    linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bot)),
+    var(--glass-overlay-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%) brightness(1.04);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%) brightness(1.04);
+  border: 1px solid var(--glass-rim);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-edge-hi),
+    inset 0 -1px 0 0 var(--glass-edge-lo),
+    0 12px 32px -8px var(--glass-shadow),
+    0 2px 6px -2px var(--glass-contact);
+}
+
+/* masked gradient rim — a 1px frame brighter top-left; mirrors GlassPanel::before */
+.glass-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    var(--glass-rim-hi),
+    rgb(255 255 255 / 0.15) 45%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* diagonal specular sheen — static, screen-blended; mirrors GlassPanel::after */
+.glass-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    135deg,
+    var(--glass-sheen) 0%,
+    rgb(255 255 255 / 0.06) 28%,
+    transparent 58%
+  );
+}
+
+/* ── .glass-scrim ───────────────────────────────────────────────────────────
+   Modal backdrop behind a glass Dialog / Sheet. A dim wash + a touch of blur so
+   the page reads as "pushed back" behind the glass surface. */
+.glass-scrim {
+  background: var(--glass-scrim);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+/* ── a11y: reduced transparency ─────────────────────────────────────────────
+   Drop the see-through material — near-opaque fill, no backdrop blur — so text
+   contrast stops depending on whatever sits behind the surface. Mirrors the
+   GlassPanel.css block. (No reduced-MOTION block is needed here: the overlay's
+   only motion is its entrance transition, already neutralised by the global
+   prefers-reduced-motion reset in @workspace/theme globals.css, and the sheen is
+   static.) */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-overlay {
+    background: var(--glass-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .glass-overlay::before,
+  .glass-overlay::after {
+    opacity: 0.5;
+  }
+  .glass-scrim {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

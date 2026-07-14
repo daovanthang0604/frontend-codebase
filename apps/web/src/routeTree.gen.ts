@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DesignSystemLiquidRouteImport } from './routes/design-system-liquid'
 import { Route as DesignSystemBaseuiRouteImport } from './routes/design-system-baseui'
 import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as UnauthenticatedRouteImport } from './routes/_unauthenticated'
@@ -16,6 +17,11 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as UnauthenticatedIndexRouteImport } from './routes/_unauthenticated/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
+const DesignSystemLiquidRoute = DesignSystemLiquidRouteImport.update({
+  id: '/design-system-liquid',
+  path: '/design-system-liquid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DesignSystemBaseuiRoute = DesignSystemBaseuiRouteImport.update({
   id: '/design-system-baseui',
   path: '/design-system-baseui',
@@ -49,12 +55,14 @@ export interface FileRoutesByFullPath {
   '/': typeof UnauthenticatedIndexRoute
   '/design-system': typeof DesignSystemRoute
   '/design-system-baseui': typeof DesignSystemBaseuiRoute
+  '/design-system-liquid': typeof DesignSystemLiquidRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof UnauthenticatedIndexRoute
   '/design-system': typeof DesignSystemRoute
   '/design-system-baseui': typeof DesignSystemBaseuiRoute
+  '/design-system-liquid': typeof DesignSystemLiquidRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesById {
@@ -63,20 +71,32 @@ export interface FileRoutesById {
   '/_unauthenticated': typeof UnauthenticatedRouteWithChildren
   '/design-system': typeof DesignSystemRoute
   '/design-system-baseui': typeof DesignSystemBaseuiRoute
+  '/design-system-liquid': typeof DesignSystemLiquidRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_unauthenticated/': typeof UnauthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/design-system' | '/design-system-baseui' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/design-system'
+    | '/design-system-baseui'
+    | '/design-system-liquid'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/design-system' | '/design-system-baseui' | '/dashboard'
+  to:
+    | '/'
+    | '/design-system'
+    | '/design-system-baseui'
+    | '/design-system-liquid'
+    | '/dashboard'
   id:
     | '__root__'
     | '/_authenticated'
     | '/_unauthenticated'
     | '/design-system'
     | '/design-system-baseui'
+    | '/design-system-liquid'
     | '/_authenticated/dashboard'
     | '/_unauthenticated/'
   fileRoutesById: FileRoutesById
@@ -86,10 +106,18 @@ export interface RootRouteChildren {
   UnauthenticatedRoute: typeof UnauthenticatedRouteWithChildren
   DesignSystemRoute: typeof DesignSystemRoute
   DesignSystemBaseuiRoute: typeof DesignSystemBaseuiRoute
+  DesignSystemLiquidRoute: typeof DesignSystemLiquidRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/design-system-liquid': {
+      id: '/design-system-liquid'
+      path: '/design-system-liquid'
+      fullPath: '/design-system-liquid'
+      preLoaderRoute: typeof DesignSystemLiquidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/design-system-baseui': {
       id: '/design-system-baseui'
       path: '/design-system-baseui'
@@ -164,6 +192,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnauthenticatedRoute: UnauthenticatedRouteWithChildren,
   DesignSystemRoute: DesignSystemRoute,
   DesignSystemBaseuiRoute: DesignSystemBaseuiRoute,
+  DesignSystemLiquidRoute: DesignSystemLiquidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

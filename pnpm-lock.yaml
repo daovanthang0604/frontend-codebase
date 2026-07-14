@@ -158,6 +158,9 @@ importers:
       '@workspace/base-ui':
         specifier: workspace:*
         version: link:../../packages/base-ui
+      '@workspace/liquid-ui':
+        specifier: workspace:*
+        version: link:../../packages/liquid-ui
       '@workspace/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -346,6 +349,43 @@ importers:
       '@types/lodash':
         specifier: 'catalog:'
         version: 4.17.20
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.9
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+
+  packages/liquid-ui:
+    dependencies:
+      '@base-ui/react':
+        specifier: 'catalog:'
+        version: 1.2.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@workspace/base-ui':
+        specifier: workspace:*
+        version: link:../base-ui
+      '@workspace/theme':
+        specifier: workspace:*
+        version: link:../theme
+      lucide-react:
+        specifier: 'catalog:'
+        version: 0.475.0(react@19.2.7)
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
       '@types/node':
         specifier: 'catalog:'
         version: 20.19.9

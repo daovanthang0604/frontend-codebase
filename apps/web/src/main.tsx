@@ -5,6 +5,10 @@ import ReactDOM from "react-dom/client"
 import "@/styles/app.css"
 import "@workspace/shared/zod"
 import "@workspace/theme/globals.css"
+// Named themes (e.g. the "liquid" glass palette) — scoped [data-theme] value
+// overrides that coexist with the default warm theme. Imported after globals so
+// the whole-app case wins by source order; per-surface use just needs the attr.
+import "@workspace/theme/themes.css"
 
 import { AppProviders } from "./components/AppProviders"
 import * as TanStackQueryProvider from "./integrations/tanstack-query/query-provider"

@@ -8,6 +8,7 @@
 @source "../../../components/**/*.{ts,tsx}";
 @source "../../../ui/**/*.{ts,tsx}";
 @source "../../../base-ui/**/*.{ts,tsx}";
+@source "../../../liquid-ui/**/*.{ts,tsx}";
 @source "../../../music-ui/**/*.{ts,tsx}";
 /* Generate the Tailwind utility classes streamdown emits (node_modules isn't
    scanned by default). streamdown is a @workspace/base-ui dep (AI-kit Response),
