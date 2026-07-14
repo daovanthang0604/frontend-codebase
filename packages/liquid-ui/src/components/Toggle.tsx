@@ -9,7 +9,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 // Reads the shared --glass-* tokens set up by GlassPanel/.glass-overlay.
 import "@workspace/liquid-ui/lib/glass"
 
-// Drop-in for @workspace/base-ui/Toggle (Toggle + ToggleGroup), re-skinned with
+// Drop-in for @workspace/liquid-ui/Toggle (Toggle + ToggleGroup), re-skinned with
 // a glass track. Resting: a sheer frosted fill (--glass-fill-top/bot) behind a
 // hairline rim (--glass-rim) over a small backdrop blur -- a light glass chip,
 // not a flat gray-11 label. Pressed (data-pressed): the same track brightens

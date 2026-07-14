@@ -9,7 +9,7 @@ import { ChevronDown } from "lucide-react"
 // item fill below.
 import "@workspace/liquid-ui/lib/glass"
 
-// Drop-in for @workspace/base-ui/Accordion (Root/Item/Header/Trigger/Panel),
+// Drop-in for @workspace/liquid-ui/Accordion (Root/Item/Header/Trigger/Panel),
 // same react-aria-shaped props: allowsMultipleExpanded -> multiple,
 // defaultExpandedKeys -> defaultValue, AccordionItem id -> value.
 //

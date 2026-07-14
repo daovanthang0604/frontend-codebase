@@ -7,7 +7,7 @@ import { Toggle as BaseToggle } from "@base-ui/react/toggle"
 import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 
-// Drop-in for @workspace/base-ui/SegmentedControl -- same Base UI ToggleGroup
+// Drop-in for @workspace/liquid-ui/SegmentedControl -- same Base UI ToggleGroup
 // (single-select "pick one" pill switcher): same options/value/onChange API,
 // roving focus + arrow-key nav, and the active segment still can't deselect
 // itself. The base-ui version highlights the active segment by painting ITS

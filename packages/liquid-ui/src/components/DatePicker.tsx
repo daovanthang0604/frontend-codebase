@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@workspace/base-ui/components/Button"
+import { Button } from "@workspace/liquid-ui/components/Button"
 import {
   Calendar,
   type DateRange,

@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import "@workspace/liquid-ui/lib/glass"
 
-// Drop-in for @workspace/base-ui/Alert: same callout shape (leading icon +
+// Drop-in for @workspace/liquid-ui/Alert: same callout shape (leading icon +
 // title/description body), rebuilt with a liquid-glass surface. `glass-overlay`
 // swaps in the frosted-glass material (fill + blur + rim + sheen + shadow) in
 // place of the solid `bg-<x>-3 border-<x>-6` pair the base-ui version used per

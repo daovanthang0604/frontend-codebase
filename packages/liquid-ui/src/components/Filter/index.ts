@@ -1,4 +1,17 @@
-// liquid-ui re-exports base-ui's directory composite; themed under
-// [data-theme="liquid"]. Needs an explicit package.json exports entry (the
-// ./components/*.tsx glob does not match directories).
-export * from "@workspace/base-ui/components/Filter"
+export { Filter } from "./Filter"
+export { FilterBar } from "./FilterBar"
+export { FilterBuilder } from "./FilterBuilder"
+
+export * from "./FilterField"
+
+export type {
+  FilterBuilderEntry,
+  FilterValue,
+  FilterFieldValue,
+  FilterProps,
+  FilterBuilderItem,
+  SelectOption,
+  SerializableSelectOption,
+} from "./Filter.types"
+
+export { isSelectOptionArray } from "./Filter.types"

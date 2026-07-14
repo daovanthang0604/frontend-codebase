@@ -1,4 +1,7 @@
-// liquid-ui re-exports base-ui's directory composite; themed under
-// [data-theme="liquid"]. Needs an explicit package.json exports entry (the
-// ./components/*.tsx glob does not match directories).
-export * from "@workspace/base-ui/components/DataTable"
+export { DataTable, DEFAULT_PAGE_SIZE } from "./DataTable"
+export { DataTableColumnHeader } from "./DataTableColumnHeader"
+export type {
+  DataTableProps,
+  BulkAction,
+  SortingState,
+} from "./types/data-table"

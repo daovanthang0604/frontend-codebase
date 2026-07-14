@@ -8,7 +8,7 @@ import { ToggleGroup as BaseToggleGroup } from "@base-ui/react/toggle-group"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 
 // A row of toggle buttons on Base UI's ToggleGroup + Toggle -- same primitives
-// as @workspace/base-ui/ToggleGroup, imported directly rather than composing a
+// as @workspace/liquid-ui/ToggleGroup, imported directly rather than composing a
 // local Toggle wrapper: base-ui's own ToggleGroup.tsx doesn't compose its
 // Toggle.tsx either, it re-styles the raw <Toggle> inline, so this file
 // mirrors that structure. Single-select by default (the group value is an

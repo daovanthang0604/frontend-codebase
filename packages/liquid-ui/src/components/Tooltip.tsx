@@ -6,7 +6,7 @@ import { Children, type ReactElement, type ReactNode } from "react"
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 
-// Drop-in for @workspace/ui/Tooltip, rebuilt on Base UI (Root/Trigger/Portal/
+// Drop-in for @workspace/liquid-ui/Tooltip, rebuilt on Base UI (Root/Trigger/Portal/
 // Positioner/Popup/Arrow). The app's call site is
 //   <TooltipTrigger><Trigger/><Tooltip placement="top">text</Tooltip></TooltipTrigger>
 // react-aria wired trigger + bubble by child order; Base UI needs an explicit

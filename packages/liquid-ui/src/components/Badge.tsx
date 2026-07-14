@@ -64,7 +64,7 @@ type BadgeVariantProps = {
   size?: "sm" | "md" | "lg" | null | undefined
 }
 
-// Ported from @workspace/base-ui/Badge, plus color="glass": a liquid-ui-only
+// Ported from @workspace/liquid-ui/Badge, plus color="glass": a liquid-ui-only
 // translucent chip (frosted fill + hairline rim + light blur) sitting
 // alongside the solid ramp colors. No `asChild` (Base UI has no Slot); wrap
 // an <a> yourself if Badge needs to be a link.

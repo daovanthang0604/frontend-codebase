@@ -4,7 +4,7 @@ import "@workspace/liquid-ui/lib/glass"
 
 import { type ComponentProps, type ReactElement, type ReactNode } from "react"
 import { AlertDialog as BaseAlertDialog } from "@base-ui/react/alert-dialog"
-import { Button } from "@workspace/base-ui/components/Button"
+import { Button } from "@workspace/liquid-ui/components/Button"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 
 // Modal confirm dialog on Base UI (Root/Trigger/Portal/Backdrop/Popup/Title/

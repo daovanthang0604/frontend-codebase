@@ -9,11 +9,11 @@ import {
   type ReactNode,
 } from "react"
 import { Dialog as BaseDialog } from "@base-ui/react/dialog"
-import { Button } from "@workspace/base-ui/components/Button"
+import { Button } from "@workspace/liquid-ui/components/Button"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 import { X } from "lucide-react"
 
-// Drop-in for @workspace/ui/Sheet — a side drawer. Same Base UI dialog machinery
+// Drop-in for @workspace/liquid-ui/Sheet — a side drawer. Same Base UI dialog machinery
 // as our Dialog (modal: focus trap + scroll lock + Esc), but the Popup anchors to
 // an edge and slides in. Same call shape:
 //   <SheetTrigger>

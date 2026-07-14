@@ -9,11 +9,11 @@ import {
   type ReactNode,
 } from "react"
 import { Dialog as BaseDialog } from "@base-ui/react/dialog"
-import { Button } from "@workspace/base-ui/components/Button"
+import { Button } from "@workspace/liquid-ui/components/Button"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 import { X } from "lucide-react"
 
-// Drop-in for @workspace/ui/Dialog, rebuilt on Base UI (Root/Trigger/Portal/
+// Drop-in for @workspace/liquid-ui/Dialog, rebuilt on Base UI (Root/Trigger/Portal/
 // Backdrop/Popup/Title/Description/Close). Modal by default — Base UI's Root
 // handles the focus trap, scroll lock and Esc. Same call shape:
 //   <DialogTrigger>

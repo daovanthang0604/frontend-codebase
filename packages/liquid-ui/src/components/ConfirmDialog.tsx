@@ -5,7 +5,7 @@ import "@workspace/liquid-ui/lib/glass"
 import React, { useState, useSyncExternalStore } from "react"
 import { Dialog as BaseDialog } from "@base-ui/react/dialog"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@workspace/base-ui/components/Button"
+import { Button } from "@workspace/liquid-ui/components/Button"
 import {
   DialogContent,
   DialogDescription,
@@ -18,7 +18,7 @@ import { FormProvider, useForm, type UseFormReturn } from "react-hook-form"
 import { z } from "zod"
 
 // Imperative confirm dialog for @workspace/base-ui — a drop-in for
-// @workspace/ui/ConfirmDialog. Fire `confirm({...})` from anywhere; a single
+// @workspace/liquid-ui/ConfirmDialog. Fire `confirm({...})` from anywhere; a single
 // mounted <ConfirmDialog/> (near the app root) renders it. Supports an async
 // `onContinue` (shows a spinner, closes on resolve, stays open on reject), a
 // primary/danger intent, optional outside-click dismissal, and an optional

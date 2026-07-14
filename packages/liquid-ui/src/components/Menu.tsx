@@ -12,7 +12,7 @@ import { Menu as BaseMenu } from "@base-ui/react/menu"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 import { Check, ChevronRight } from "lucide-react"
 
-// Drop-in for @workspace/ui/Menu, rebuilt on Base UI's menu parts. The common
+// Drop-in for @workspace/liquid-ui/Menu, rebuilt on Base UI's menu parts. The common
 // dropdown usage:
 //   <MenuTrigger>
 //     <Button/>

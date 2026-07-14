@@ -7,7 +7,7 @@ import {
   Toast as BaseToast,
   type ToastManagerAddOptions,
 } from "@base-ui/react/toast"
-import { Button } from "@workspace/base-ui/components/Button"
+import { Button } from "@workspace/liquid-ui/components/Button"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 import {
   AlertCircle,

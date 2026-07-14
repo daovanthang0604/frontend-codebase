@@ -5,7 +5,7 @@ import { GlassPanel } from "@workspace/liquid-ui/components/GlassPanel"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 
-// Drop-in for @workspace/base-ui/Card. Header/Title/Description/Content are
+// Drop-in for @workspace/liquid-ui/Card. Header/Title/Description/Content are
 // reproduced verbatim (only the `cn` import changed). The Card surface itself
 // renders as a real GlassPanel instead of the bg-panel/backdrop-blur recipe:
 // `default`/`elevated`/`glass` each pick a tint + elevation pair off GlassPanel

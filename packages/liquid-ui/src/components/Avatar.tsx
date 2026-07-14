@@ -6,7 +6,7 @@ import type { ComponentProps } from "react"
 import { Avatar as BaseAvatar } from "@base-ui/react/avatar"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 
-// Drop-in for @workspace/ui/Avatar, rebuilt on Base UI (Root/Image/Fallback). ui
+// Drop-in for @workspace/liquid-ui/Avatar, rebuilt on Base UI (Root/Image/Fallback). ui
 // used Radix; Base UI's avatar has the same image-load/fallback behavior.
 // Badge/Group/GroupCount carry no primitive behavior — copied verbatim. Fallback
 // + badge use accent-solid (navy) to match the other controls, not ui's accent-9.

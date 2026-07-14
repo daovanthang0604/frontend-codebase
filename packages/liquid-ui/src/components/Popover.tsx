@@ -11,7 +11,7 @@ import {
 import { Popover as BasePopover } from "@base-ui/react/popover"
 import { cn } from "@workspace/liquid-ui/lib/utils"
 
-// Drop-in for @workspace/ui/Popover, rebuilt on Base UI (Root/Trigger/Portal/
+// Drop-in for @workspace/liquid-ui/Popover, rebuilt on Base UI (Root/Trigger/Portal/
 // Positioner/Popup). Same call shape as the react-aria original:
 //   <PopoverTrigger>
 //     <Button/>                         {/* trigger */}
