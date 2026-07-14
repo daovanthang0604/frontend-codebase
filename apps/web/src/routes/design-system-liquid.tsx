@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react"
 import { createFileRoute } from "@tanstack/react-router"
+import { Button } from "@workspace/base-ui/components/Button"
 import { Checkbox } from "@workspace/liquid-ui/components/Checkbox"
 import { GlassPanel } from "@workspace/liquid-ui/components/GlassPanel"
 import {
@@ -9,6 +10,17 @@ import {
   TextArea,
 } from "@workspace/liquid-ui/components/Input"
 import { NumberInput } from "@workspace/liquid-ui/components/NumberInput"
+import {
+  Popover,
+  PopoverDialog,
+  PopoverTrigger,
+} from "@workspace/liquid-ui/components/Popover"
+import {
+  PreviewCard,
+  PreviewCardArrow,
+  PreviewCardContent,
+  PreviewCardTrigger,
+} from "@workspace/liquid-ui/components/PreviewCard"
 import { Progress } from "@workspace/liquid-ui/components/Progress"
 import { RadioGroup } from "@workspace/liquid-ui/components/RadioGroup"
 import { Slider } from "@workspace/liquid-ui/components/Slider"
@@ -19,6 +31,10 @@ import {
   TabPanel,
   Tabs,
 } from "@workspace/liquid-ui/components/Tabs"
+import {
+  Tooltip,
+  TooltipTrigger,
+} from "@workspace/liquid-ui/components/Tooltip"
 
 import { ThemeModeSwitcher } from "@/components/ThemeModeSwitcher"
 
@@ -151,6 +167,70 @@ function ThemedControlsSection() {
   )
 }
 
+// Phase 2.1: glass floating surfaces. Popover / Tooltip / PreviewCard rebuilt on
+// the same Base UI primitives base-ui uses, but their surface is `glass-overlay`
+// (frosted fill + rim + sheen) instead of the solid bg-panel recipe. These portal
+// to document.body; glass-overlay reads light-dark() defaults so they stay frosted
+// even outside the [data-theme="liquid"] scope. Triggers are base-ui Buttons
+// (liquid Button lands in Phase 3).
+function FloatingSurfacesSection() {
+  return (
+    <LiquidSection
+      title="Floating surfaces"
+      meta="Popover, Tooltip, and PreviewCard on the glass-overlay surface. Open each to check legibility and focus rings over the aurora; the caret arrows are translucent glass edges."
+    >
+      <div className="flex flex-wrap items-center gap-4">
+        <PopoverTrigger>
+          <Button>Open popover</Button>
+          <Popover placement="bottom start">
+            <PopoverDialog className="w-72">
+              <div className="text-gray-12 text-ui-base font-medium">
+                Fare alert
+              </div>
+              <p className="text-gray-11 text-ui-sm mt-1">
+                We will watch this route and notify you when the price drops
+                below your target.
+              </p>
+            </PopoverDialog>
+          </Popover>
+        </PopoverTrigger>
+
+        <TooltipTrigger>
+          <Button>Hover for a tooltip</Button>
+          <Tooltip placement="top">Frosted glass, translucent caret</Tooltip>
+        </TooltipTrigger>
+
+        <PreviewCard>
+          <PreviewCardTrigger>
+            <a
+              href="#"
+              className="text-accent-11 text-ui-base underline decoration-dotted underline-offset-4"
+            >
+              @skyway
+            </a>
+          </PreviewCardTrigger>
+          <PreviewCardContent placement="bottom start">
+            <div className="flex items-center gap-3">
+              <div className="bg-accent-9 text-gray-1 grid size-10 place-items-center rounded-full text-sm font-semibold">
+                SW
+              </div>
+              <div>
+                <div className="text-gray-12 text-ui-base font-medium">
+                  Skyway Air
+                </div>
+                <div className="text-gray-11 text-ui-sm">
+                  On time on 9 of the last 10 flights
+                </div>
+              </div>
+            </div>
+            <PreviewCardArrow />
+          </PreviewCardContent>
+        </PreviewCard>
+      </div>
+    </LiquidSection>
+  )
+}
+
 function DesignSystemLiquidRoute() {
   return (
     <div data-theme="liquid" className="liquid-aurora text-gray-12 min-h-svh">
@@ -212,6 +292,8 @@ function DesignSystemLiquidRoute() {
         </LiquidSection>
 
         <ThemedControlsSection />
+
+        <FloatingSurfacesSection />
       </div>
     </div>
   )
