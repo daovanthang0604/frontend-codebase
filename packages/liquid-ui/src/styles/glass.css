@@ -27,7 +27,10 @@
 
   /* surface fill + rim + edge lighting + shadow — the shared GlassPanel set */
   --glass-fill-top: light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.1));
-  --glass-fill-bot: light-dark(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02));
+  --glass-fill-bot: light-dark(
+    rgb(255 255 255 / 0.06),
+    rgb(255 255 255 / 0.02)
+  );
   --glass-rim: light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.14));
   --glass-rim-hi: light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.4));
   --glass-rim-lo: light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.14));
@@ -50,96 +53,105 @@
   --glass-scrim: light-dark(rgb(16 24 40 / 0.32), rgb(0 0 0 / 0.55));
 }
 
-/* ── .glass-overlay ─────────────────────────────────────────────────────────
-   Applied to a Base UI Popup / Content element in place of `bg-panel border
-   shadow-lg`. The element still brings its own radius (Tailwind `rounded-lg`)
-   and entrance transition; this class owns the glass MATERIAL only. */
-.glass-overlay {
-  position: relative;
-  isolation: isolate; /* contain the ::before/::after blends + z-index */
-  background:
-    linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bot)),
-    var(--glass-overlay-bg);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%) brightness(1.04);
-  backdrop-filter: blur(var(--glass-blur)) saturate(180%) brightness(1.04);
-  border: 1px solid var(--glass-rim);
-  box-shadow:
-    inset 0 1px 0 0 var(--glass-edge-hi),
-    inset 0 -1px 0 0 var(--glass-edge-lo),
-    0 12px 32px -8px var(--glass-shadow),
-    0 2px 6px -2px var(--glass-contact);
-}
+/* The recipe classes live in @layer components so a consumer's Tailwind utilities
+   (in the higher `utilities` layer) override the properties they set on the SAME
+   element: Dialog/Sheet's `fixed` positioning, or a Toast's `border-<color>`.
+   Left UNLAYERED, .glass-overlay's own `position: relative` / `border` would beat
+   those utilities — which broke modals (rendered in document flow, not fixed and
+   centered) and neutralised per-type borders. */
+@layer components {
+  /* ── .glass-overlay ───────────────────────────────────────────────────────
+     Applied to a Base UI Popup / Content element in place of `bg-panel border
+     shadow-lg`. The element still brings its own radius (Tailwind `rounded-lg`)
+     and entrance transition; this class owns the glass MATERIAL only. */
+  .glass-overlay {
+    position: relative;
+    isolation: isolate; /* contain the ::before/::after blends + z-index */
+    background:
+      linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bot)),
+      var(--glass-overlay-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%)
+      brightness(1.04);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%) brightness(1.04);
+    border: 1px solid var(--glass-rim);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-edge-hi),
+      inset 0 -1px 0 0 var(--glass-edge-lo),
+      0 12px 32px -8px var(--glass-shadow),
+      0 2px 6px -2px var(--glass-contact);
+  }
 
-/* masked gradient rim — a 1px frame brighter top-left; mirrors GlassPanel::before */
-.glass-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  background: linear-gradient(
-    135deg,
-    var(--glass-rim-hi),
-    rgb(255 255 255 / 0.15) 45%,
-    var(--glass-rim-lo)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
+  /* masked gradient rim — a 1px frame brighter top-left; mirrors GlassPanel::before */
+  .glass-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      var(--glass-rim-hi),
+      rgb(255 255 255 / 0.15) 45%,
+      var(--glass-rim-lo)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
 
-/* diagonal specular sheen — static, screen-blended; mirrors GlassPanel::after */
-.glass-overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  background: linear-gradient(
-    135deg,
-    var(--glass-sheen) 0%,
-    rgb(255 255 255 / 0.06) 28%,
-    transparent 58%
-  );
-}
+  /* diagonal specular sheen — static, screen-blended; mirrors GlassPanel::after */
+  .glass-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: linear-gradient(
+      135deg,
+      var(--glass-sheen) 0%,
+      rgb(255 255 255 / 0.06) 28%,
+      transparent 58%
+    );
+  }
 
-/* ── .glass-scrim ───────────────────────────────────────────────────────────
+  /* ── .glass-scrim ───────────────────────────────────────────────────────────
    Modal backdrop behind a glass Dialog / Sheet. A dim wash + a touch of blur so
    the page reads as "pushed back" behind the glass surface. */
-.glass-scrim {
-  background: var(--glass-scrim);
-  -webkit-backdrop-filter: blur(2px);
-  backdrop-filter: blur(2px);
-}
+  .glass-scrim {
+    background: var(--glass-scrim);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
 
-/* ── a11y: reduced transparency ─────────────────────────────────────────────
+  /* ── a11y: reduced transparency ─────────────────────────────────────────────
    Drop the see-through material — near-opaque fill, no backdrop blur — so text
    contrast stops depending on whatever sits behind the surface. Mirrors the
    GlassPanel.css block. (No reduced-MOTION block is needed here: the overlay's
    only motion is its entrance transition, already neutralised by the global
    prefers-reduced-motion reset in @workspace/theme globals.css, and the sheen is
    static.) */
-@media (prefers-reduced-transparency: reduce) {
-  .glass-overlay {
-    background: var(--glass-solid);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-  .glass-overlay::before,
-  .glass-overlay::after {
-    opacity: 0.5;
-  }
-  .glass-scrim {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-overlay {
+      background: var(--glass-solid);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .glass-overlay::before,
+    .glass-overlay::after {
+      opacity: 0.5;
+    }
+    .glass-scrim {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 }
