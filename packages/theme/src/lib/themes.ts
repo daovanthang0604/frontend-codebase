@@ -96,4 +96,64 @@ const liquid: NamedTheme = {
   },
 }
 
-export const THEMES: NamedTheme[] = [liquid]
+// "slate-iris" — a clean, near-monochrome cool theme: a periwinkle-iris accent
+// (the single hit of color, reserved for primary actions / links / focus) over
+// cool slate grays. Its hue (~273) sits clear of both the default navy and
+// liquid's cyan. A flat theme (no glass material). The light gray-9..12 overrides
+// are REQUIRED: generateRadixColors hard-codes a warm-taupe ink at those steps in
+// light mode, which would warm-tint an otherwise cool neutral — the overrides
+// restore the cool slate ink. Dark mode derives cool grays natively, so only
+// light needs them. --accent-solid is re-pointed to accent-9 so the primary fill
+// is the iris (the generator's default light solid is the dark accent-12).
+const slateIris: NamedTheme = {
+  name: "slate-iris",
+  accent: "#5768be",
+  graySeedLight: "#52555d",
+  graySeedDark: "#7c8088",
+  backgroundLight: "#f9fbfd",
+  backgroundDark: "#121417",
+  material: {
+    light: {
+      "--panel": "#ffffff",
+      "--accent-solid": "var(--accent-9)",
+      "--gray-9": "oklch(60.6% 0.0116 261.8)",
+      "--gray-10": "oklch(55.5% 0.0133 264.5)",
+      "--gray-11": "oklch(45.6% 0.016 262.3)",
+      "--gray-12": "oklch(23.5% 0.0166 264.2)",
+    },
+    dark: {
+      "--panel": "var(--gray-2)",
+      "--accent-solid": "var(--accent-9)",
+    },
+  },
+}
+
+// "camellia" — a refined rose/raspberry accent (~hue 352) over a cool mauve-
+// neutral paper: bright and editorial in light, deep raspberry on near-black in
+// dark. Also flat (no glass). Same as slate-iris, the light gray-9..12 overrides
+// defeat the generator's warm-taupe ink so the neutral stays cool mauve instead
+// of drifting brown. --accent-solid stays the vivid accent-9 rose in both modes.
+const camellia: NamedTheme = {
+  name: "camellia",
+  accent: "#b23276",
+  graySeedLight: "#747073",
+  graySeedDark: "#a8a3a7",
+  backgroundLight: "#fefcfe",
+  backgroundDark: "#1a1418",
+  material: {
+    light: {
+      "--panel": "oklch(0.99 0.003 340)",
+      "--accent-solid": "oklch(0.53 0.176 352)",
+      "--gray-9": "oklch(0.63 0.012 330)",
+      "--gray-10": "oklch(0.56 0.014 330)",
+      "--gray-11": "oklch(0.44 0.015 330)",
+      "--gray-12": "oklch(0.25 0.016 330)",
+    },
+    dark: {
+      "--panel": "var(--gray-2)",
+      "--accent-solid": "var(--accent-9)",
+    },
+  },
+}
+
+export const THEMES: NamedTheme[] = [liquid, slateIris, camellia]

@@ -19,8 +19,8 @@ client are stubbed seams** you replace with your own. There is no backend.
 | Path                         | Package                        | Role                                                        |
 | ---------------------------- | ------------------------------ | ----------------------------------------------------------- |
 | `apps/web`             | `web`                    | The app — Vite + React + TanStack Router (dev on port 3000) |
-| `packages/ui`                | `@workspace/ui`                 | Component library (consumed from source)                    |
-| `packages/base-ui`           | `@workspace/base-ui`            | Component library rebuilt on Base UI (consumed from source) |
+| `packages/base-ui`           | `@workspace/base-ui`            | **Primary component library** — rebuilt on Base UI (consumed from source) |
+| `packages/ui`                | `@workspace/ui`                 | Legacy component library — prefer `@workspace/base-ui` for new work         |
 | `packages/liquid-ui`         | `@workspace/liquid-ui`          | Standalone glass kit (self-contained; forked from base-ui, depends on neither base-ui nor ui) under the `liquid` theme (see its README) |
 | `packages/theme`             | `@workspace/theme`              | Design tokens + Tailwind/PostCSS preset + named themes (e.g. `liquid`) |
 | `packages/shared`            | `@workspace/shared`             | Framework-agnostic utilities                                |
@@ -69,18 +69,19 @@ these. For UI changes, also confirm the dev server renders (`pnpm dev`).
    intentionally dynamic code.
 2. **Use `@/` path aliases** (`@/services`, `@/components`, …) — avoid relative
    imports more than two levels deep.
-3. **Reuse `@workspace/ui` first.** Primitives live in `packages/ui/src`
-   (imported as `@workspace/ui/components/*`). Many are named exports inside a
+3. **Reuse `@workspace/base-ui` first.** Primitives live in `packages/base-ui/src`
+   (imported as `@workspace/base-ui/components/*`). Many are named exports inside a
    shared file (e.g. `Input.tsx` also exports `TextArea`/`SearchInput`), so grep
-   the exports, not just filenames. The `/design-system` route is a live catalog.
+   the exports, not just filenames. The `/design-system-baseui` route is a live
+   catalog. (`@workspace/ui` is legacy — don't reach for it in new work.)
 4. **Wrap page content in `<PageShell>`** — it owns the gutter, centering, max
    width, and the title/description header. Don't hand-roll `h1` + `mx-auto p-5`.
-5. **Data tables use `<DataTable>`** (`@workspace/ui/components/DataTable`), never
-   a raw grid. Its list-friendly shape `{ rows, total, limit, offset }` pairs
+5. **Data tables use `<DataTable>`** (`@workspace/base-ui/components/DataTable`),
+   never a raw grid. Its list-friendly shape `{ rows, total, limit, offset }` pairs
    with server mode (`dataSource="server"`, `rowCount`, `onStateChange`).
 6. **Keep the established look** when styling — warm surfaces, hairline
    dividers, bordered "boxed" data units, calm and uncrowded (no zebra striping,
-   no heavy gridlines). The `/design-system` route shows the components in-context.
+   no heavy gridlines). The `/design-system-baseui` route shows the components in-context.
 7. **JSX non-breaking spaces:** use `&nbsp;`, not `{" "}`.
 8. **i18n:** `react-i18next`; `useTranslation` with the **page name as the
    namespace**; `camelCase` keys; catalogs in `public/locales`; load namespaces
