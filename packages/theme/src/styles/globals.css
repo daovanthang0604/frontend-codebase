@@ -214,6 +214,26 @@
     --warning-10: oklch(0.65 0.15 66);
     --warning-11: oklch(0.52 0.115 66);
     --warning-12: oklch(0.37 0.072 66);
+
+    /* Golden Lotus gold (Vietnam Airlines, Pantone 130 C) — a FIXED brand/emphasis
+       scale consumed by the `lotus` theme (KPI figures, active-nav indicator, the
+       lotus lockup, one chart series). Restrained by convention: gold is never a
+       status color and never a flood. Gold is intrinsically light, so labels on a
+       gold fill use --gold-contrast (dark ink), never white. Light values here;
+       .dark repoints below. semantic.css maps --color-gold-* at these. */
+    --gold-1: oklch(97.6% 0.0032 77.58);
+    --gold-2: oklch(96.7% 0.0276 77.58);
+    --gold-3: oklch(94.8% 0.0784 77.58);
+    --gold-4: oklch(92.2% 0.1206 77.58);
+    --gold-5: oklch(89.4% 0.1542 77.58);
+    --gold-6: oklch(85.6% 0.1436 77.58);
+    --gold-7: oklch(80.1% 0.142 77.58);
+    --gold-8: oklch(73.1% 0.1639 77.58);
+    --gold-9: #ffb100;
+    --gold-10: oklch(78.8% 0.1965 77.58);
+    --gold-11: oklch(54.5% 0.09 77.58);
+    --gold-12: oklch(35.2% 0.0581 77.58);
+    --gold-contrast: #2c1f09;
   }
 
   * {
@@ -265,6 +285,21 @@
     --warning-10: var(--amber-10);
     --warning-11: var(--amber-11);
     --warning-12: var(--amber-12);
+
+    /* Golden Lotus gold — dark ramp (dark gold-9 lands exactly on brand #f2a900). */
+    --gold-1: oklch(18.1% 0.0113 77.58);
+    --gold-2: oklch(21% 0.0173 77.58);
+    --gold-3: oklch(25.7% 0.0414 77.58);
+    --gold-4: oklch(29.5% 0.0698 77.58);
+    --gold-5: oklch(33.6% 0.0777 77.58);
+    --gold-6: oklch(38.7% 0.0762 77.58);
+    --gold-7: oklch(45.3% 0.0809 77.58);
+    --gold-8: oklch(53.8% 0.0969 77.58);
+    --gold-9: #f2a900;
+    --gold-10: oklch(75.1% 0.1639 77.58);
+    --gold-11: oklch(83.8% 0.09 77.58);
+    --gold-12: oklch(93% 0.0583 77.58);
+    --gold-contrast: #2c1f09;
 
     --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
     --shadow-sm:

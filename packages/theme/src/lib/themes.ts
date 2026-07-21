@@ -156,4 +156,69 @@ const camellia: NamedTheme = {
   },
 }
 
-export const THEMES: NamedTheme[] = [liquid, slateIris, camellia]
+// "frost-azure" — the clean, cool CDP / data-tool register (Vercel · Stripe ·
+// Primer): a crisp azure accent over cool steel grays on a cool off-white page.
+// Flat theme. Like slate-iris, the light gray-9..12 overrides defeat the
+// generator's warm-taupe ink so the neutral stays cool; --accent-solid is the
+// azure accent-9. A touch more accent presence than slate-iris.
+const frostAzure: NamedTheme = {
+  name: "frost-azure",
+  accent: "#00769b",
+  graySeedLight: "#4f555e",
+  graySeedDark: "#797f88",
+  backgroundLight: "#f7fafd",
+  backgroundDark: "#0f1216",
+  material: {
+    light: {
+      "--panel": "#ffffff",
+      "--accent-solid": "var(--accent-9)",
+      "--gray-9": "oklch(60.6% 0.0123 243.8)",
+      "--gray-10": "oklch(55.5% 0.0138 248.1)",
+      "--gray-11": "oklch(45.5% 0.0173 245.0)",
+      "--gray-12": "oklch(23.6% 0.017 248.6)",
+    },
+    dark: {
+      "--panel": "var(--gray-2)",
+      "--accent-solid": "var(--accent-9)",
+    },
+  },
+}
+
+// "lotus" — Vietnam Airlines "Golden Lotus" register, tuned for a CDP (dense data
+// UI, light + dark). VN's corporate teal-blue (Pantone 315 C, seeded at its bluer
+// #005E80 variant so the interaction blue clears the info-cyan hue) is the accent,
+// over a cool steel neutral. The GOLD half of the brand ships separately as a
+// fixed --gold-* scale (globals.css + semantic.css), used sparingly for brand /
+// KPI emphasis. Flat theme; the light gray-9..12 overrides (hue retuned to 235,
+// the teal-blue neutral) defeat the generator's warm-taupe ink; --accent-solid =
+// accent-9 so the primary fill is VN blue. Primary button clears WCAG AAA (7.2:1).
+const lotus: NamedTheme = {
+  name: "lotus",
+  accent: "#005E80",
+  graySeedLight: "#4f555e",
+  graySeedDark: "#797f88",
+  backgroundLight: "#f7fafd",
+  backgroundDark: "#0f1216",
+  material: {
+    light: {
+      "--panel": "#ffffff",
+      "--accent-solid": "var(--accent-9)",
+      "--gray-9": "oklch(60.6% 0.0123 235)",
+      "--gray-10": "oklch(55.5% 0.0138 235)",
+      "--gray-11": "oklch(45.5% 0.0173 235)",
+      "--gray-12": "oklch(23.6% 0.017 235)",
+    },
+    dark: {
+      "--panel": "var(--gray-2)",
+      "--accent-solid": "var(--accent-9)",
+    },
+  },
+}
+
+export const THEMES: NamedTheme[] = [
+  liquid,
+  slateIris,
+  camellia,
+  frostAzure,
+  lotus,
+]

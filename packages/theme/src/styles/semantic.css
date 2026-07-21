@@ -75,4 +75,21 @@
   --color-info-10: var(--cyan-10);
   --color-info-11: var(--cyan-11);
   --color-info-12: var(--cyan-12);
+
+  /* Golden Lotus gold (values in globals.css) — brand / emphasis scale for the
+     `lotus` theme. Yields bg-gold-*, text-gold-*, border-gold-* utilities. Labels
+     on a gold fill use text-gold-contrast (dark ink) — white fails on gold. */
+  --color-gold-1: var(--gold-1);
+  --color-gold-2: var(--gold-2);
+  --color-gold-3: var(--gold-3);
+  --color-gold-4: var(--gold-4);
+  --color-gold-5: var(--gold-5);
+  --color-gold-6: var(--gold-6);
+  --color-gold-7: var(--gold-7);
+  --color-gold-8: var(--gold-8);
+  --color-gold-9: var(--gold-9);
+  --color-gold-10: var(--gold-10);
+  --color-gold-11: var(--gold-11);
+  --color-gold-12: var(--gold-12);
+  --color-gold-contrast: var(--gold-contrast);
 }
