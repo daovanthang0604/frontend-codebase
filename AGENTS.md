@@ -20,7 +20,9 @@ client are stubbed seams** you replace with your own. There is no backend.
 | ---------------------------- | ------------------------------ | ----------------------------------------------------------- |
 | `apps/web`             | `web`                    | The app — Vite + React + TanStack Router (dev on port 3000) |
 | `packages/ui`                | `@workspace/ui`                 | Component library (consumed from source)                    |
-| `packages/theme`             | `@workspace/theme`              | Design tokens + Tailwind/PostCSS preset (consumed from source) |
+| `packages/base-ui`           | `@workspace/base-ui`            | Component library rebuilt on Base UI (consumed from source) |
+| `packages/liquid-ui`         | `@workspace/liquid-ui`          | Standalone glass kit (self-contained; forked from base-ui, depends on neither base-ui nor ui) under the `liquid` theme (see its README) |
+| `packages/theme`             | `@workspace/theme`              | Design tokens + Tailwind/PostCSS preset + named themes (e.g. `liquid`) |
 | `packages/shared`            | `@workspace/shared`             | Framework-agnostic utilities                                |
 | `packages/typescript-config` | `@workspace/typescript-config` | Shared tsconfig bases                                       |
 

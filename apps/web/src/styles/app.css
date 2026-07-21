@@ -237,3 +237,196 @@
   padding: 1rem 0 0.75rem;
   letter-spacing: 0.3em;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   liquid-ui showcase sky — the drifting "liquid glass" aurora backdrop for the
+   /design-system-liquid route. Deep-twilight radial blobs painted in the liquid
+   theme's own accent hues: the container carries [data-theme="liquid"], so its
+   accent and gray tokens resolve to the cyan/slate liquid ramp and adapt to
+   light/dark mode on their own. One blurred ::before layer drifts via transform;
+   the global prefers-reduced-motion reset (theme globals.css) freezes it. This
+   is app-only showcase scenery, not part of the kit, so it lives here. */
+@keyframes liquid-drift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(3%, 1%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-2%, 3%, 0) scale(1.06);
+  }
+}
+
+.liquid-aurora {
+  position: relative;
+  isolation: isolate;
+  /* clip the blurred, scaled ::before so it adds no scrollbar. `clip`, not
+     `hidden`: hidden makes this a scroll container, which silently breaks
+     position:sticky descendants (the /booking fare receipt). */
+  overflow: clip;
+  background-color: var(--gray-1);
+}
+
+.liquid-aurora::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      44% 56% at 16% 20%,
+      color-mix(in oklch, var(--accent-9) 70%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 50% at 84% 12%,
+      color-mix(in oklch, var(--accent-7) 58%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      58% 62% at 76% 86%,
+      color-mix(in oklch, var(--accent-10) 58%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      50% 56% at 20% 94%,
+      color-mix(in oklch, var(--accent-8) 46%, transparent),
+      transparent 72%
+    ),
+    /* soft "key light" behind the summary column so the hero glass catches it */
+      radial-gradient(
+        34% 40% at 82% 30%,
+        color-mix(in oklch, var(--accent-6) 40%, transparent),
+        transparent 70%
+      ),
+    /* golden-hour horizon — one warm, low-chroma glow at the foot of the sky.
+       Scenery, not a second UI accent: it makes the twilight read as a flight
+       at dusk instead of a generic cyan wash. */
+      radial-gradient(
+        58% 30% at 50% 104%,
+        oklch(0.78 0.085 62 / 0.5),
+        transparent 72%
+      );
+  background-repeat: no-repeat;
+  filter: blur(54px) saturate(168%);
+  animation: liquid-drift 30s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Fine grain over the aurora — breaks the digital flatness of a pure gradient.
+   soft-light keeps it a texture, not a haze. Static, non-interactive. */
+.liquid-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Staggered section entrance — content rises + fades in. The global
+   prefers-reduced-motion reset (theme globals.css) neutralises it. */
+@keyframes liquid-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.liquid-rise {
+  animation: liquid-rise 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   /booking boarding-pass kit — demo-only recipes for the flight tickets and
+   the tear-off fare receipt on the /booking route. App scenery like the
+   aurora above, not part of @workspace/liquid-ui.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Perforation rules — dotted, not `dashed` border (browser dashes read cheap).
+   Vertical between cabin and stub on sm+; horizontal when the ticket stacks. */
+.ticket-perf {
+  width: 1px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--gray-a7) 0 4px,
+    transparent 4px 10px
+  );
+}
+.ticket-perf-h {
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--gray-a7) 0 4px,
+    transparent 4px 10px
+  );
+}
+
+/* Punched notches where the perforation meets the ticket edges (sm+ only —
+   below that the stub stacks under a horizontal rule). Two radial masks
+   intersect to cut a half-circle out of the top and bottom edge at the
+   perforation line; --ticket-stub-w must match the stub grid column. */
+@media (min-width: 40rem) {
+  .ticket-punched {
+    --ticket-stub-w: 11rem;
+    --ticket-perf-x: calc(100% - var(--ticket-stub-w));
+    -webkit-mask-image:
+      radial-gradient(
+        circle 10px at var(--ticket-perf-x) 0,
+        transparent 9px,
+        #000 10px
+      ),
+      radial-gradient(
+        circle 10px at var(--ticket-perf-x) 100%,
+        transparent 9px,
+        #000 10px
+      );
+    -webkit-mask-composite: source-in;
+    mask-image:
+      radial-gradient(
+        circle 10px at var(--ticket-perf-x) 0,
+        transparent 9px,
+        #000 10px
+      ),
+      radial-gradient(
+        circle 10px at var(--ticket-perf-x) 100%,
+        transparent 9px,
+        #000 10px
+      );
+    mask-composite: intersect;
+  }
+}
+
+/* Route arc — the dotted flight path drifts forward, slowly, like an inflight
+   map. Stroke-only animation; the global reduced-motion reset freezes it. */
+@keyframes route-drift {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+.route-arc-dash {
+  animation: route-drift 2.8s linear infinite;
+}
+
+/* Odometer tick — re-mounted total (key={total}) rises into place. */
+@keyframes total-tick {
+  from {
+    opacity: 0;
+    transform: translateY(0.3em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.total-tick {
+  animation: total-tick 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}

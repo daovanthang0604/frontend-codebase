@@ -8,11 +8,14 @@
 @source "../../../components/**/*.{ts,tsx}";
 @source "../../../ui/**/*.{ts,tsx}";
 @source "../../../base-ui/**/*.{ts,tsx}";
+@source "../../../liquid-ui/**/*.{ts,tsx}";
 @source "../../../music-ui/**/*.{ts,tsx}";
 /* Generate the Tailwind utility classes streamdown emits (node_modules isn't
-   scanned by default). streamdown is a @workspace/base-ui dep (AI-kit Response),
-   so it resolves under base-ui's node_modules. */
+   scanned by default). streamdown is a dep of both @workspace/base-ui and
+   @workspace/liquid-ui (AI-kit Response), so it resolves under each one's
+   node_modules; scan both so either kit's Response is styled. */
 @source "../../../base-ui/node_modules/streamdown/dist/*.js";
+@source "../../../liquid-ui/node_modules/streamdown/dist/*.js";
 
 @custom-variant dark (&:is(.dark *));
 

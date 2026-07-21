@@ -9,11 +9,13 @@
     "./postcss.config": "./postcss.config.mjs",
     "./globals.css": "./src/styles/globals.css",
     "./generated.css": "./src/styles/generated.css",
+    "./themes.css": "./src/styles/themes.css",
     "./semantic.css": "./src/styles/semantic.css",
     "./provider": "./src/provider.ts"
   },
   "scripts": {
-    "gen:css": "tsx scripts/generate-default-theme-css.ts"
+    "gen:css": "tsx scripts/generate-default-theme-css.ts",
+    "gen:themes": "tsx scripts/generate-theme-css.ts"
   },
   "keywords": [
     "theme",

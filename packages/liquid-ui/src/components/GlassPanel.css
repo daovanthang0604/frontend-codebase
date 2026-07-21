@@ -1,0 +1,253 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   GlassPanel — liquid-glass surface (honest web approximation).
+
+   NOT Apple's Liquid Glass (that is Apple-platform-only, no public web CSS).
+   This is a frosted-glass approximation: backdrop blur + saturate, a layered
+   translucent fill, directional edge lighting, a masked gradient rim, a
+   diagonal specular sheen, and an optional pointer-tracked highlight. Real
+   backdrop refraction (feDisplacementMap) is opt-in and Chromium-only, behind
+   @supports, with the blur+saturate chain as the built-in fallback.
+
+   Every tunable is a CSS var read with a `light-dark()` fallback, so a bare
+   <GlassPanel> adapts to light/dark on its own (next-themes runs with
+   enableColorScheme, so `light-dark()` resolves). A theme scope (e.g.
+   `[data-theme="liquid"]` from @workspace/theme) sets the vars on an ancestor;
+   they inherit down and override the fallback. Because NO rule sets `--glass-*`
+   on the `.glass-panel` element itself, an ancestor scope always wins by
+   inheritance — no cascade/source-order fight.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* The recipe classes live in @layer components (matching styles/glass.css) so a
+   consumer's Tailwind utilities (in the higher `utilities` layer) can override the
+   properties they set on the SAME element — e.g. `position` or `border`. Left
+   unlayered, .glass-panel would beat those utilities. */
+@layer components {
+  .glass-panel {
+    position: relative;
+    isolation: isolate; /* contain the ::before/::after blends + z-index */
+    border-radius: var(--glass-radius, 24px);
+    border: 1px solid
+      var(
+        --glass-rim,
+        light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.14))
+      );
+    background: linear-gradient(
+      180deg,
+      var(
+        --glass-fill-top,
+        light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.1))
+      ),
+      var(
+        --glass-fill-bot,
+        light-dark(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02))
+      )
+    );
+    -webkit-backdrop-filter: blur(var(--glass-blur, 16px)) saturate(180%)
+      brightness(1.05);
+    backdrop-filter: blur(var(--glass-blur, 16px)) saturate(180%)
+      brightness(1.05);
+    /* Edge lighting (inset top highlight + faint bottom) + float + contact shadow.
+     The two-part outer shadow (broad soft lift + short tight contact) makes the
+     panel hover convincingly. Shadow is tinted toward the backdrop, not pure
+     black on light. */
+    box-shadow:
+      inset 0 1px 0 0
+        var(
+          --glass-edge-hi,
+          light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.22))
+        ),
+      inset 0 -1px 0 0
+        var(
+          --glass-edge-lo,
+          light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.05))
+        ),
+      0 12px 32px -8px
+        var(--glass-shadow, light-dark(rgb(16 24 40 / 0.28), rgb(0 0 0 / 0.5))),
+      0 2px 6px -2px
+        var(--glass-contact, light-dark(rgb(16 24 40 / 0.22), rgb(0 0 0 / 0.4)));
+  }
+
+  /* Masked gradient rim — a 1px frame brighter top-left (where light hits) than
+   bottom-right. Reads more "liquid" than a flat hairline border. */
+  .glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      var(
+        --glass-rim-hi,
+        light-dark(rgb(255 255 255 / 0.85), rgb(255 255 255 / 0.4))
+      ),
+      rgb(255 255 255 / 0.15) 45%,
+      var(
+        --glass-rim-lo,
+        light-dark(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.14))
+      )
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Diagonal specular sheen (static) + pointer-tracked highlight (when the panel
+   opts into `interactive`, JS updates --glass-mx/--glass-my on pointermove).
+   `screen` blend so these layers only ever brighten what is behind them. */
+  .glass-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background:
+      radial-gradient(
+        200px circle at var(--glass-mx, 50%) var(--glass-my, 0%),
+        var(--glass-glow, transparent),
+        transparent 60%
+      ),
+      linear-gradient(
+        135deg,
+        var(
+            --glass-sheen,
+            light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.16))
+          )
+          0%,
+        rgb(255 255 255 / 0.06) 28%,
+        transparent 58%
+      );
+    transition: background 80ms linear;
+  }
+
+  /* Only the interactive variant lights up under the pointer. */
+  .glass-panel[data-interactive="true"] {
+    --glass-glow: var(
+      --glass-glow-on,
+      light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.16))
+    );
+  }
+
+  /* Tints — the fill body. `frost` = neutral white frost (default, above).
+   `tinted` leans warmer/brighter; `clear` is barely-there chrome over imagery. */
+  .glass-panel[data-tint="tinted"] {
+    background: linear-gradient(
+      180deg,
+      var(
+        --glass-tint-top,
+        light-dark(rgb(255 255 255 / 0.28), rgb(255 255 255 / 0.14))
+      ),
+      var(
+        --glass-tint-bot,
+        light-dark(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.04))
+      )
+    );
+  }
+  .glass-panel[data-tint="clear"] {
+    background: linear-gradient(
+      180deg,
+      var(
+        --glass-clear-top,
+        light-dark(rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.06))
+      ),
+      var(
+        --glass-clear-bot,
+        light-dark(rgb(255 255 255 / 0.02), rgb(255 255 255 / 0.015))
+      )
+    );
+  }
+
+  /* Elevation — how far the panel floats. */
+  .glass-panel[data-elevation="flush"] {
+    box-shadow:
+      inset 0 1px 0 0
+        var(
+          --glass-edge-hi,
+          light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.22))
+        ),
+      inset 0 -1px 0 0
+        var(
+          --glass-edge-lo,
+          light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.05))
+        ),
+      0 1px 3px -1px
+        var(--glass-contact, light-dark(rgb(16 24 40 / 0.22), rgb(0 0 0 / 0.4)));
+  }
+  .glass-panel[data-elevation="hero"] {
+    --glass-blur: var(--glass-blur-hero, 22px);
+    box-shadow:
+      inset 0 1px 0 0
+        var(
+          --glass-edge-hi,
+          light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.22))
+        ),
+      inset 0 -1px 0 0
+        var(
+          --glass-edge-lo,
+          light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.05))
+        ),
+      0 28px 60px -12px
+        var(--glass-shadow, light-dark(rgb(16 24 40 / 0.4), rgb(0 0 0 / 0.55))),
+      0 6px 16px -6px
+        var(
+          --glass-contact,
+          light-dark(rgb(16 24 40 / 0.28), rgb(0 0 0 / 0.45))
+        );
+  }
+
+  /* Real backdrop refraction — the literal light-bending. Chromium-only; Safari
+   and Firefox ignore the url() and keep the blur+saturate fallback in the same
+   declaration. Scale is kept modest so text behind stays legible. */
+  @supports (backdrop-filter: url("#glass-refraction")) {
+    .glass-panel[data-refraction="true"] {
+      -webkit-backdrop-filter: url("#glass-refraction")
+        blur(var(--glass-blur, 16px)) saturate(180%);
+      backdrop-filter: url("#glass-refraction") blur(var(--glass-blur, 16px))
+        saturate(180%);
+    }
+  }
+
+  /* A11y: honor reduced-transparency — near-opaque, blur dropped, so text contrast
+   no longer depends on the backdrop. */
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-panel {
+      background: var(
+        --glass-solid,
+        light-dark(rgb(255 255 255 / 0.94), rgb(20 22 30 / 0.96))
+      );
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .glass-panel::after,
+    .glass-panel::before {
+      opacity: 0.5;
+    }
+  }
+
+  /* A11y: reduced-motion freezes the pointer highlight (the JS handler also bails,
+   see GlassPanel.tsx) so nothing tracks the cursor. */
+  @media (prefers-reduced-motion: reduce) {
+    .glass-panel::after {
+      transition: none;
+      background: linear-gradient(
+        135deg,
+        var(
+            --glass-sheen,
+            light-dark(rgb(255 255 255 / 0.4), rgb(255 255 255 / 0.16))
+          )
+          0%,
+        rgb(255 255 255 / 0.06) 28%,
+        transparent 58%
+      );
+    }
+  }
+}

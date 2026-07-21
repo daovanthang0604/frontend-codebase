@@ -23,6 +23,7 @@
     "@tanstack/router-plugin": "^1.132.0",
     "@tanstack/zod-adapter": "^1.147.3",
     "@workspace/base-ui": "workspace:*",
+    "@workspace/liquid-ui": "workspace:*",
     "@workspace/shared": "workspace:*",
     "@workspace/theme": "workspace:*",
     "@workspace/ui": "workspace:*",
