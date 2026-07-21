@@ -69,10 +69,10 @@
   --accent-solid: oklch(0.6 0.13 210);
   --accent-contrast: #ffffff;
   --glass-radius: 1.5rem;
-  --glass-fill-top: rgb(255 255 255 / 0.55);
-  --glass-fill-bot: rgb(255 255 255 / 0.28);
-  --glass-tint-top: oklch(0.72 0.13 210 / 0.22);
-  --glass-tint-bot: oklch(0.72 0.13 210 / 0.08);
+  --glass-fill-top: rgb(255 255 255 / 0.66);
+  --glass-fill-bot: rgb(255 255 255 / 0.4);
+  --glass-tint-top: oklch(0.72 0.13 210 / 0.3);
+  --glass-tint-bot: oklch(0.72 0.13 210 / 0.12);
   --glass-rim: rgb(255 255 255 / 0.7);
   --glass-rim-hi: rgb(255 255 255 / 0.95);
   --glass-rim-lo: rgb(255 255 255 / 0.5);
@@ -80,8 +80,8 @@
   --glass-edge-lo: rgb(255 255 255 / 0.25);
   --glass-sheen: rgb(255 255 255 / 0.6);
   --glass-glow-on: oklch(0.75 0.13 210 / 0.25);
-  --glass-shadow: oklch(0.5 0.06 240 / 0.2);
-  --glass-contact: oklch(0.5 0.06 240 / 0.16);
+  --glass-shadow: oklch(0.5 0.07 240 / 0.3);
+  --glass-contact: oklch(0.5 0.07 240 / 0.22);
 }
 
 .dark [data-theme="liquid"],

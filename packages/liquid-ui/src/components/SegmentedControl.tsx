@@ -69,7 +69,7 @@ function SegmentedControl<T extends string>({
         if (next != null) onChange(next as T)
       }}
       className={cn(
-        "relative inline-flex gap-1 rounded-md border p-1",
+        "relative inline-flex gap-1 rounded-full border p-1",
         className
       )}
       style={{
@@ -82,9 +82,17 @@ function SegmentedControl<T extends string>({
         backdropFilter: "blur(var(--glass-blur)) saturate(180%)",
       }}
     >
+      {/* Raised pill chip, concentric with the pill rail (inset by its p-1) —
+          NOT .glass-overlay: the popover recipe reads as a dark plate with a
+          floating-surface shadow in dark mode. iOS-style platter instead: a
+          light chip in both modes, inset top highlight, tight contact shadow. */}
       <div
         aria-hidden
-        className="glass-overlay ease-spring pointer-events-none absolute inset-y-0 left-0 z-0 rounded-sm transition-[transform,width] duration-[var(--dur-fast)]"
+        className={cn(
+          "ease-spring pointer-events-none absolute inset-y-1 left-0 z-0 rounded-full border backdrop-blur-sm transition-[transform,width] duration-[var(--dur-fast)]",
+          "border-white/60 bg-white/80 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.6),0_2px_6px_-2px_var(--glass-contact)]",
+          "dark:border-white/20 dark:bg-white/15 dark:shadow-[inset_0_1px_0_0_rgb(255_255_255/0.2),0_2px_6px_-2px_var(--glass-contact)]"
+        )}
         style={{
           width: thumbRect.width,
           transform: `translateX(${thumbRect.x}px)`,
@@ -99,7 +107,7 @@ function SegmentedControl<T extends string>({
             else segmentRefs.current.delete(opt.value)
           }}
           className={cn(
-            "relative z-10 inline-flex cursor-pointer items-center gap-1.5 rounded-sm px-3.5 py-2 text-[13px] font-semibold whitespace-nowrap transition-[color,transform] outline-none select-none [&>svg]:size-4",
+            "relative z-10 inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] font-semibold whitespace-nowrap transition-[color,transform] outline-none select-none [&>svg]:size-4",
             "text-gray-11 hover:text-gray-12",
             "data-[pressed]:text-accent-12 data-[pressed]:font-bold",
             "focus-visible:ring-ring focus-visible:ring-2",

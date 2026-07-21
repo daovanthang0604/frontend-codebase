@@ -61,7 +61,7 @@ function SelectTrigger({
     <BaseSelect.Trigger className={cn(triggerClassName, className)} {...props}>
       <BaseSelect.Value
         placeholder={placeholder}
-        className="data-[placeholder]:text-gray-8 min-w-0 flex-1 truncate text-left"
+        className="data-[placeholder]:text-gray-10 min-w-0 flex-1 truncate text-left"
       />
       <BaseSelect.Icon className="text-gray-9 flex shrink-0">
         <ChevronsUpDown className="size-4" />

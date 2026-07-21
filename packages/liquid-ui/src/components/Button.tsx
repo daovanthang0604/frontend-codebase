@@ -109,12 +109,27 @@ function Button({
 // fill at rest, so the shared .glass-overlay recipe (blur + saturate, rim, sheen,
 // shadow) reads as the button's own surface. Thin wrapper: every Button prop still
 // works; `variant` is pinned so the glass look can't be swapped for a solid fill.
-function GlassButton({ className, ...props }: ButtonProps) {
+// `prominent` upgrades it to the accent-glass CTA (.glass-cta) — an accent-solid
+// fill with a glow — for the one primary action that should command the screen.
+function GlassButton({
+  className,
+  prominent,
+  ...props
+}: ButtonProps & { prominent?: boolean }) {
   return (
     <Button
       {...props}
       variant="ghost"
-      className={cn("glass-overlay", className)}
+      className={cn(
+        prominent
+          ? // Hover/pending background-color pinned here because the ghost
+            // variant's hover:bg-accent-3 utility out-ranks .glass-cta's fill
+            // (components layer): hover shifts to the CTA's hover shade, pending
+            // holds the accent fill.
+            "glass-cta text-accent-contrast hover:not-disabled:bg-(--glass-cta-hover) data-pending:bg-(--accent-solid)"
+          : "glass-overlay",
+        className
+      )}
     />
   )
 }

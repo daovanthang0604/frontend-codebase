@@ -66,7 +66,7 @@ function DatePicker({
         className={cn(triggerClass, className)}
       >
         <CalendarDays aria-hidden />
-        <span className={cn("flex-1 truncate", !selected && "text-gray-8")}>
+        <span className={cn("flex-1 truncate", !selected && "text-gray-10")}>
           {selected ? dayjs(selected).format("MMM D, YYYY") : placeholder}
         </span>
       </button>
@@ -141,7 +141,7 @@ function DateRangePicker({
       >
         <CalendarDays aria-hidden />
         <span
-          className={cn("flex-1 truncate", !committed?.from && "text-gray-8")}
+          className={cn("flex-1 truncate", !committed?.from && "text-gray-10")}
         >
           {formatRange(committed, placeholder)}
         </span>

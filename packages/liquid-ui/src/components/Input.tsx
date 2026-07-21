@@ -26,8 +26,10 @@ const fieldGroup = cn(
   "[&_svg]:text-gray-9 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
 )
 
+// gray-10 placeholder, not gray-8: on dark (and on glass wells) gray-8 sits too
+// close to the field fill to read.
 const controlBase =
-  "placeholder:text-gray-8 h-full min-w-0 flex-1 bg-transparent outline-none [&::-webkit-search-cancel-button]:hidden"
+  "placeholder:text-gray-10 h-full min-w-0 flex-1 bg-transparent outline-none [&::-webkit-search-cancel-button]:hidden"
 
 interface InputProps {
   label?: string
@@ -182,7 +184,7 @@ function TextArea({
         onValueChange={onChange}
         className={cn(
           // WDS textarea: white paper + hairline border + accent focus halo.
-          "bg-panel placeholder:text-gray-8 border-gray-a7 field-sizing-content flex min-h-[80px] w-full rounded-md border px-3.5 py-2.5 outline-none md:text-sm",
+          "bg-panel placeholder:text-gray-10 border-gray-a7 field-sizing-content flex min-h-[80px] w-full rounded-md border px-3.5 py-2.5 outline-none md:text-sm",
           "transition-[box-shadow,border-color] duration-150",
           "focus-visible:border-accent-a8 focus-visible:ring-ring/30 focus-visible:ring-2",
           "group-data-[disabled]:cursor-not-allowed group-data-[disabled]:opacity-60",
